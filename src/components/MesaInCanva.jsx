@@ -50,6 +50,7 @@ const MesaInCanva = ({ mesa, isEditing }) => {
   return (
     <TapGestureHandler onActivated={handleTap}>
       <PanGestureHandler
+        enabled={isEditing}
         onGestureEvent={handleDrag}
         onHandlerStateChange={handleStateChange}
       >
