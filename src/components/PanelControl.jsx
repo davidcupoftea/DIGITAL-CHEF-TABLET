@@ -600,8 +600,8 @@ const PanelControl = () => {
           <ActivityIndicator size="large" />
         ) : null}
 
-        <View style={{ flex: 1, flexDirection: "column" }}>
-          <View style={{ flexDirection: "row", flex: 1 }}>
+        <View style={{ flex: 1, flexDirection: "column"}}>
+          <View style={{ flexDirection: "row", flex: 1 , gap: 15}}>
             <View style={{ flex: 2 }}>
               <CanvasMesas mesas={tables} isEditing={isEditing} />
             </View>
