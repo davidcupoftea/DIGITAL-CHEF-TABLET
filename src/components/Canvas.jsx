@@ -9,7 +9,7 @@ const CanvasMesas = ({ mesas, isEditing }) => {
     <View style={{ flex: 1, borderWidth: 1, borderColor: "gray" }}>
       <Svg width="100%" height="100%">
         {mesas.map((mesa) => (
-            <MesaInCanva mesa={mesa} isEditing={isEditing}/>
+            <MesaInCanva key={mesa.pk} mesa={mesa} isEditing={isEditing}/>
         ))}
       </Svg>
     </View>
