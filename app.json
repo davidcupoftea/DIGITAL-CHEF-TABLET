@@ -1,0 +1,82 @@
+{
+  "expo": {
+    "scheme": "digitalchef",
+    "name": "digitalchef",
+    "slug": "digitalchef",
+    "version": "1.0.0",
+    "orientation": "default",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "jsEngine": "hermes",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.digitalchef"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.digitalchef",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCUapNTP0prko0UaM6vw1TpUpPEPNZIqhM"
+        }
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "aab62123-f83b-46d8-a40e-c87a3f5336aa"
+      }
+    },
+    "plugins": [
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": "merchant.identifier",
+          "enableGooglePay": true
+        }
+      ],
+      [
+        "expo-secure-store",
+        {
+          "faceIDPermission": "Permite a Digital Chef Republik acceder a tus datos biométricos de Face ID."
+        }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Function-Regular.ttf",
+            "./assets/fonts/Function-Bold.ttf",
+            "./assets/fonts/JoySans-Bold.ttf"
+          ]
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Permite a esta aplicación usar la cámara",
+          "microphonePermission": "Permite a la aplicación utilizar el micrófono",
+          "recordAudioAndroid": true
+        }
+      ]
+    ],
+    "owner": "davidcupoftea"
+  }
+}
