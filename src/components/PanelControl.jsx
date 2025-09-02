@@ -30,6 +30,7 @@ import {
 } from "../services/printerFunctions.jsx"; // DESCOMENTAR PARA VERSION CON IMPRESORA
 import { FacturadosContext } from "./ConceptosFacturadosProvider.jsx";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import CanvasMesas from './Canvas.jsx'
 
 const PanelControl = () => {
   const addTable = (pk) => {
@@ -97,7 +98,7 @@ const PanelControl = () => {
   const [loadingProforma, setLoadingProforma] = useState(false);
   const [loadingTicket, setLoadingTicket] = useState(false);
 
-  const [isEditing, setIsEditing] = useState(false)
+  const [isEditing, setIsEditing] = useState(false);
 
   const navigation = useNavigation();
   const isFocused = useIsFocused();
@@ -599,17 +600,26 @@ const PanelControl = () => {
           <ActivityIndicator size="large" />
         ) : null}
 
-        {loadedRooms && !loadingRooms && rooms.length != 0
-          ? tables.map((mesa, index) => (
-              <MesaTablePanelControl
-                table={mesa}
-                key={index}
-                addTable={addTable}
-                removeTable={removeTable}
-                tablesChosen={tablesChosen}
-              />
-            ))
-          : null}
+        <View style={{ flex: 1, flexDirection: "column" }}>
+          <View style={{ flexDirection: "row", flex: 1 }}>
+            <View style={{ flex: 2 }}>
+              <CanvasMesas mesas={tables} isEditing={isEditing} />
+            </View>
+            <View style={{ flex: 1 }}></View>
+
+            {loadedRooms && !loadingRooms && rooms.length != 0
+              ? tables.map((mesa, index) => (
+                  <MesaTablePanelControl
+                    table={mesa}
+                    key={index}
+                    addTable={addTable}
+                    removeTable={removeTable}
+                    tablesChosen={tablesChosen}
+                  />
+                ))
+              : null}
+          </View>
+        </View>
 
         {loadedRooms && !loadingRooms && rooms.length == 0 ? (
           <Text style={styles.textsmall}>
