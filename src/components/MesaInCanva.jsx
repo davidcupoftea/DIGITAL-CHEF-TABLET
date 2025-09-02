@@ -37,6 +37,7 @@ const MesaInCanva = ({ mesa, isEditing }) => {
 
   return isEditing ? (
     <Draggable
+    renderSize={50}
       x={x}
       y={y}
       onDragRelease={(e, gestureState, bounds) => {
