@@ -1,44 +1,63 @@
 import { useState, useRef } from "react";
-import { View, Animated } from "react-native";
+import { Animated } from "react-native";
 import Svg, { Rect, Circle } from "react-native-svg";
-import { PanGestureHandler, TapGestureHandler } from "react-native-gesture-handler";
+import { PanGestureHandler, TapGestureHandler, State } from "react-native-gesture-handler";
 
 const MesaInCanva = ({ mesa, isEditing }) => {
   const [isRounded, setIsRounded] = useState(false);
 
-  // Animated.ValueXY para manejar posición fácilmente
-  const position = useRef(new Animated.ValueXY({ x: mesa.x || 50, y: mesa.y || 50 })).current;
+  // Posición inicial desde mesa
+  const position = useRef(
+    new Animated.ValueXY({ x: mesa.x || 50, y: mesa.y || 50 })
+  ).current;
 
   const handleTap = () => {
     if (isEditing) setIsRounded(!isRounded);
   };
 
-  // Se llama mientras arrastramos
-  const handleDrag = (event) => {
-    const { translationX, translationY } = event.nativeEvent;
-    position.setValue({
-      x: (mesa.x || 50) + translationX,
-      y: (mesa.y || 50) + translationY,
-    });
-  };
+  const handleDrag = Animated.event(
+    [
+      {
+        nativeEvent: {
+          translationX: position.x,
+          translationY: position.y,
+        },
+      },
+    ],
+    { useNativeDriver: false }
+  );
 
-  // Se llama al terminar el gesto
-  const handleDragEnd = (event) => {
-    const { translationX, translationY } = event.nativeEvent;
-    // Actualizamos las coordenadas base de la mesa
-    mesa.x = (mesa.x || 50) + translationX;
-    mesa.y = (mesa.y || 50) + translationY;
-    position.setValue({ x: mesa.x, y: mesa.y });
+  const handleStateChange = (event) => {
+    if (event.nativeEvent.state === State.BEGAN) {
+      // Guardamos el offset actual antes de empezar a mover
+      position.setOffset({
+        x: position.x.__getValue(),
+        y: position.y.__getValue(),
+      });
+      position.setValue({ x: 0, y: 0 });
+    }
+
+    if (event.nativeEvent.state === State.END) {
+      // Acumulamos el offset cuando termina
+      position.flattenOffset();
+
+      // Guardamos coordenadas absolutas en la mesa (opcional)
+      mesa.x = position.x.__getValue();
+      mesa.y = position.y.__getValue();
+    }
   };
 
   return (
     <TapGestureHandler onActivated={handleTap}>
-      <PanGestureHandler onGestureEvent={handleDrag} onEnded={handleDragEnd}>
+      <PanGestureHandler
+        onGestureEvent={handleDrag}
+        onHandlerStateChange={handleStateChange}
+      >
         <Animated.View
           style={{
             width: 50,
             height: 50,
-            transform: [{ translateX: position.x }, { translateY: position.y }],
+            transform: position.getTranslateTransform(),
           }}
         >
           <Svg width={50} height={50}>
