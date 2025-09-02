@@ -605,7 +605,7 @@ const PanelControl = () => {
             <View style={{ flex: 2 }}>
               <CanvasMesas mesas={tables} isEditing={isEditing} />
             </View>
-            <View style={{ flex: 1 }}></View>
+            <View style={{ flex: 1 }}>
 
             {loadedRooms && !loadingRooms && rooms.length != 0
               ? tables.map((mesa, index) => (
@@ -618,6 +618,7 @@ const PanelControl = () => {
                   />
                 ))
               : null}
+              </View>
           </View>
         </View>
 
