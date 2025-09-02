@@ -30,11 +30,11 @@ const MesaInCanva = ({ mesa, isEditing }) => {
 
 
       const mesaComponent = isRounded ? (
-            <Circle cx={25} cy={25} r={25} fill="orange" />
-            //<View><Text>Mesa redonda</Text></View>
+            //<Circle cx={25} cy={25} r={25} fill="orange" />
+            <View><Text>Mesa redonda</Text></View>
           ) : (
-            //<View><Text>Mesa cuadrada</Text></View>
-            <Rect x={0} y={0} width={50} height={50} fill="orange" />
+            <View><Text>Mesa cuadrada</Text></View>
+            //<Rect x={0} y={0} width={50} height={50} fill="orange" />
           );
 
           return isEditing ? (
@@ -58,7 +58,8 @@ const MesaInCanva = ({ mesa, isEditing }) => {
               onPress={() => handleMesaPress()}
             >
               {mesaComponent}
-            </Svg>)
+            </Svg>
+            )
 
 
 
