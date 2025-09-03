@@ -7,21 +7,29 @@ import {
   State,
 } from "react-native-gesture-handler";
 
-
-const MesaInCanva = ({ mesa, isEditing, initialX, initialY, onUpdate, addTable, removeTable, tablesChosen }) => {
+const MesaInCanva = ({
+  mesa,
+  isEditing,
+  initialX,
+  initialY,
+  onUpdate,
+  addTable,
+  removeTable,
+  tablesChosen,
+  canvasSize
+}) => {
   const [isRounded, setIsRounded] = useState(false);
 
-      const selectTable = (pk) => {
-        if (!tablesChosen.includes(pk)){
-          addTable(pk)
-        }
-        else {
-            removeTable(pk)
-        }
+  const selectTable = (pk) => {
+    if (!tablesChosen.includes(pk)) {
+      addTable(pk);
+    } else {
+      removeTable(pk);
     }
+  };
 
-  console.log('mesa x is', mesa.x)
-  console.log('mesa y is', mesa.y)
+  console.log("mesa x is", mesa.x);
+  console.log("mesa y is", mesa.y);
 
   const size = 50; // tamaño de la mesa
 
@@ -31,15 +39,14 @@ const MesaInCanva = ({ mesa, isEditing, initialX, initialY, onUpdate, addTable, 
   ).current;
 
   const handleTap = () => {
-    if (isEditing){ 
-        setIsRounded(!isRounded);
-    }
-    else selectTable(mesa.id)
+    if (isEditing) {
+      setIsRounded(!isRounded);
+    } else selectTable(mesa.id);
   };
 
-//   useEffect(() => {
-//   position.setValue({ x: initialX, y: initialY });
-// }, [initialX, initialY]);
+  //   useEffect(() => {
+  //   position.setValue({ x: initialX, y: initialY });
+  // }, [initialX, initialY]);
 
   const handleDrag = Animated.event(
     [
@@ -50,7 +57,22 @@ const MesaInCanva = ({ mesa, isEditing, initialX, initialY, onUpdate, addTable, 
         },
       },
     ],
-    { useNativeDriver: false }
+    { useNativeDriver: false //,
+    // listener: (event) => {
+    //   // Obtenemos la posición con el offset aplicado automáticamente
+    //   const x = Math.max(
+    //     0,
+    //     Math.min(position.x.__getValue(), canvasSize.width - size)
+    //   );
+    //   const y = Math.max(
+    //     0,
+    //     Math.min(position.y.__getValue(), canvasSize.height - size)
+    //   );
+
+    //   // Forzamos que la posición no salga del canvas
+    //   position.setValue({ x, y });
+    // }
+    }
   );
 
   const handleStateChange = (event) => {
@@ -64,15 +86,24 @@ const MesaInCanva = ({ mesa, isEditing, initialX, initialY, onUpdate, addTable, 
 
     if (event.nativeEvent.state === State.END) {
       position.flattenOffset();
-      mesa.x = position.x.__getValue();
-      mesa.y = position.y.__getValue();
+      let x = position.x.__getValue();
+      let y = position.y.__getValue();
+
+      if (canvasSize.width && canvasSize.height) {
+        x = Math.max(0, Math.min(x, canvasSize.width - size));
+        y = Math.max(0, Math.min(y, canvasSize.height - size));
+      }
+
+      position.setValue({ x, y });
+      mesa.x = x;
+      mesa.y = y;
 
       if (onUpdate) onUpdate(mesa);
     }
   };
 
-  const fillColor = 'gray'
-  const borderWidth = '3'
+  const fillColor = "gray";
+  const borderWidth = "3";
   // Determinar color del borde según estado de la mesa
   let borderColor = "white";
 
@@ -89,39 +120,39 @@ const MesaInCanva = ({ mesa, isEditing, initialX, initialY, onUpdate, addTable, 
         onGestureEvent={isEditing ? handleDrag : null}
         onHandlerStateChange={isEditing ? handleStateChange : null}
       >
-    <Animated.View
-      style={{
+        <Animated.View
+          style={{
             position: "absolute",
             width: size,
-        alignItems: "center",
-        transform: position.getTranslateTransform(),
-      }}
-    >
-      {/* Mesa cuadrada o circular */}
-      <View
-        style={{
-          width: size,
-          height: size,
-          borderRadius: isRounded ? size / 2 : 0,
-          backgroundColor: "gray",
-          borderWidth: 3,
-          borderColor: borderColor,
-        }}
-      />
-      {/* Texto debajo de la mesa */}
-      <Text
-        style={{
-          color: borderColor,
-          fontSize: 12,
-          textAlign: "center",
-          marginTop: 5, // separa el texto de la mesa
-          width: size + 20, // un poco más ancho para que quepa el texto
-        }}
-        numberOfLines={3} // opcional, si quieres limitar líneas
-      >
-        {`Mesa ${mesa.name_of_the_table} - (C.max:${mesa.number_of_comensals})`}
-      </Text>
-    </Animated.View>
+            alignItems: "center",
+            transform: position.getTranslateTransform(),
+          }}
+        >
+          {/* Mesa cuadrada o circular */}
+          <View
+            style={{
+              width: size,
+              height: size,
+              borderRadius: isRounded ? size / 2 : 0,
+              backgroundColor: fillColor,
+              borderWidth: borderWidth,
+              borderColor: borderColor,
+            }}
+          />
+          {/* Texto debajo de la mesa */}
+          <Text
+            style={{
+              color: borderColor,
+              fontSize: 12,
+              textAlign: "center",
+              marginTop: 5, // separa el texto de la mesa
+              width: size + 20, // un poco más ancho para que quepa el texto
+            }}
+            numberOfLines={3} // opcional, si quieres limitar líneas
+          >
+            {`Mesa ${mesa.name_of_the_table} - (C.max:${mesa.number_of_comensals})`}
+          </Text>
+        </Animated.View>
       </PanGestureHandler>
     </TapGestureHandler>
   );

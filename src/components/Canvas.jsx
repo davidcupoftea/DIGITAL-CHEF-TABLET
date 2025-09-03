@@ -12,6 +12,9 @@ import getAndSetRestaurant from "../services/apiCallFavouriteRestaurant.jsx";
 const CanvasMesas = ({ mesasOriginales, isEditing,  addTable, removeTable, tablesChosen={tablesChosen} }) => {
   const [mesas, setMesas] = useState(mesasOriginales);
 
+  const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
+
+
   let { restaurantChosenObject } = useContext(RestaurantChosenContext);
   const [restaurantChosen, setRestaurantChosen] = restaurantChosenObject;
 
@@ -79,8 +82,12 @@ const CanvasMesas = ({ mesasOriginales, isEditing,  addTable, removeTable, table
         borderColor: "gray",
         position: "relative",
       }}
+    onLayout={(event) => {
+        const { width, height } = event.nativeEvent.layout;
+        setCanvasSize({ width, height });
+      }}
     >
-      <Svg width="100%" height="100%">
+      {/*<Svg width="100%" height="100%">*/}
         {mesas.map((mesa) => (
           <MesaInCanva
             key={mesa.id}
@@ -92,9 +99,10 @@ const CanvasMesas = ({ mesasOriginales, isEditing,  addTable, removeTable, table
             addTable={addTable}
             removeTable={removeTable}
             tablesChosen={tablesChosen}
+            canvasSize={canvasSize}
           />
         ))}
-      </Svg>
+      {/*</Svg>*/}
     </View>
   );
 };

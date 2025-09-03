@@ -9,7 +9,7 @@ export const navOptions = (nav) => {
         headerRight: () =>(
             <Ionicons
             name="menu"
-            size={32}
+            size={45}
             color="white"
             onPress={()=>nav.toggleDrawer()}
             />
