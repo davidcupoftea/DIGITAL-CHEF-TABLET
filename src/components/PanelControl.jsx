@@ -256,7 +256,7 @@ const PanelControl = () => {
       );
       var res_json = await jsonData.json();
       var tables = res_json.tables;
-      //console.log('TABLES ARE', tables)
+      console.log('TABLES ARE', tables)
       setTables(tables);
       setLoadingTables(false);
       setLoadedTables(true);
@@ -681,9 +681,11 @@ const PanelControl = () => {
               <View
                 key={index}
                 style={{
-                  width: cardWidth, // o un valor fijo como 150
+                  //width: cardWidth, // o un valor fijo como 150
+                  flexBasis: `33.33%`,
+                  flexGrow: 0,
                   marginBottom: 10, // separación vertical entre filas
-                  marginRight: isLastInRow ? 0 : gapWidth,
+                  paddingRight: isLastInRow ? 0 : gapWidth,
                 }}
               >
                 <TableWithOrderElementsControlPanel
