@@ -49,6 +49,8 @@ const MesaInCanva = ({ mesa, isEditing }) => {
     }
   };
   const strokeWidth = 3;
+  const fillColor = 'gray'
+  const borderWidth = '3'
   // Determinar color del borde según estado de la mesa
   let borderColor = "white";
 
@@ -68,21 +70,19 @@ const MesaInCanva = ({ mesa, isEditing }) => {
         <Animated.View
           style={{
             width: size,
-            height: size,
             alignItems: "center",
             transform: position.getTranslateTransform(),
           }}
-          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
           <Svg width={size} height={size}>
             {isRounded ? (
               <Circle
                 cx={size / 2}
                 cy={size / 2}
-                r={size / 2 - strokeWidth / 2}
-                fill="gray"
+                r={size / 2 - borderWidth}
+                fill={fillColor}
                 stroke={borderColor}
-                strokeWidth={3}
+                strokeWidth={borderWidth}
               />
             ) : (
               <Rect
@@ -90,21 +90,16 @@ const MesaInCanva = ({ mesa, isEditing }) => {
                 y={0}
                 width={size}
                 height={size}
-                fill="gray"
+                fill={fillColor}
                 stroke={borderColor}
-                strokeWidth={3}
+                strokeWidth={borderWidth}
               />
             )}
           </Svg>
           <Text
-            style={{
-              color: "white",
-              fontSize: 12,
-              textAlign: "center",
-              marginTop: 2,
-            }}
+            style={{ color: borderColor, fontSize: 12, textAlign: "center" }}
           >
-            {displayText}
+            {`Mesa ${mesa.name_of_the_table} - (C.max:${mesa.number_of_comensals})`}
           </Text>
         </Animated.View>
       </PanGestureHandler>
