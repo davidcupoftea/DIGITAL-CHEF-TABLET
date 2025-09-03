@@ -24,9 +24,9 @@ const MesaInCanva = ({ mesa, isEditing, initialX, initialY }) => {
     if (isEditing) setIsRounded(!isRounded);
   };
 
-  useEffect(() => {
-  position.setValue({ x: initialX, y: initialY });
-}, [initialX, initialY]);
+//   useEffect(() => {
+//   position.setValue({ x: initialX, y: initialY });
+// }, [initialX, initialY]);
 
   const handleDrag = Animated.event(
     [
@@ -74,41 +74,39 @@ const MesaInCanva = ({ mesa, isEditing, initialX, initialY }) => {
         onGestureEvent={isEditing ? handleDrag : null}
         onHandlerStateChange={isEditing ? handleStateChange : null}
       >
-        <Animated.View
-          style={{
+    <Animated.View
+      style={{
+            position: "absolute",
             width: size,
-            alignItems: "center",
-            transform: position.getTranslateTransform(),
-          }}
-        >
-          <Svg width={size} height={size}>
-            {isRounded ? (
-              <Circle
-                cx={size / 2}
-                cy={size / 2}
-                r={size / 2 - borderWidth}
-                fill={fillColor}
-                stroke={borderColor}
-                strokeWidth={borderWidth}
-              />
-            ) : (
-              <Rect
-                x={0}
-                y={0}
-                width={size}
-                height={size}
-                fill={fillColor}
-                stroke={borderColor}
-                strokeWidth={borderWidth}
-              />
-            )}
-          </Svg>
-          <Text
-            style={{ color: borderColor, fontSize: 12, textAlign: "center" }}
-          >
-            {`Mesa ${mesa.name_of_the_table} - (C.max:${mesa.number_of_comensals})`}
-          </Text>
-        </Animated.View>
+        alignItems: "center",
+        transform: position.getTranslateTransform(),
+      }}
+    >
+      {/* Mesa cuadrada o circular */}
+      <View
+        style={{
+          width: size,
+          height: size,
+          borderRadius: isRounded ? size / 2 : 0,
+          backgroundColor: "gray",
+          borderWidth: 3,
+          borderColor: borderColor,
+        }}
+      />
+      {/* Texto debajo de la mesa */}
+      <Text
+        style={{
+          color: borderColor,
+          fontSize: 12,
+          textAlign: "center",
+          marginTop: 5, // separa el texto de la mesa
+          width: size + 20, // un poco más ancho para que quepa el texto
+        }}
+        numberOfLines={3} // opcional, si quieres limitar líneas
+      >
+        {`Mesa ${mesa.name_of_the_table} - (C.max:${mesa.number_of_comensals})`}
+      </Text>
+    </Animated.View>
       </PanGestureHandler>
     </TapGestureHandler>
   );
