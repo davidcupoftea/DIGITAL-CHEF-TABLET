@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Animated, Text, View } from "react-native";
 import Svg, { Rect, Circle } from "react-native-svg";
 import {
@@ -7,19 +7,26 @@ import {
   State,
 } from "react-native-gesture-handler";
 
-const MesaInCanva = ({ mesa, isEditing }) => {
+const MesaInCanva = ({ mesa, isEditing, initialX, initialY }) => {
   const [isRounded, setIsRounded] = useState(false);
+
+  console.log('mesa x is', mesa.x)
+  console.log('mesa y is', mesa.y)
 
   const size = 50; // tamaño de la mesa
 
   // Animated.ValueXY para manejar posición
   const position = useRef(
-    new Animated.ValueXY({ x: mesa.x || 50, y: mesa.y || 50 })
+    new Animated.ValueXY({ x: initialX || 50, y: initialY || 50 })
   ).current;
 
   const handleTap = () => {
     if (isEditing) setIsRounded(!isRounded);
   };
+
+  useEffect(() => {
+  position.setValue({ x: initialX, y: initialY });
+}, [initialX, initialY]);
 
   const handleDrag = Animated.event(
     [

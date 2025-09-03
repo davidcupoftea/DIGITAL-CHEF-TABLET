@@ -20,7 +20,7 @@ const mesasPorFila = 5;
     <View style={{ flex: 1, borderWidth: 1, borderColor: "gray" }}>
       <Svg width="100%" height="100%">
         {mesas.map((mesa) => (
-            <MesaInCanva key={mesa.id} mesa={mesa} isEditing={isEditing}/>
+            <MesaInCanva key={mesa.id} mesa={mesa} initialX={mesa.x} initialY={mesa.y} isEditing={isEditing}/>
         ))}
       </Svg>
     </View>
