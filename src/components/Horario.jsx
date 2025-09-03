@@ -14,7 +14,7 @@ import { RestaurantChosenContext } from "./RestaurantChosenProvider.jsx";
 import { BASE_URL, WARNING_NOT_SCROLLABLE} from "../services/index.jsx";
 import getAndSetRestaurant from "../services/apiCallFavouriteRestaurant.jsx";
 
-function Recompensas() {
+function Horario() {
   const navigation = useNavigation();
 
   const [hoursOfEveryDay, setHoursOfEveryDay] = useState([]);
@@ -369,6 +369,6 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Recompensas;
+export default Horario;
 
 //LIMPIADO Y REVISADO
