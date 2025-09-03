@@ -19,9 +19,7 @@ import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { AuthFlowContext } from "./AuthUseContextProvider";
 import { RestaurantChosenContext } from "./RestaurantChosenProvider.jsx";
-import {
-  BASE_URL
-} from "../services/index.jsx";
+import { BASE_URL } from "../services/index.jsx";
 import getAndSetRestaurant from "../services/apiCallFavouriteRestaurant.jsx";
 import ManuallyTableReservationForOrders from "./ManuallyTableReservationForOrders.jsx";
 import OrderInList from "./OrderInList.jsx";
@@ -42,8 +40,8 @@ const Pedidos = () => {
   const [tables, setTables] = useState([]);
   const [tablesChosen, setTablesChosen] = useState([]);
   const [alltables, setAllTables] = useState(true);
-  
-  const [prepared, setPrepared] = useState(true)
+
+  const [prepared, setPrepared] = useState(true);
 
   const [orderDateString, setOrderDateString] = useState("");
   const [orderDate, setOrderDate] = useState(new Date());
@@ -126,7 +124,6 @@ const Pedidos = () => {
     }
   }, [tablesChosen]);
 
-
   useEffect(() => {
     const gettingInfoForReservation = async () => {
       setShowPicker(false);
@@ -191,7 +188,6 @@ const Pedidos = () => {
     const jsonData = await response.json();
     setTables([...jsonData.tables]);
   };
-
 
   useEffect(() => {
     if (!allorders && indiferentDelivery) {
@@ -271,23 +267,33 @@ const Pedidos = () => {
       }
     );
     var jsonData = await res.json();
-    if (jsonData.status == 'ok'){
-    setOrders(jsonData.data);
-    setLoading(false);
-    setLoaded(true);
-    } else if (jsonData.status == 'nook'){
-      Alert.alert('Error',jsonData.message)
+    if (jsonData.status == "ok") {
+      setOrders(jsonData.data);
+      setLoading(false);
+      setLoaded(true);
+    } else if (jsonData.status == "nook") {
+      Alert.alert("Error", jsonData.message);
     }
   };
+
+  //const screenWidth = Dimensions.get("window").width; // ancho de pantalla
+  const cardsPerRow = 3; // cuántas tarjetas por fila
+  //const gap = screenWidth * 0.019; // espacio entre tarjetas
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [gapWidth, setGapWidth] = useState(0);
+  //const cardWidth = (screenWidth - gap * (cardsPerRow - 1)) / cardsPerRow;
+
+  useEffect(() => {
+    setGapWidth(containerWidth * 0.02);
+  }, [containerWidth]);
 
   return (
     <View style={styles.container}>
       <ScrollView>
-          <Text style={styles.textsmall}>
-            Estás viendo los pedidos del restaurante{" "}
-            {restaurantChosen.franchise} localizado en{" "}
-            {restaurantChosen.address}
-          </Text>
+        <Text style={styles.textsmall}>
+          Estás viendo los pedidos del restaurante {restaurantChosen.franchise}{" "}
+          localizado en {restaurantChosen.address}
+        </Text>
 
         <Text style={styles.text}>Fecha de pedido</Text>
 
@@ -755,7 +761,7 @@ const Pedidos = () => {
           onPress={(nulledByRestaurant) => {
             setNulledByRestaurant(true);
             setIndiferentNull(false);
-            setNulledByUser(false)
+            setNulledByUser(false);
             setNotNulled(false);
           }}
         />
@@ -779,11 +785,10 @@ const Pedidos = () => {
           onPress={(nulledByUser) => {
             setNulledByRestaurant(false);
             setIndiferentNull(false);
-            setNulledByUser(true)
+            setNulledByUser(true);
             setNotNulled(false);
           }}
         />
-
 
         <BouncyCheckbox
           size={25}
@@ -804,7 +809,7 @@ const Pedidos = () => {
           onPress={(notNulled) => {
             setNulledByRestaurant(false);
             setIndiferentNull(false);
-            setNulledByUser(false)
+            setNulledByUser(false);
             setNotNulled(true);
           }}
         />
@@ -828,7 +833,7 @@ const Pedidos = () => {
           onPress={(indiferentNull) => {
             setNulledByRestaurant(false);
             setIndiferentNull(true);
-            setNulledByUser(false)
+            setNulledByUser(false);
             setNotNulled(false);
           }}
         />
@@ -851,7 +856,7 @@ const Pedidos = () => {
           }}
           onPress={(arrival) => {
             setArrival(true);
-            setNotArrival(false)
+            setNotArrival(false);
             setPending(false);
             setIndiferentState(false);
           }}
@@ -874,7 +879,7 @@ const Pedidos = () => {
           }}
           onPress={(notArrival) => {
             setArrival(false);
-            setNotArrival(true)
+            setNotArrival(true);
             setPending(false);
             setIndiferentState(false);
           }}
@@ -898,7 +903,7 @@ const Pedidos = () => {
           onPress={(pending) => {
             setPending(true);
             setArrival(false);
-            setNotArrival(false)
+            setNotArrival(false);
             setIndiferentState(false);
           }}
         />
@@ -921,7 +926,7 @@ const Pedidos = () => {
           onPress={(indiferentState) => {
             setPending(false);
             setArrival(false);
-            setNotArrival(false)
+            setNotArrival(false);
             setIndiferentState(true);
           }}
         />
@@ -944,7 +949,7 @@ const Pedidos = () => {
             textDecorationLine: "none",
           }}
           onPress={(prepared) => {
-            setPrepared(!prepared)
+            setPrepared(!prepared);
           }}
         />
 
@@ -967,11 +972,40 @@ const Pedidos = () => {
 
         {!loaded && loading ? <ActivityIndicator size="large" /> : null}
 
-        {loaded && !loading && orders.length != 0
-          ? orders.map((order) => (
-              <OrderInList key={order.pk} pedido={order}></OrderInList>
-            ))
-          : null}
+        <View
+          style={{
+            flexDirection: "row", // Poner elementos en fila
+            flexWrap: "wrap", // Permitir que se vayan a la siguiente fila
+            justifyContent: "flex-start", // Puedes usar 'space-between' si quieres separación
+            width: "100%",
+            //gap: gapWidth,
+          }}
+          onLayout={(event) => {
+            const { width } = event.nativeEvent.layout;
+            setContainerWidth(width);
+          }}
+        >
+          {loaded && !loading && orders.length != 0
+            ? orders.map((order, index) => {
+                //const cardWidth = (containerWidth - gapWidth * (cardsPerRow - 1)) / cardsPerRow;
+                const isLastInRow = (index + 1) % cardsPerRow === 0;
+                return (
+                  <View
+                    key={index}
+                    style={{
+                      //width: cardWidth, // o un valor fijo como 150
+                      flexBasis: `33.33%`,
+                      flexGrow: 0,
+                      marginBottom: 10, // separación vertical entre filas
+                      paddingRight: isLastInRow ? 0 : gapWidth,
+                    }}
+                  >
+                    <OrderInList key={order.pk} pedido={order}></OrderInList>
+                  </View>
+                );
+              })
+            : null}
+        </View>
 
         {loaded && !loading && orders.length == 0 ? (
           <Text style={styles.textsmall}>
