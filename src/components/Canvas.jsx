@@ -12,7 +12,7 @@ const mesasPorFila = 5;
       const fila = Math.floor(index / mesasPorFila);
       const col = index % mesasPorFila;
       mesa.x = col * (size + padding);
-      mesa.y = fila * (size + padding);
+      mesa.y = 15;
     }
   });
 

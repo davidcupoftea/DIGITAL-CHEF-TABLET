@@ -48,7 +48,7 @@ const MesaInCanva = ({ mesa, isEditing }) => {
       mesa.y = position.y.__getValue();
     }
   };
-  const strokeWidth = 3;
+
   const fillColor = 'gray'
   const borderWidth = '3'
   // Determinar color del borde según estado de la mesa
@@ -59,7 +59,7 @@ const MesaInCanva = ({ mesa, isEditing }) => {
   else if (mesa.is_reserved) borderColor = "#2271b3";
   else if (mesa.has_only_conceptos_extra) borderColor = "#FFF9C4";
 
-  const displayText = `${mesa.name_of_the_table} - (C.max:${mesa.number_of_comensals})`;
+  //const displayText = `${mesa.name_of_the_table} - (C.max:${mesa.number_of_comensals})`;
 
   return (
     <TapGestureHandler onActivated={handleTap}>
