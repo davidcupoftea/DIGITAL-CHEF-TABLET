@@ -57,22 +57,7 @@ const MesaInCanva = ({
         },
       },
     ],
-    { useNativeDriver: false //,
-    // listener: (event) => {
-    //   // Obtenemos la posición con el offset aplicado automáticamente
-    //   const x = Math.max(
-    //     0,
-    //     Math.min(position.x.__getValue(), canvasSize.width - size)
-    //   );
-    //   const y = Math.max(
-    //     0,
-    //     Math.min(position.y.__getValue(), canvasSize.height - size)
-    //   );
-
-    //   // Forzamos que la posición no salga del canvas
-    //   position.setValue({ x, y });
-    // }
-    }
+    { useNativeDriver: false}
   );
 
   const handleStateChange = (event) => {
@@ -134,8 +119,8 @@ const MesaInCanva = ({
               width: size,
               height: size,
               borderRadius: isRounded ? size / 2 : 0,
-              backgroundColor: fillColor,
-              borderWidth: borderWidth,
+              backgroundColor: "gray",
+              borderWidth: 3,
               borderColor: borderColor,
             }}
           />
