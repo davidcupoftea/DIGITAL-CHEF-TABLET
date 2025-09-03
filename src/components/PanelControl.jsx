@@ -550,7 +550,7 @@ const PanelControl = () => {
   //const cardWidth = (screenWidth - gap * (cardsPerRow - 1)) / cardsPerRow;
 
   useEffect(() => {
-    setGapWidth(containerWidth * 0.01);
+    setGapWidth(containerWidth * 0.02);
   }, [containerWidth]);
 
   return (
@@ -675,8 +675,7 @@ const PanelControl = () => {
           }}
         >
           {mesasConItems.map((mesa, index) => {
-            const cardWidth =
-              (containerWidth - gapWidth * (cardsPerRow - 1)) / cardsPerRow;
+            const cardWidth = (containerWidth - gapWidth * (cardsPerRow - 1)) / cardsPerRow;
             const isLastInRow = (index + 1) % cardsPerRow === 0;
             return (
               <View
@@ -684,7 +683,7 @@ const PanelControl = () => {
                 style={{
                   width: cardWidth, // o un valor fijo como 150
                   marginBottom: 10, // separación vertical entre filas
-                marginRight: isLastInRow ? 0 : gapWidth,
+                  marginRight: isLastInRow ? 0 : gapWidth,
                 }}
               >
                 <TableWithOrderElementsControlPanel
