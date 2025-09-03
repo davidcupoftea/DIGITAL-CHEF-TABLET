@@ -28,9 +28,6 @@ const MesaInCanva = ({
     }
   };
 
-  console.log("mesa x is", mesa.x);
-  console.log("mesa y is", mesa.y);
-
   const size = 50; // tamaño de la mesa
 
   // Animated.ValueXY para manejar posición
