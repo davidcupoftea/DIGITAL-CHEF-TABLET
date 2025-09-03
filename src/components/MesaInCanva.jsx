@@ -7,11 +7,11 @@ import {
   State,
 } from "react-native-gesture-handler";
 
-const MesaInCanva = ({ mesa, isEditing, initialX, initialY }) => {
+const MesaInCanva = ({ mesa, isEditing, initialX, initialY, onUpdate }) => {
   const [isRounded, setIsRounded] = useState(false);
 
-  console.log('mesa x is', mesa.x)
-  console.log('mesa y is', mesa.y)
+//   console.log('mesa x is', mesa.x)
+//   console.log('mesa y is', mesa.y)
 
   const size = 50; // tamaño de la mesa
 
@@ -53,6 +53,8 @@ const MesaInCanva = ({ mesa, isEditing, initialX, initialY }) => {
       position.flattenOffset();
       mesa.x = position.x.__getValue();
       mesa.y = position.y.__getValue();
+
+      if (onUpdate) onUpdate(mesa);
     }
   };
 

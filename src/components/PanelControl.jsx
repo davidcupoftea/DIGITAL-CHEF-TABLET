@@ -603,7 +603,7 @@ const PanelControl = () => {
         <View style={{ flex: 1, flexDirection: "column"}}>
           <View style={{ flexDirection: "row", flex: 1 , gap: 15}}>
             <View style={{ flex: 2 }}>
-              <CanvasMesas mesas={tables} isEditing={isEditing} />
+              <CanvasMesas mesasOriginales={tables} isEditing={isEditing} />
             </View>
             <View style={{ flex: 1 }}>
 
