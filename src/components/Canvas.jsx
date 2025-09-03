@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext  } from "react";
 import { View } from "react-native";
 import Svg, { Rect, Circle } from "react-native-svg";
 import MesaInCanva from "./MesaInCanva.jsx";
@@ -6,27 +6,34 @@ import {
   cargarPosiciones,
   guardarPosiciones,
 } from "./storageHelperPositionTables.jsx";
+import { RestaurantChosenContext } from "./RestaurantChosenProvider.jsx";
+import getAndSetRestaurant from "../services/apiCallFavouriteRestaurant.jsx";
 
 const CanvasMesas = ({ mesasOriginales, isEditing }) => {
   const [mesas, setMesas] = useState(mesasOriginales);
+
+  let { restaurantChosenObject } = useContext(RestaurantChosenContext);
+  const [restaurantChosen, setRestaurantChosen] = restaurantChosenObject;
+
   useEffect(() => {
     // Cargar mesas y sus posiciones
     const init = async () => {
       const posiciones = await cargarPosiciones();
+      const posicionesRestaurante = posiciones.filter(p => p.restaurantId === restaurantChosen.pk);
       // tu array original de mesas
       // Aplicar posiciones guardadas
-      if (posiciones.length > 0) {
+      if (posicionesRestaurante.length > 0) {
         const mesasIniciales = [...mesasOriginales];
-        console.log('mesasIniciales es', mesasIniciales)
-        console.log('posiciones.length es mayor de 0')
-        mesasIniciales.forEach((m) => {
+        console.log("mesasIniciales es", mesasIniciales);
+        console.log("posiciones.length es mayor de 0");
+        mesasIniciales.forEach((m, index) => {
           const pos = posiciones.find((p) => p.id === m.id);
           if (pos) {
             m.x = pos.x;
             m.y = pos.y;
           }
         });
-        console.log('mesasIniciales es', mesasIniciales)
+        console.log("mesasIniciales es", mesasIniciales);
         setMesas(mesasIniciales);
       } else {
         const mesasIniciales = [...mesasOriginales];
@@ -38,6 +45,10 @@ const CanvasMesas = ({ mesasOriginales, isEditing }) => {
             mesa.y = fila * (size + paddingVertical);
           }
         });
+        console.log(
+          "mesasIniciales sin posicion predeterminada es",
+          mesasIniciales
+        );
         setMesas(mesasIniciales);
       }
     };
@@ -55,7 +66,7 @@ const CanvasMesas = ({ mesasOriginales, isEditing }) => {
       const nuevoArray = prev.map((m) =>
         m.id === mesaActualizada.id ? mesaActualizada : m
       );
-      guardarPosiciones(nuevoArray); // ✅ guardar el array actualizado
+      guardarPosiciones(nuevoArray, restaurantChosen.pk); // ✅ guardar el array actualizado
       return nuevoArray;
     });
   };

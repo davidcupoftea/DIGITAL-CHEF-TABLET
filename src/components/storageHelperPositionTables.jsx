@@ -1,12 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Guardar posición de todas las mesas
-export const guardarPosiciones = async (mesas) => {
+export const guardarPosiciones = async (mesas, restaurantId) => {
   try {
     const posiciones = mesas.map(m => ({
       id: m.id,
       x: m.x,
-      y: m.y
+      y: m.y,
+      restaurantId
     }));
     await AsyncStorage.setItem('posicionesMesas', JSON.stringify(posiciones));
   } catch (e) {
