@@ -11,6 +11,7 @@ import {
   Alert,
   FlatList,
   ActivityIndicator,
+  Dimensions,
 } from "react-native";
 import * as Device from "expo-device";
 import { Picker } from "@react-native-picker/picker";
@@ -541,6 +542,17 @@ const PanelControl = () => {
     }
   };
 
+  //const screenWidth = Dimensions.get("window").width; // ancho de pantalla
+  const cardsPerRow = 3; // cuántas tarjetas por fila
+  //const gap = screenWidth * 0.019; // espacio entre tarjetas
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [gapWidth, setGapWidth] = useState(0);
+  //const cardWidth = (screenWidth - gap * (cardsPerRow - 1)) / cardsPerRow;
+
+  useEffect(() => {
+    setGapWidth(containerWidth * 0.01);
+  }, [containerWidth]);
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -649,21 +661,49 @@ const PanelControl = () => {
           contentContainerStyle={styles.mesasContainer}
         />
 
-        {mesasConItems.map((mesa, index) => (
-          <TableWithOrderElementsControlPanel
-            key={index}
-            table={mesa}
-            addElement={addElement}
-            removeElement={removeElement}
-            elementsChosen={elementsChosen}
-            onItemPriceChange={getAmountToPay}
-            addConcepto={addConcepto}
-            removeConcepto={removeConcepto}
-            conceptosChosen={conceptosChosen}
-            onConceptoChange={getAmountToPay}
-            conceptosJustHided={conceptosJustHided}
-          />
-        ))}
+        <View
+          style={{
+            flexDirection: "row", // Poner elementos en fila
+            flexWrap: "wrap", // Permitir que se vayan a la siguiente fila
+            justifyContent: "flex-start", // Puedes usar 'space-between' si quieres separación
+            width: "100%",
+            //gap: gapWidth,
+          }}
+          onLayout={(event) => {
+            const { width } = event.nativeEvent.layout;
+            setContainerWidth(width);
+          }}
+        >
+          {mesasConItems.map((mesa, index) => {
+            const cardWidth =
+              (containerWidth - gapWidth * (cardsPerRow - 1)) / cardsPerRow;
+            const isLastInRow = (index + 1) % cardsPerRow === 0;
+            return (
+              <View
+                key={index}
+                style={{
+                  width: cardWidth, // o un valor fijo como 150
+                  marginBottom: 10, // separación vertical entre filas
+                marginRight: isLastInRow ? 0 : gapWidth,
+                }}
+              >
+                <TableWithOrderElementsControlPanel
+                  key={index}
+                  table={mesa}
+                  addElement={addElement}
+                  removeElement={removeElement}
+                  elementsChosen={elementsChosen}
+                  onItemPriceChange={getAmountToPay}
+                  addConcepto={addConcepto}
+                  removeConcepto={removeConcepto}
+                  conceptosChosen={conceptosChosen}
+                  onConceptoChange={getAmountToPay}
+                  conceptosJustHided={conceptosJustHided}
+                />
+              </View>
+            );
+          })}
+        </View>
         <View style={styles.change_box}>
           <Text style={styles.calculateTextBig}>Calcula aquí tu cambio</Text>
           <Text style={styles.calculateText}>
