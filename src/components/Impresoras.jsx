@@ -12,12 +12,39 @@ import { AuthFlowContext } from "./AuthUseContextProvider.jsx";
 import { PrinterContext } from "./PrintersContextProvider.jsx";
 import { useNavigation } from "@react-navigation/native";
 import { BluetoothManager } from 'react-native-bluetooth-escpos-printer'; //DESCOMENTAR PARA LA VERSION CON IMPRESORA
+import { PermissionsAndroid, Platform } from "react-native";
+
+// Dentro de tu componente, antes de escanear o conectar:
 
 const Impresoras = () => {
 
   const [printers, setPrinters] = useState([])
 
   const { selectedPrinters, setSelectedPrinters } = useContext(PrinterContext);
+
+  const requestBluetoothPermissions = async () => {
+  if (Platform.OS === "android" && Platform.Version >= 31) { // Android 12+
+    try {
+      const granted = await PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
+        PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
+        PermissionsAndroid.PERMISSIONS.BLUETOOTH_ADVERTISE,
+      ]);
+
+      const allGranted = Object.values(granted).every(value => value === PermissionsAndroid.RESULTS.GRANTED);
+      if (!allGranted) {
+        Alert.alert("Permisos denegados", "Necesitas permitir Bluetooth para usar la impresora.");
+        return false;
+      }
+      return true;
+    } catch (err) {
+      console.warn(err);
+      return false;
+    }
+  } else {
+    return true; // Android < 12 o iOS no requieren permisos explícitos
+  }
+};
 
   useEffect(() => {
   const reconnectPrinters = async () => {
@@ -84,6 +111,9 @@ if (!contains(selectedPrinters, element)){
 }
 
   const scanDevices = async () =>{
+
+  const ok = await requestBluetoothPermissions();
+  if (!ok) return;
 
     var enabled = await BluetoothManager.isBluetoothEnabled()
     if (!enabled) {
