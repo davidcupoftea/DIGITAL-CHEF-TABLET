@@ -9,7 +9,7 @@ import {
 import { RestaurantChosenContext } from "./RestaurantChosenProvider.jsx";
 import getAndSetRestaurant from "../services/apiCallFavouriteRestaurant.jsx";
 
-const CanvasMesas = ({ mesasOriginales, isEditing }) => {
+const CanvasMesas = ({ mesasOriginales, isEditing,  addTable, removeTable, tablesChosen={tablesChosen} }) => {
   const [mesas, setMesas] = useState(mesasOriginales);
 
   let { restaurantChosenObject } = useContext(RestaurantChosenContext);
@@ -89,6 +89,9 @@ const CanvasMesas = ({ mesasOriginales, isEditing }) => {
             initialY={mesa.y}
             isEditing={isEditing}
             onUpdate={actualizarPosicionMesa}
+            addTable={addTable}
+            removeTable={removeTable}
+            tablesChosen={tablesChosen}
           />
         ))}
       </Svg>

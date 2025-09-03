@@ -30,7 +30,7 @@ import {
 } from "../services/printerFunctions.jsx"; // DESCOMENTAR PARA VERSION CON IMPRESORA
 import { FacturadosContext } from "./ConceptosFacturadosProvider.jsx";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import CanvasMesas from './Canvas.jsx'
+import CanvasMesas from "./Canvas.jsx";
 
 const PanelControl = () => {
   const addTable = (pk) => {
@@ -600,25 +600,30 @@ const PanelControl = () => {
           <ActivityIndicator size="large" />
         ) : null}
 
-        <View style={{ flex: 1, flexDirection: "column"}}>
-          <View style={{ flexDirection: "row", flex: 1 , gap: 15}}>
+        <View style={{ flex: 1, flexDirection: "column" }}>
+          <View style={{ flexDirection: "row", flex: 1, gap: 15 }}>
             <View style={{ flex: 2 }}>
-              <CanvasMesas mesasOriginales={tables} isEditing={isEditing} />
+              <CanvasMesas
+                mesasOriginales={tables}
+                isEditing={isEditing}
+                addTable={addTable}
+                removeTable={removeTable}
+                tablesChosen={tablesChosen}
+              />
             </View>
             <View style={{ flex: 1 }}>
-
-            {loadedRooms && !loadingRooms && rooms.length != 0
-              ? tables.map((mesa, index) => (
-                  <MesaTablePanelControl
-                    table={mesa}
-                    key={index}
-                    addTable={addTable}
-                    removeTable={removeTable}
-                    tablesChosen={tablesChosen}
-                  />
-                ))
-              : null}
-              </View>
+              {loadedRooms && !loadingRooms && rooms.length != 0
+                ? tables.map((mesa, index) => (
+                    <MesaTablePanelControl
+                      table={mesa}
+                      key={index}
+                      addTable={addTable}
+                      removeTable={removeTable}
+                      tablesChosen={tablesChosen}
+                    />
+                  ))
+                : null}
+            </View>
           </View>
         </View>
 

@@ -8,8 +8,17 @@ import {
 } from "react-native-gesture-handler";
 
 
-const MesaInCanva = ({ mesa, isEditing, initialX, initialY, onUpdate }) => {
+const MesaInCanva = ({ mesa, isEditing, initialX, initialY, onUpdate, addTable, removeTable, tablesChosen }) => {
   const [isRounded, setIsRounded] = useState(false);
+
+      const selectTable = (pk) => {
+        if (!tablesChosen.includes(pk)){
+          addTable(pk)
+        }
+        else {
+            removeTable(pk)
+        }
+    }
 
   console.log('mesa x is', mesa.x)
   console.log('mesa y is', mesa.y)
@@ -22,7 +31,10 @@ const MesaInCanva = ({ mesa, isEditing, initialX, initialY, onUpdate }) => {
   ).current;
 
   const handleTap = () => {
-    if (isEditing) setIsRounded(!isRounded);
+    if (isEditing){ 
+        setIsRounded(!isRounded);
+    }
+    else selectTable(mesa.id)
   };
 
 //   useEffect(() => {
