@@ -241,6 +241,7 @@ const PanelControl = () => {
   const getTables = async (restaurantChosen_pk) => {
     setLoadingTables(true);
     setLoadedTables(false);
+    //setTables([])
     if (room != null) {
       const jsonData = await fetch(
         BASE_URL + "tables-dc/" + restaurantChosen_pk + "/",
@@ -257,7 +258,7 @@ const PanelControl = () => {
       var res_json = await jsonData.json();
       var tables = res_json.tables;
       console.log('TABLES ARE', tables)
-      setTables(tables);
+      setTables([...tables]);
       setLoadingTables(false);
       setLoadedTables(true);
     }
