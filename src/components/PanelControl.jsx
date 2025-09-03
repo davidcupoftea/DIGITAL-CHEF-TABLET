@@ -550,7 +550,7 @@ const PanelControl = () => {
         </Text>
 
         <BouncyCheckbox
-          size={25}
+          size={30}
           isChecked={isEditing}
           fillColor="black"
           unfillColor="#FFFFFF"
