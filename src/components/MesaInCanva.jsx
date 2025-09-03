@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
-import { Animated } from "react-native";
-import Svg, { Rect, Circle, Text as SvgText} from "react-native-svg";
+import { Animated, Text, View } from "react-native";
+import Svg, { Rect, Circle } from "react-native-svg";
 import {
   PanGestureHandler,
   TapGestureHandler,
@@ -10,7 +10,9 @@ import {
 const MesaInCanva = ({ mesa, isEditing }) => {
   const [isRounded, setIsRounded] = useState(false);
 
-  // Posición inicial desde mesa
+  const size = 50; // tamaño de la mesa
+
+  // Animated.ValueXY para manejar posición
   const position = useRef(
     new Animated.ValueXY({ x: mesa.x || 50, y: mesa.y || 50 })
   ).current;
@@ -18,21 +20,6 @@ const MesaInCanva = ({ mesa, isEditing }) => {
   const handleTap = () => {
     if (isEditing) setIsRounded(!isRounded);
   };
-
-  const borderColor = (() => {
-    if (mesa.has_order_with_reservation) return "green";
-    if (mesa.has_order_without_reservation) return "#C7F6C7";
-    if (mesa.is_reserved) return "#2271b3";
-    if (mesa.has_only_conceptos_extra) return "#FFF9C4";
-    return "white";
-  })();
-
-  const backgroundColor = "rgb(107,106,106)";
-  const size = 50;
-  const strokeWidth = 4;
-
-  // Texto que se muestra dentro de la mesa
-  const displayText = `${mesa.name_of_the_table} - (C. max:${mesa.number_of_comensals})`;
 
   const handleDrag = Animated.event(
     [
@@ -48,7 +35,6 @@ const MesaInCanva = ({ mesa, isEditing }) => {
 
   const handleStateChange = (event) => {
     if (event.nativeEvent.state === State.BEGAN) {
-      // Guardamos el offset actual antes de empezar a mover
       position.setOffset({
         x: position.x.__getValue(),
         y: position.y.__getValue(),
@@ -57,65 +43,69 @@ const MesaInCanva = ({ mesa, isEditing }) => {
     }
 
     if (event.nativeEvent.state === State.END) {
-      // Acumulamos el offset cuando termina
       position.flattenOffset();
-
-      // Guardamos coordenadas absolutas en la mesa (opcional)
       mesa.x = position.x.__getValue();
       mesa.y = position.y.__getValue();
     }
   };
+  const strokeWidth = 3;
+  // Determinar color del borde según estado de la mesa
+  let borderColor = "white";
+
+  if (mesa.has_order_with_reservation) borderColor = "green";
+  else if (mesa.has_order_without_reservation) borderColor = "#C7F6C7";
+  else if (mesa.is_reserved) borderColor = "#2271b3";
+  else if (mesa.has_only_conceptos_extra) borderColor = "#FFF9C4";
+
+  const displayText = `${mesa.name_of_the_table} - (C.max:${mesa.number_of_comensals})`;
 
   return (
     <TapGestureHandler onActivated={handleTap}>
       <PanGestureHandler
-        enabled={isEditing}
-        onGestureEvent={handleDrag}
-        onHandlerStateChange={handleStateChange}
+        onGestureEvent={isEditing ? handleDrag : null}
+        onHandlerStateChange={isEditing ? handleStateChange : null}
       >
         <Animated.View
           style={{
-            width: 50,
-            height: 50,
+            width: size,
+            height: size,
+            alignItems: "center",
             transform: position.getTranslateTransform(),
           }}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <Svg width={50} height={50}>
+          <Svg width={size} height={size}>
             {isRounded ? (
               <Circle
                 cx={size / 2}
                 cy={size / 2}
-                r={(size - strokeWidth) / 2}
-                fill={backgroundColor}
+                r={size / 2 - strokeWidth / 2}
+                fill="gray"
                 stroke={borderColor}
-                strokeWidth={strokeWidth}
+                strokeWidth={3}
               />
             ) : (
-                <>
               <Rect
                 x={0}
                 y={0}
                 width={size}
                 height={size}
-                fill={backgroundColor}
+                fill="gray"
                 stroke={borderColor}
-                strokeWidth={strokeWidth}
+                strokeWidth={3}
               />
-            
-            <SvgText
-              x={size / 2}
-              y={size / 2}
-              fontSize={10}
-              fill="white"
-              fontWeight="bold"
-              textAnchor="middle"
-              alignmentBaseline="middle"
-            >
-              {displayText}
-            </SvgText>
-            </>
             )}
           </Svg>
+          <Text
+            style={{
+              color: "white",
+              fontSize: 12,
+              textAlign: "center",
+              marginTop: 2,
+            }}
+          >
+            {displayText}
+          </Text>
         </Animated.View>
       </PanGestureHandler>
     </TapGestureHandler>
