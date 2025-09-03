@@ -27,8 +27,8 @@ const CanvasMesas = ({ mesasOriginales, isEditing,  addTable, removeTable, table
       // Aplicar posiciones guardadas
       if (posicionesRestaurante.length > 0) {
         const mesasIniciales = [...mesasOriginales];
-        console.log("mesasIniciales es", mesasIniciales);
-        console.log("posiciones.length es mayor de 0");
+        //console.log("mesasIniciales es", mesasIniciales);
+        //console.log("posiciones.length es mayor de 0");
         mesasIniciales.forEach((m, index) => {
           const pos = posiciones.find((p) => p.id === m.id);
           if (pos) {
@@ -36,7 +36,7 @@ const CanvasMesas = ({ mesasOriginales, isEditing,  addTable, removeTable, table
             m.y = pos.y;
           }
         });
-        console.log("mesasIniciales es", mesasIniciales);
+        //console.log("mesasIniciales es", mesasIniciales);
         setMesas(mesasIniciales);
       } else {
         const mesasIniciales = [...mesasOriginales];
@@ -48,10 +48,10 @@ const CanvasMesas = ({ mesasOriginales, isEditing,  addTable, removeTable, table
             mesa.y = fila * (size + paddingVertical);
           }
         });
-        console.log(
-          "mesasIniciales sin posicion predeterminada es",
-          mesasIniciales
-        );
+        // console.log(
+        //   "mesasIniciales sin posicion predeterminada es",
+        //   mesasIniciales
+        // );
         setMesas(mesasIniciales);
       }
     };

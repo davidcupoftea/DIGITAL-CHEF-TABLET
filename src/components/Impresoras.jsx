@@ -110,10 +110,12 @@ if (!contains(selectedPrinters, element)){
   return paired
 }
 
+
   const scanDevices = async () =>{
 
   const ok = await requestBluetoothPermissions();
   if (!ok) return;
+  
 
     var enabled = await BluetoothManager.isBluetoothEnabled()
     if (!enabled) {
@@ -126,12 +128,16 @@ if (!contains(selectedPrinters, element)){
       //console.log('paried', paired)
     }
 
+    await new Promise(resolve => setTimeout(resolve, 500));
+
     setPrinters(paired)
+
+    //await BluetoothManager.init();
 
     var devices = await BluetoothManager.scanDevices()
     //console.log('devices are',devices)
     var ss = JSON.parse(devices)
-    //console.log(ss)
+    console.log(ss)
   }
 
   const navigation = useNavigation();
