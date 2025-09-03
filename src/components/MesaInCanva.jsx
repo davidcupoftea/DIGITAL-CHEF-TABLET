@@ -17,7 +17,7 @@ const MesaInCanva = ({ mesa, isEditing, initialX, initialY }) => {
 
   // Animated.ValueXY para manejar posición
   const position = useRef(
-    new Animated.ValueXY({ x: initialX || 50, y: initialY || 50 })
+    new Animated.ValueXY({ x: initialX || 0, y: initialY || 0 })
   ).current;
 
   const handleTap = () => {
