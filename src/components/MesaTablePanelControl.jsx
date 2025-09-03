@@ -15,6 +15,7 @@ const MesaTablePanelControl = ({ table, addTable, removeTable, tablesChosen}) =>
             removeTable(pk)
         }
     }
+    
   return (
     <TouchableOpacity
       style={table.has_order_with_reservation? styles.has_order_with_reservation: (table.has_order_without_reservation? styles.has_order_without_reservation: (table.is_reserved? styles.is_reserved : table.has_only_conceptos_extra? styles.only_conceptos_extra :styles.not_occupied))}
