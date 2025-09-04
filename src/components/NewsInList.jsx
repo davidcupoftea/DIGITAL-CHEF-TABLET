@@ -211,6 +211,7 @@ const styles = StyleSheet.create({
     },
     shadowColor: "#f0ffff",
     shadowOpacity: 0.8,
+    overflow: 'hidden',
   },
   redcard: {
     flexDirection: "column",
@@ -228,6 +229,7 @@ const styles = StyleSheet.create({
     },
     shadowColor: "#f0ffff",
     shadowOpacity: 0.8,
+    overflow: 'hidden',
   },
   textDate: {
     color: "black",
