@@ -9,7 +9,7 @@ import {
   Image,
   Alert,
 } from "react-native";
-import ScaledImage from "./CustomFastAndFunctionalScaledImage.jsx";
+import ScaledImage from "./CustomFastAndFunctionalScaledImageContainerWidth.jsx";
 import { useNavigation } from "@react-navigation/native";
 import { AuthFlowContext } from "./AuthUseContextProvider.jsx";
 import { BASE_URL } from "../services/index.jsx";
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
   image: {
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    width: Dimensions.get("window").width * 0.9 - 8,
+    width: '100%'
   },
   quantity: {
     marginTop: 15,
