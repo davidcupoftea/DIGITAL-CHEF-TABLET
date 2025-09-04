@@ -179,7 +179,7 @@ const Facturas = ({ route }) => {
   const [gapWidth, setGapWidth] = useState(0);
 
   useEffect(() => {
-    setGapWidth(containerWidth * 0.02);
+    setGapWidth(containerWidth * 0.001);
   }, [containerWidth]);
 
   return (
