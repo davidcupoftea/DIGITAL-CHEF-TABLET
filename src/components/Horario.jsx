@@ -266,7 +266,7 @@ const togglePeriod = (dayId, tpId) => {
                       !!selected[keyFor(hourOfEveryDay.id, tp.id)];
                     return (
                       <TouchableOpacity
-                        key={`${hourOfEveryDay.id}-${tp.id}`}
+                        key={`${hourOfEveryDay.id}${tp.id}`}
                         style={[
                           styles.time_period,
                           isSelected ? styles.selected : styles.not_selected,
