@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect} from "react";
 import {
   StyleSheet,
   View,
@@ -7,10 +7,10 @@ import {
   ActivityIndicator,
   TextInput,
   TouchableOpacity,
-  Alert
+  Alert,
 } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import RecompensaReclamadaInlistCode  from "./RecompensaReclamadaInListCode.jsx";
+import RecompensaReclamadaInlistCode from "./RecompensaReclamadaInListCode.jsx";
 import { useNavigation } from "@react-navigation/native";
 import { AuthFlowContext } from "./AuthUseContextProvider.jsx";
 import { RestaurantChosenContext } from "./RestaurantChosenProvider.jsx";
@@ -52,13 +52,20 @@ const RecompensasReclamadas = () => {
       setCodes(jsonData2.codes);
       setLoading(false);
       setLoaded(true);
-    } else if (jsonData2.status == 'nook'){
-      setLoaded(true)
-      setLoading(false)
-      Alert.alert('Error', jsonData2.message)
+    } else if (jsonData2.status == "nook") {
+      setLoaded(true);
+      setLoading(false);
+      Alert.alert("Error", jsonData2.message);
     }
   };
 
+    const cardsPerRow = 3;
+    const [containerWidth, setContainerWidth] = useState(0);
+    const [gapWidth, setGapWidth] = useState(0);
+  
+    useEffect(() => {
+      setGapWidth(containerWidth * 0.02);
+    }, [containerWidth]);
 
   return (
     <View style={styles.container}>
@@ -74,25 +81,25 @@ const RecompensasReclamadas = () => {
           value={codeToSearch}
         ></TextInput>
         <BouncyCheckbox
-            size={25}
-            isChecked={used}
-            fillColor="black"
-            unFillColor="#FFFFFF"
-            useBuiltInState={false}
-            text="Usadas también"
-            iconStyle={{ borderColor: "white" }}
-            innerIconStyle={{ borderWidth: 2 }}
-            style={{ marginTop: 15 }}
-            textStyle={{
-              fontFamily: "Function-Regular",
-              fontSize: 20,
-              color: "white",
-              textDecorationLine: "none",
-            }}
-            onPress={(used) => {
-              setUsed(!used);
-            }}
-          />
+          size={25}
+          isChecked={used}
+          fillColor="black"
+          unFillColor="#FFFFFF"
+          useBuiltInState={false}
+          text="Usadas también"
+          iconStyle={{ borderColor: "white" }}
+          innerIconStyle={{ borderWidth: 2 }}
+          style={{ marginTop: 15 }}
+          textStyle={{
+            fontFamily: "Function-Regular",
+            fontSize: 20,
+            color: "white",
+            textDecorationLine: "none",
+          }}
+          onPress={(used) => {
+            setUsed(!used);
+          }}
+        />
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
@@ -106,15 +113,44 @@ const RecompensasReclamadas = () => {
           <Text style={styles.textsmall}>Pon el código y dale a buscar</Text>
         ) : null}
 
-        {!loaded && loading ? (
-          <ActivityIndicator size="large" />
+        {!loaded && loading ? <ActivityIndicator size="large" /> : null}
+
+        <View
+          style={styles.containerthreecolumns}
+          onLayout={(event) => {
+            const { width } = event.nativeEvent.layout;
+            setContainerWidth(width);
+          }}
+        >
+
+        {loaded && !loading && codes.length != 0
+          ? codes.map((code, index) => {
+                          const isLastInRow = (index + 1) % cardsPerRow === 0;
+              return (
+                <View
+                  key={index}
+                  style={{
+                    flexBasis: `33.33%`,
+                    flexGrow: 0,
+                    marginBottom: 10,
+                    paddingRight: isLastInRow ? 0 : gapWidth,
+                  }}
+                >
+              <RecompensaReclamadaInlistCode
+                key={code.pk}
+                code={code}
+              ></RecompensaReclamadaInlistCode>
+              </View>)}
+            )
+          : null}
+
+          </View>
+
+        {loaded && !loading && codes.length == 0 ? (
+          <Text style={styles.textsmall}>
+            No hay resultados que coinciden con tu búsqueda
+          </Text>
         ) : null}
-
-        {loaded && !loading && codes.length != 0? codes.map((code) => (
-            <RecompensaReclamadaInlistCode key={code.pk} code={code}></RecompensaReclamadaInlistCode>)):null}
-        
-        {loaded && !loading && codes.length == 0 ? <Text style={styles.textsmall}>No hay resultados que coinciden con tu búsqueda</Text>: null}
-
       </ScrollView>
     </View>
   );
@@ -174,6 +210,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "Function-Regular",
   },
+  containerthreecolumns: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "flex-start",
+    width: "100%",
+  }
 });
 
 //REPASADO Y LIMPIADO
