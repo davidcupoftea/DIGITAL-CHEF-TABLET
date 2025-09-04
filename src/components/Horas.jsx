@@ -7,14 +7,13 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
-  TextInput
+  TextInput,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AuthFlowContext } from "./AuthUseContextProvider.jsx";
 import { RestaurantChosenContext } from "./RestaurantChosenProvider.jsx";
 import { BASE_URL } from "../services/index.jsx";
 import getAndSetRestaurant from "../services/apiCallFavouriteRestaurant.jsx";
-
 
 function Recompensas() {
   const navigation = useNavigation();
@@ -32,62 +31,55 @@ function Recompensas() {
   let { restaurantChosenObject } = useContext(RestaurantChosenContext);
   const [restaurantChosen, setRestaurantChosen] = restaurantChosenObject;
 
-
- 
-// Función genérica para mostrar confirmación
-const confirmAction = (message, onConfirm) => {
-  Alert.alert(
-    "Confirmar",
-    message,
-    [
+  // Función genérica para mostrar confirmación
+  const confirmAction = (message, onConfirm) => {
+    Alert.alert("Confirmar", message, [
       { text: "Cancelar", style: "cancel" },
       { text: "Sí", onPress: onConfirm },
-    ]
-  );
-};
+    ]);
+  };
 
+  // ---- FUNCIONES PRINCIPALES ----
 
-// ---- FUNCIONES PRINCIPALES ----
+  // Añadir periodo a un día con confirmación
+  // const editTimePeriodToDay = (dayId, tpId) => {
+  //   confirmAction("¿Quieres editar este periodo a este día?", async () => {
+  //     const success = await editPeriodBackend(tpId, timePeriodField);
+  //     if (success) {
+  //       Alert.alert('Se ha añadido a este día este periodo de tiempo')
+  //       setSelected(prev => ({ ...prev, [keyFor(dayId, tpId)]: true }));
+  //     }
+  //   });
+  // };
 
-// Añadir periodo a un día con confirmación
-// const editTimePeriodToDay = (dayId, tpId) => {
-//   confirmAction("¿Quieres editar este periodo a este día?", async () => {
-//     const success = await editPeriodBackend(tpId, timePeriodField);
-//     if (success) {
-//       Alert.alert('Se ha añadido a este día este periodo de tiempo')
-//       setSelected(prev => ({ ...prev, [keyFor(dayId, tpId)]: true }));
-//     }
-//   });
-// };
-
-const saveTimePeriod = async (tpId) => {
-  const newValue = editedPeriods[tpId];
-  try {
-    const res = await fetch(`${BASE_URL}edit-time-period/${tpId}/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${authTokens?.access}`,
-      },
-      body: JSON.stringify({ time_period_field: newValue }),
-    });
-    const json = await res.json();
-    if (json.status === "ok") {
-      Alert.alert("Éxito", "Periodo actualizado correctamente");
-      // Actualiza la lista local para reflejar el cambio
-      setTimePeriods((prev) =>
-        prev.map((tp) => (tp.id === tpId ? { ...tp, time_period_field: newValue } : tp))
-      );
-    } else {
-      Alert.alert("Error", json.message || "No se pudo actualizar");
+  const saveTimePeriod = async (tpId) => {
+    const newValue = editedPeriods[tpId];
+    try {
+      const res = await fetch(`${BASE_URL}edit-time-period/${tpId}/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authTokens?.access}`,
+        },
+        body: JSON.stringify({ time_period_field: newValue }),
+      });
+      const json = await res.json();
+      if (json.status === "ok") {
+        Alert.alert("Éxito", "Periodo actualizado correctamente");
+        // Actualiza la lista local para reflejar el cambio
+        setTimePeriods((prev) =>
+          prev.map((tp) =>
+            tp.id === tpId ? { ...tp, time_period_field: newValue } : tp
+          )
+        );
+      } else {
+        Alert.alert("Error", json.message || "No se pudo actualizar");
+      }
+    } catch (err) {
+      console.error(err);
+      Alert.alert("Error", "Hubo un problema con la conexión");
     }
-  } catch (err) {
-    console.error(err);
-    Alert.alert("Error", "Hubo un problema con la conexión");
-  }
-};
-
-
+  };
 
   var fetchTimePeriods = async (restaurantPk) => {
     const res = await fetch(
@@ -128,16 +120,22 @@ const saveTimePeriod = async (tpId) => {
   const [containerWidth, setContainerWidth] = useState(0);
   const [gapWidth, setGapWidth] = useState(0);
 
-    useEffect(() => {
+  useEffect(() => {
     setGapWidth(containerWidth * 0.02);
   }, [containerWidth]);
-
 
   return (
     <View style={styles.container}>
       <ScrollView>
         <View>
-          <Text style={styles.textpadding}>Pon hora de inicio con minutos separados con dos puntos y sepárala mediante guión con la hora de finalización con minutos. Si la hora final es las 00:00 utiliza 23:59. Se cambiará la hora de las reservas acordemente, por lo que no conviene jugar con estos datos. Si alguna de las horas es menos de las 10, pon un cero delante. Por ejemplo: no 9:00 sino 09:00.</Text>
+          <Text style={styles.textpadding}>
+            Pon hora de inicio con minutos separados con dos puntos y sepárala
+            mediante guión con la hora de finalización con minutos. Si la hora
+            final es las 00:00 utiliza 23:59. Se cambiará la hora de las
+            reservas acordemente, por lo que no conviene jugar con estos datos.
+            Si alguna de las horas es menos de las 10, pon un cero delante. Por
+            ejemplo: no 9:00 sino 09:00.
+          </Text>
           {notAbleToFetch ? (
             <Text style={styles.text}>No puedes acceder a estos datos</Text>
           ) : loading ? (
@@ -148,44 +146,56 @@ const saveTimePeriod = async (tpId) => {
               No hay días y periodos establecidos aún
             </Text>
           ) : (
-                        <View
-                          style={styles.containerthreecolumns}
-                          onLayout={(event) => {
-                            const { width } = event.nativeEvent.layout;
-                            setContainerWidth(width);
-                          }}
-                        >
-            {timePeriods.map((tp, index) => {
-            const isLastInRow = (index + 1) % cardsPerRow === 0;
-            return(
-            <View key={tp.id} style={styles.card}>
-              <Text style={styles.text}>{tp.time_period_field}</Text>
-              <Text style={styles.text}>Nuevo valor:</Text>
-              <TextInput
-                style={styles.input}
-                value={editedPeriods[tp.id]}
-                onChangeText={(text) =>
-                  setEditedPeriods((prev) => ({ ...prev, [tp.id]: text }))
-                }
-              />
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => saveTimePeriod(tp.id)}
-              >
-                <Text style={styles.textbutton}>Guardar</Text>
-              </TouchableOpacity>
+            <View
+              style={styles.containerthreecolumns}
+              onLayout={(event) => {
+                const { width } = event.nativeEvent.layout;
+                setContainerWidth(width);
+              }}
+            >
+              {timePeriods.map((tp, index) => {
+                const isLastInRow = (index + 1) % cardsPerRow === 0;
+                const cardWidth =
+                  (containerWidth - (cardsPerRow - 1) * gapWidth) / cardsPerRow;
+                return (
+                  <View
+                    key={tp.id}
+                    style={[
+                      styles.card,
+                      {
+                        width: cardWidth,
+                        marginRight: isLastInRow ? 0 : gapWidth,
+                      },
+                    ]}
+                  >
+                    <Text style={styles.text}>{tp.time_period_field}</Text>
+                    <Text style={styles.text}>Nuevo valor:</Text>
+                    <TextInput
+                      style={styles.input}
+                      value={editedPeriods[tp.id]}
+                      onChangeText={(text) =>
+                        setEditedPeriods((prev) => ({ ...prev, [tp.id]: text }))
+                      }
+                    />
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => saveTimePeriod(tp.id)}
+                    >
+                      <Text style={styles.textbutton}>Guardar</Text>
+                    </TouchableOpacity>
+                  </View>
+                );
+              })}
             </View>
-          )})}
-          </View>
           )}
         </View>
       </ScrollView>
-              <TouchableOpacity
-                style={styles.buttonbottom}
-                onPress={() => navigation.navigate('Crear hora')}
-              >
-                <Text style={styles.textbutton}>Crear hora</Text>
-              </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.buttonbottom}
+        onPress={() => navigation.navigate("Crear hora")}
+      >
+        <Text style={styles.textbutton}>Crear hora</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -209,7 +219,7 @@ const styles = StyleSheet.create({
     fontFamily: "Function-Regular",
     fontSize: 22,
   },
-    textpadding: {
+  textpadding: {
     color: "white",
     textAlign: "center",
     fontFamily: "Function-Regular",
@@ -226,7 +236,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "white",
     borderRadius: 30,
-    marginHorizontal: 15,
   },
   button: {
     marginTop: 20,
@@ -236,7 +245,7 @@ const styles = StyleSheet.create({
     borderColor: "white",
     borderRadius: 15,
   },
-    buttonbottom: {
+  buttonbottom: {
     margin: 15,
     padding: 14,
     backgroundColor: "white",
@@ -250,16 +259,16 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "Function-Regular",
   },
-    input: {
-  backgroundColor: "rgb(107,106,106)",  // gris de tu proyecto
-  color: "white",                       // texto en blanco para contraste
-  borderWidth: 1,                       
-  borderColor: "white",                 // borde fino blanco
-  borderRadius: 10,                     // bordes redondeados
-  padding: 10,                          // espacio interno cómodo
-  marginTop: 10,
-  fontSize: 18,
-  fontFamily: "Function-Regular", 
+  input: {
+    backgroundColor: "rgb(107,106,106)", // gris de tu proyecto
+    color: "white", // texto en blanco para contraste
+    borderWidth: 1,
+    borderColor: "white", // borde fino blanco
+    borderRadius: 10, // bordes redondeados
+    padding: 10, // espacio interno cómodo
+    marginTop: 10,
+    fontSize: 18,
+    fontFamily: "Function-Regular",
   },
   containerthreecolumns: {
     flexDirection: "row",
