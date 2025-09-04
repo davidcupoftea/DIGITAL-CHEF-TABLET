@@ -124,6 +124,15 @@ const saveTimePeriod = async (tpId) => {
     return unsubscribe;
   }, [navigation]);
 
+  const cardsPerRow = 3;
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [gapWidth, setGapWidth] = useState(0);
+
+    useEffect(() => {
+    setGapWidth(containerWidth * 0.02);
+  }, [containerWidth]);
+
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -138,7 +147,17 @@ const saveTimePeriod = async (tpId) => {
               {" "}
               No hay días y periodos establecidos aún
             </Text>
-          ) : (          timePeriods.map((tp) => (
+          ) : (
+                        <View
+                          style={styles.containerthreecolumns}
+                          onLayout={(event) => {
+                            const { width } = event.nativeEvent.layout;
+                            setContainerWidth(width);
+                          }}
+                        >
+            {timePeriods.map((tp, index) => {
+            const isLastInRow = (index + 1) % cardsPerRow === 0;
+            return(
             <View key={tp.id} style={styles.card}>
               <Text style={styles.text}>{tp.time_period_field}</Text>
               <Text style={styles.text}>Nuevo valor:</Text>
@@ -156,7 +175,8 @@ const saveTimePeriod = async (tpId) => {
                 <Text style={styles.textbutton}>Guardar</Text>
               </TouchableOpacity>
             </View>
-          ))
+          )})}
+          </View>
           )}
         </View>
       </ScrollView>
@@ -240,6 +260,12 @@ const styles = StyleSheet.create({
   marginTop: 10,
   fontSize: 18,
   fontFamily: "Function-Regular", 
+  },
+  containerthreecolumns: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "flex-start",
+    width: "100%",
   },
 });
 
