@@ -101,6 +101,14 @@ const ClaimMembershipToRestaurant = () => {
     return unsubscribe;
   }, [navigation]);
 
+  const cardsPerRow = 3;
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [gapWidth, setGapWidth] = useState(0);
+
+  useEffect(() => {
+    setGapWidth(containerWidth * 0.02);
+  }, [containerWidth]);
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -108,18 +116,40 @@ const ClaimMembershipToRestaurant = () => {
         {loading ? (
           <ActivityIndicator size="large" />
         ) : (<>
-          {restaurants.map((restaurant, index)=>(
+                <View
+                  style={styles.containerthreecolumns}
+                  onLayout={(event) => {
+                    const { width } = event.nativeEvent.layout;
+                    setContainerWidth(width);
+                  }}
+                >
+          {restaurants.map((restaurant, index)=>{
+                            const isLastInRow = (index + 1) % cardsPerRow === 0;
+                            return (
+                              <View
+                                key={index}
+                                style={{
+                                  flexBasis: `33.33%`,
+                                  flexGrow: 0,
+                                  marginBottom: 10,
+                                  paddingRight: isLastInRow ? 0 : gapWidth,
+                                }}
+                              >
             <View key={index} style={!restaurantsToClaim.includes(restaurant.restaurant.pk)? styles.card: styles.greencard}>
               <Text style={styles.textsmall}>{restaurant.restaurant.restaurant_name}</Text>
               <Text style={styles.textsmall}>{restaurant.restaurant.address}</Text>
+              
 
               {restaurantsAlreadyClaimed.includes(restaurant.restaurant.pk)? <Text style={styles.textsmall}>Ya has reclamado la vinculación con este restaurante</Text>:null}
 
               <TouchableOpacity style={styles.button} onPress={()=>{selectRestaurant(restaurant.restaurant.pk)}}><Text style={styles.textbutton}>Seleccionar/deseleccionar pertenencia a restaurante</Text></TouchableOpacity>
 
             </View>
+            </View>
+            )
 
-          ))}
+          })}
+          </View>
           </>
         )}
       </ScrollView>
@@ -144,7 +174,7 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: "column",
     marginTop: 20,
-    marginHorizontal: 20,
+    
     padding: 20,
     backgroundColor: "white",
     borderWidth: 1,
@@ -161,7 +191,7 @@ const styles = StyleSheet.create({
   greencard: {
     flexDirection: "column",
     marginTop: 20,
-    marginHorizontal: 20,
+    
     padding: 20,
     backgroundColor: "white",
     borderWidth: 6,
@@ -234,6 +264,12 @@ const styles = StyleSheet.create({
     fontFamily: "Function-Regular",
     textDecorationLine: 'underline'
   },
+  containerthreecolumns: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "flex-start",
+    width: "100%",
+  }
 });
 export default ClaimMembershipToRestaurant;
 
