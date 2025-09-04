@@ -332,29 +332,42 @@ const Registros = ({ route }) => {
             setContainerWidth(width);
           }}
         >
-
-        {loading && !gotten ? (
-          <ActivityIndicator size={33} />
-        ) : !loading && !gotten ? (
-          <Text style={styles.textsmall}>No puedes acceder a estos datos</Text>
-        ) : (
-          registros.map((registro, index) => {
-                          const isLastInRow = (index + 1) % cardsPerRow === 0;
-                          return (
-                            <View
-                              key={index}
-                              style={{
-                                flexBasis: `33.33%`,
-                                flexGrow: 0,
-                                marginBottom: 10,
-                                paddingRight: isLastInRow ? 0 : gapWidth,
-                              }}
-                            >
-            <RegistroInList key={index} registro={registro}></RegistroInList>
-            </View>)
-          })
-        )}
-
+          {loading && !gotten ? (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                paddingVertical: 20,
+              }}
+            >
+              <ActivityIndicator size={33} />
+            </View>
+          ) : !loading && !gotten ? (
+            <Text style={styles.textsmall}>
+              No puedes acceder a estos datos
+            </Text>
+          ) : (
+            registros.map((registro, index) => {
+              const isLastInRow = (index + 1) % cardsPerRow === 0;
+              return (
+                <View
+                  key={index}
+                  style={{
+                    flexBasis: `33.33%`,
+                    flexGrow: 0,
+                    marginBottom: 10,
+                    paddingRight: isLastInRow ? 0 : gapWidth,
+                  }}
+                >
+                  <RegistroInList
+                    key={index}
+                    registro={registro}
+                  ></RegistroInList>
+                </View>
+              );
+            })
+          )}
         </View>
 
         {loaded && !loading && registros != null && registros.length == 0 ? (
@@ -403,7 +416,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "flex-start",
     width: "100%",
-  }
+  },
 });
 
 export default Registros;

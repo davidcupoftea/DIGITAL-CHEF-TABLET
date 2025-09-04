@@ -35,25 +35,25 @@ const Registros = ({ route }) => {
 
   const [serie, setSerie] = useState("Todas");
 
-    const onChangePicker = ({ type }, selectedDate) => {
-      if (type == "set") {
-        const currentDate = selectedDate;
-        setOrderDate(currentDate);
-        if (Device.osName === "Android" || Platform.OS === "android") {
-          let Day = String(currentDate.getDate()).padStart(2, "0");
-          let Month = String(currentDate.getMonth() + 1).padStart(2, "0");
-          let Year = currentDate.getFullYear();
-          toggleDatePicker();
-          setOrderDateString(`${Year}-${Month}-${Day}`);
-        }
-      } else {
+  const onChangePicker = ({ type }, selectedDate) => {
+    if (type == "set") {
+      const currentDate = selectedDate;
+      setOrderDate(currentDate);
+      if (Device.osName === "Android" || Platform.OS === "android") {
+        let Day = String(currentDate.getDate()).padStart(2, "0");
+        let Month = String(currentDate.getMonth() + 1).padStart(2, "0");
+        let Year = currentDate.getFullYear();
         toggleDatePicker();
+        setOrderDateString(`${Year}-${Month}-${Day}`);
       }
-    };
-  
-    const toggleDatePicker = () => {
-      setShowPicker(!showPicker);
-    };
+    } else {
+      toggleDatePicker();
+    }
+  };
+
+  const toggleDatePicker = () => {
+    setShowPicker(!showPicker);
+  };
 
   let { authTokensObject, logOutFunction } = useContext(AuthFlowContext);
   const [authTokens, setAuthTokens] = authTokensObject;
@@ -209,7 +209,6 @@ const Registros = ({ route }) => {
     getRegistros();
   }, [route.params?.refresh]);
 
-
   const cardsPerRow = 3;
   const [containerWidth, setContainerWidth] = useState(0);
   const [gapWidth, setGapWidth] = useState(0);
@@ -333,34 +332,44 @@ const Registros = ({ route }) => {
             setContainerWidth(width);
           }}
         >
-
-        {loading && !gotten ? (
-          <ActivityIndicator size={33} />
-        ) : !loading && !gotten ? (
-          <Text style={styles.textsmall}>No puedes acceder a estos datos</Text>
-        ) : (
-          registrosyfacturas.map((registro, index) => {
-                                      const isLastInRow = (index + 1) % cardsPerRow === 0;
-                          return (
-                            <View
-                              key={index}
-                              style={{
-                                flexBasis: `33.33%`,
-                                flexGrow: 0,
-                                marginBottom: 10,
-                                paddingRight: isLastInRow ? 0 : gapWidth,
-                              }}
-                            >
-            <RegistroYFacturaInList
-              key={index}
-              registro={registro}
-              fetchFacturas={fetchRegistros}
-            ></RegistroYFacturaInList>
-            </View>)
-          })
-        )}
+          {loading && !gotten ? (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                paddingVertical: 20,
+              }}
+            >
+              <ActivityIndicator size={33} />
+            </View>
+          ) : !loading && !gotten ? (
+            <Text style={styles.textsmall}>
+              No puedes acceder a estos datos
+            </Text>
+          ) : (
+            registrosyfacturas.map((registro, index) => {
+              const isLastInRow = (index + 1) % cardsPerRow === 0;
+              return (
+                <View
+                  key={index}
+                  style={{
+                    flexBasis: `33.33%`,
+                    flexGrow: 0,
+                    marginBottom: 10,
+                    paddingRight: isLastInRow ? 0 : gapWidth,
+                  }}
+                >
+                  <RegistroYFacturaInList
+                    key={index}
+                    registro={registro}
+                    fetchFacturas={fetchRegistros}
+                  ></RegistroYFacturaInList>
+                </View>
+              );
+            })
+          )}
         </View>
-
 
         {loaded &&
         !loading &&
@@ -385,7 +394,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: "Function-Regular",
   },
-    textinput: {
+  textinput: {
     padding: 14,
     paddingHorizontal: 10,
     color: "white",
@@ -397,7 +406,7 @@ const styles = StyleSheet.create({
   picker: {
     color: "white",
   },
-    typeOfInvoice: {
+  typeOfInvoice: {
     borderColor: "white",
     borderWidth: 1,
     backgroundColor: "rgb(107,106,106)",
@@ -408,7 +417,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "flex-start",
     width: "100%",
-  }
+  },
 });
 
 export default Registros;

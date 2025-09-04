@@ -308,7 +308,16 @@ const Facturas = ({ route }) => {
           }}
         >
           {loading && !gotten ? (
-            <ActivityIndicator size={33} />
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                paddingVertical: 20,
+              }}
+            >
+              <ActivityIndicator size={33} />
+            </View>
           ) : !loading && !gotten ? (
             <Text style={styles.textsmall}>
               No puedes acceder a estos datos
@@ -382,7 +391,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "flex-start",
     width: "100%",
-  }
+  },
 });
 
 export default Facturas;
