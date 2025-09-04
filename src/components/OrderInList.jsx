@@ -482,10 +482,12 @@ function PedidoInList({ pedido }) {
                 estadoStyle = styles.estadoLimpiado;
               }
 
+              console.log('Pedido es', pedido)
+
               return (
                 <View key={index}>
                 <Text  style={styles.text2}>
-                  -{dish.toString()} (x{quantity}){pedido.fromtable ?' [ID:' + id +']':null}{" "}
+                  -{dish.toString()} (x{quantity}){pedido.fromtable == true || pedido.fromtable == 'true'?' [ID:' + id +']':null}{" "}
                   {estado !== "" && <Text style={estadoStyle}>[{estado}]</Text>}
                 </Text>
                 </View>
@@ -750,7 +752,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 20,
     marginBottom: 4,
-    flexWrap: 'wrap',
+    fontFamily: "Function-Regular",
   },
   textCentered: {
     color: "white",
