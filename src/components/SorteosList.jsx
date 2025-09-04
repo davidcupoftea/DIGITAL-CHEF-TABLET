@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useContext} from "react";
-import { StyleSheet, FlatList, ScrollView, Text, Dimensions} from "react-native";
+import { StyleSheet, FlatList, ScrollView, Text, Dimensions, View} from "react-native";
 import SorteoInList from "./SorteoInList";
 import { RestaurantChosenContext } from "./RestaurantChosenProvider.jsx";
 import { WARNING_NOT_SCROLLABLE } from '../services/index.jsx';
@@ -9,11 +9,20 @@ const SorteosList = ({ sorteos, onlylastweek=false, fetchSorteos }) => {
   const [loading, setLoading] = useState(true);
   let [finalsorteos, setFinalSorteos] = useState(null);
 
+  const margin = Dimensions.get('window').width * 0.01
+  const cardsPerRow = 3;
+  const [containerWidth, setContainerWidth] = useState(0);
+
   let { restaurantChosenObject } = useContext(RestaurantChosenContext);
   const [restaurantChosen, setRestaurantChosen] = restaurantChosenObject;
 
-  renderItem = ({ item }) => {
-    return <SorteoInList offer={item} fetchSorteos={fetchSorteos}/>;
+  renderItem = ({ item, index }) => {
+            const itemWidth = (containerWidth - margin  * (cardsPerRow-1)) / cardsPerRow;
+        return (
+          <View style={[styles.item, { width: itemWidth, marginRight: (index + 1) % cardsPerRow === 0 ? 0 : margin, }]}>
+    <SorteoInList offer={item} fetchSorteos={fetchSorteos}/>
+    </View>)
+  
   };
 
   useEffect(() => {
@@ -58,15 +67,22 @@ const SorteosList = ({ sorteos, onlylastweek=false, fetchSorteos }) => {
 
   return (
     <><ScrollView>{!WARNING_NOT_SCROLLABLE && onlylastweek==false? <Text style={styles.textsmall}>Estás viendo el feed de sorteos del restaurante {restaurantChosen.franchise} localizado en {restaurantChosen.address}</Text>: null}
+      <View style={[styles.screen, { marginHorizontal: margin }]} onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}>
+      
     
       {loading
         ? null : finalsorteos.length == 0 ? <Text style={styles.textsmall}>No hay sorteos aún.</Text>
-        : <FlatList style={styles.screen}
+        : <FlatList
+        style={styles.screen}
         data={[...finalsorteos]}
         keyExtractor={item=>item.id}
         renderItem={renderItem}
-        scrollEnabled={false}/>}
+        scrollEnabled={false}
+        numColumns={cardsPerRow}
+        columnWrapperStyle={{ justifyContent: "flex-start"}}/>}
+        </View>
         </ScrollView>
+        
     </>
   );
 
@@ -74,7 +90,6 @@ const SorteosList = ({ sorteos, onlylastweek=false, fetchSorteos }) => {
 
 const styles = StyleSheet.create({
   screen: {
-    paddingHorizontal: Dimensions.get("window").width * 0.05,
     backgroundColor: "rgb(107,106,106)",
   },
   textsmall: {
