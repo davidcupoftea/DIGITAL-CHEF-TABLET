@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import { ScrollView, FlatList, StyleSheet, Text, Dimensions, View} from "react-native";
 import NewsInList from "./NewsInList.jsx";
 import { RestaurantChosenContext } from "./RestaurantChosenProvider.jsx";

@@ -1,14 +1,20 @@
-import { useContext } from "react";
-import { ScrollView, FlatList, StyleSheet, Text, Dimensions} from 'react-native'
+import { useContext, useState } from "react";
+import { ScrollView, FlatList, StyleSheet, Text, Dimensions, View} from 'react-native'
 import OfferInList from '../components/OfferInList'
 import { RestaurantChosenContext } from "./RestaurantChosenProvider.jsx";
 import {
   WARNING_NOT_SCROLLABLE,
 } from "../services/index.jsx";
-//import getAndSetRestaurant from '../services/apiCallFavouriteRestaurant.jsx'
-
 
 const OffersList = ({onlylastweek, ofertas, fetchOfertas}) => {
+  const margin = Dimensions.get('window').width * 0.01
+  const cardsPerRow = 3;
+  const [containerWidth, setContainerWidth] = useState(0);
+  //const [gapWidth, setGapWidth] = useState(0);
+
+  // useEffect(() => {
+  //   setGapWidth(containerWidth * 0.02);
+  // }, [containerWidth]);
 
 
     let { restaurantChosenObject } = useContext(RestaurantChosenContext);
@@ -54,8 +60,11 @@ const OffersList = ({onlylastweek, ofertas, fetchOfertas}) => {
         finaloffers = ofertas
         finaloffers2 = finaloffers.sort(sortByDate)
 
-    const renderItem = ({item}) => {
-        return <OfferInList key={item.id} offer={item} isstatus={''} fetchOfertas={fetchOfertas}/>
+    const renderItem = ({item, index}) => {
+                const itemWidth = (containerWidth - margin  * (cardsPerRow-1)) / cardsPerRow;
+        return (
+        <View style={[styles.item, { width: itemWidth, marginRight: (index + 1) % cardsPerRow === 0 ? 0 : margin, }]}>        
+        <OfferInList key={item.id} offer={item} isstatus={''} fetchOfertas={fetchOfertas}/></View>)
     }
     // if (onlylastweek === true){
     //     return ( <>{ finaloffers2 == 0 ? (<Text style={styles.textsmall}>No hay ofertas esta semana.</Text>): (
@@ -74,13 +83,20 @@ const OffersList = ({onlylastweek, ofertas, fetchOfertas}) => {
             {" "} {restaurantChosen.address}
           </Text>
         ) : null}
+
+        <View style={[styles.screen, { marginHorizontal: margin }]} onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}>
         {finaloffers2 == 0 ? (<Text style={styles.textsmall}>No hay ofertas aún.</Text>): (
-        <FlatList style={styles.screen}
+            containerWidth > 0 && 
+        <FlatList 
+            style={styles.screen}
             data={[...finaloffers2]}
             keyExtractor={item=>item.id}
             renderItem={renderItem}
             scrollEnabled={false}
+            numColumns={cardsPerRow}
+            columnWrapperStyle={{ justifyContent: "flex-start"}}
         />)}
+        </View>
      </ScrollView>
      )
     //}
@@ -89,7 +105,6 @@ const OffersList = ({onlylastweek, ofertas, fetchOfertas}) => {
  
 const styles = StyleSheet.create({
     screen: {
-        marginHorizontal: Dimensions.get('window').width * 0.05,
         backgroundColor: 'rgb(107,106,106)',
     },
     textsmall: {
