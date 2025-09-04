@@ -31,6 +31,10 @@ const Restaurants = () => {
 
   const { order, setOrder } = useContext(OrderContext);
 
+  const margin = Dimensions.get("window").width * 0.01;
+  const cardsPerRow = 3;
+  const [containerWidth, setContainerWidth] = useState(0);
+
   const getRestaurants = async () => {
     setRestaurants([]); //ESTO ES UNA GUARRADA, NO SE COMO SOLUCIONARLO
     const res2 = await fetch(BASE_URL + "restaurants-digital-chef/", {
@@ -45,7 +49,7 @@ const Restaurants = () => {
     var jsonData2 = await res2.json();
     setRestaurants([...jsonData2]);
     setLoading(false);
-    setOrder({products : []})
+    setOrder({ products: [] });
   };
 
   useEffect(() => {
@@ -62,13 +66,31 @@ const Restaurants = () => {
     return unsubscribe;
   }, [navigation]);
 
-  const renderItem = ({ item }) => {
-    return <RestaurantInList key={item.id} offer={item} />;
+  const renderItem = ({ item, index }) => {
+    const itemWidth =
+      (containerWidth - margin * (cardsPerRow - 1)) / cardsPerRow;
+    return (
+      <View
+        style={[
+          styles.item,
+          {
+            width: itemWidth,
+            marginRight: (index + 1) % cardsPerRow === 0 ? 0 : margin,
+          },
+        ]}
+      >
+        <RestaurantInList key={item.id} offer={item} />
+      </View>
+    );
   };
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Aquí puedes ver los restaurantes a los que tienes acceso</Text>
+      <Text style={styles.text}>
+        Aquí puedes ver los restaurantes a los que tienes acceso
+      </Text>
       <ScrollView>
+        <View style={[styles.screen, { marginHorizontal: margin }]} onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}>
+           
         {loading ? (
           <ActivityIndicator size={33} />
         ) : (
@@ -78,15 +100,21 @@ const Restaurants = () => {
             scrollEnabled={false}
             keyExtractor={(item) => item.restaurant.pk}
             renderItem={renderItem}
+            numColumns={cardsPerRow}
+            columnWrapperStyle={{ justifyContent: "flex-start"}}
           />
         )}
+        </View>
       </ScrollView>
-      <TouchableOpacity style={styles.googlesign}
+      <TouchableOpacity
+        style={styles.googlesign}
         onPress={() => {
           navigation.navigate("Únete a uno o varios restaurantes");
         }}
       >
-        <Text style={styles.googlesigntext}>Reclamar pertenencia a uno u otro restaurante</Text>
+        <Text style={styles.googlesigntext}>
+          Reclamar pertenencia a uno u otro restaurante
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -97,7 +125,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   screen: {
-    paddingHorizontal: Dimensions.get("window").width * 0.05,
     backgroundColor: "rgb(107,106,106)",
   },
   text: {

@@ -8,7 +8,7 @@ import {
   Dimensions,
 } from "react-native";
 import { Video } from "expo-av";
-import ScaledImage from "./CustomFastAndFunctionalScaledImage";
+import ScaledImage from "./CustomFastAndFunctionalScaledImageContainerWidth.jsx";
 import { AuthFlowContext } from "./AuthUseContextProvider.jsx";
 import { RestaurantChosenContext } from "./RestaurantChosenProvider.jsx";
 import getAndSetRestaurant from "../services/apiCallFavouriteRestaurant.jsx";
@@ -176,12 +176,12 @@ const styles = StyleSheet.create({
   image: {
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    width: Dimensions.get("window").width * 0.9 - 6,
+    width: '100%',
   },
   imageGreenCard: {
     borderTopLeftRadius: 27,
     borderTopRightRadius: 27,
-    width: Dimensions.get("window").width * 0.9 - 6,
+    width: '100%',
   },
   card: {
     flexDirection: "column",
