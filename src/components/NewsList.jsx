@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { ScrollView, FlatList, StyleSheet, Text, Dimensions} from "react-native";
+import { useContext, useState, useEffect } from "react";
+import { ScrollView, FlatList, StyleSheet, Text, Dimensions, View} from "react-native";
 import NewsInList from "./NewsInList.jsx";
 import { RestaurantChosenContext } from "./RestaurantChosenProvider.jsx";
 import {
@@ -7,6 +7,14 @@ import {
 } from "../services/index.jsx";
 
 const NewsList = ({ onlylastweek = false, noticias, fetchNoticias}) => {
+  const margin = Dimensions.get('window').width * 0.01
+  const cardsPerRow = 3;
+  const [containerWidth, setContainerWidth] = useState(0);
+  //const [gapWidth, setGapWidth] = useState(0);
+
+  // useEffect(() => {
+  //   setGapWidth(containerWidth * 0.02);
+  // }, [containerWidth]);
 
   let { restaurantChosenObject } = useContext(RestaurantChosenContext);
   const [restaurantChosen, setRestaurantChosen] = restaurantChosenObject;
@@ -33,8 +41,15 @@ const NewsList = ({ onlylastweek = false, noticias, fetchNoticias}) => {
   };
 
 
-  const renderItem = ({ item }) => {
-    return <NewsInList offer={item} isstatus={""} fetchNoticias={fetchNoticias} />;
+
+  const renderItem = ({ item, index }) => {
+        const itemWidth = (containerWidth - margin  * (cardsPerRow-1)) / cardsPerRow;
+    return (
+      <View style={[styles.item, { width: itemWidth, marginRight: (index + 1) % cardsPerRow === 0 ? 0 : margin, }]}>
+        <NewsInList offer={item} isstatus={""} fetchNoticias={fetchNoticias} />
+      </View>
+    );
+    //return <NewsInList offer={item} isstatus={""} fetchNoticias={fetchNoticias} />;
   };
 
 
@@ -60,8 +75,11 @@ const NewsList = ({ onlylastweek = false, noticias, fetchNoticias}) => {
           </Text>
         ) : null}
 
+         <View style={[styles.screen, { marginHorizontal: margin }]} onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}>
+  
+
         {finalnoticias2.length != 0 ? 
-        (<FlatList
+        (containerWidth > 0 && (<FlatList
           style={styles.screen}
           data={[...finalnoticias2]}
           keyExtractor={(item) => item.id}
@@ -71,7 +89,10 @@ const NewsList = ({ onlylastweek = false, noticias, fetchNoticias}) => {
           initialNumToRender={2}
           windowSize={3}
           scrollEnabled={false}
-        />) : (<Text style={styles.textsmall}>No hay novedades aún.</Text>)}
+          numColumns={cardsPerRow}
+          columnWrapperStyle={{ justifyContent: "flex-start"}}
+        />)) : (<Text style={styles.textsmall}>No hay novedades aún.</Text>)}
+        </View>
       </ScrollView>
     );
   //}
@@ -79,7 +100,6 @@ const NewsList = ({ onlylastweek = false, noticias, fetchNoticias}) => {
 
 const styles = StyleSheet.create({
   screen: {
-    marginHorizontal: Dimensions.get('window').width * 0.05,
     backgroundColor: "rgb(107,106,106)",
   },
   textsmall: {
