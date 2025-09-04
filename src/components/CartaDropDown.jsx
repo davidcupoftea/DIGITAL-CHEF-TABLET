@@ -84,8 +84,13 @@ function ElegirProductos() {
     }
   };
 
-  const renderItem = ({ item }) => {
-    return <DishInMenu item={item} />;
+  const renderItem = ({ item, index }) => {
+      const itemWidth = (containerWidth - margin  * (cardsPerRow-1)) / cardsPerRow;
+      return (
+      <View style={[styles.item, { width: itemWidth, marginRight: (index + 1) % cardsPerRow === 0 ? 0 : margin, }]}>
+      
+    <DishInMenu item={item} />
+    </View>)
   };
 
   const fetchSpecificDishes = async () => {
@@ -208,6 +213,10 @@ function ElegirProductos() {
     await Promise.all(funcArray);
   };
 
+  const margin = Dimensions.get('window').width * 0.01
+  const cardsPerRow = 3;
+  const [containerWidth, setContainerWidth] = useState(0);
+
   return (
     <View style={styles.container}>
       {WARNING_NOT_SCROLLABLE ? (
@@ -251,6 +260,9 @@ function ElegirProductos() {
           value={searchTerm}
         ></TextInput>
 
+        <View style={[styles.screen, { marginHorizontal: margin }]} onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}>
+          
+
         {specificDishesFlag ? (
           <View style={styles.screen}>
             <FlatList
@@ -262,9 +274,13 @@ function ElegirProductos() {
               updateCellsBatchingPeriod={1000}
               initialNumToRender={3}
               windowSize={3}
+              numColumns={cardsPerRow}
+              columnWrapperStyle={{ justifyContent: "flex-start"}}
             />
           </View>
         ) : null}
+
+        </View>
 
         {loading ? (
           <ActivityIndicator size="large" />
@@ -374,7 +390,6 @@ const styles = StyleSheet.create({
     margin: 15,
   },
   screen: {
-    paddingHorizontal: Dimensions.get("window").width * 0.05,
     backgroundColor: "rgb(107,106,106)",
   },
   hideDishesButton: {
