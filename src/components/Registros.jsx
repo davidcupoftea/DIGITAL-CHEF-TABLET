@@ -209,6 +209,14 @@ const Registros = ({ route }) => {
     getRegistros();
   }, [route.params?.refresh]);
 
+  const cardsPerRow = 3;
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [gapWidth, setGapWidth] = useState(0);
+
+  useEffect(() => {
+    setGapWidth(containerWidth * 0.02);
+  }, [containerWidth]);
+
   return (
     <View style={styles.ofertas}>
       {WARNING_NOT_SCROLLABLE ? (
@@ -317,15 +325,37 @@ const Registros = ({ route }) => {
           </Picker>
         </View>
 
+        <View
+          style={styles.containerthreecolumns}
+          onLayout={(event) => {
+            const { width } = event.nativeEvent.layout;
+            setContainerWidth(width);
+          }}
+        >
+
         {loading && !gotten ? (
           <ActivityIndicator size={33} />
         ) : !loading && !gotten ? (
           <Text style={styles.textsmall}>No puedes acceder a estos datos</Text>
         ) : (
-          registros.map((registro, index) => (
+          registros.map((registro, index) => {
+                          const isLastInRow = (index + 1) % cardsPerRow === 0;
+                          return (
+                            <View
+                              key={index}
+                              style={{
+                                flexBasis: `33.33%`,
+                                flexGrow: 0,
+                                marginBottom: 10,
+                                paddingRight: isLastInRow ? 0 : gapWidth,
+                              }}
+                            >
             <RegistroInList key={index} registro={registro}></RegistroInList>
-          ))
+            </View>)
+          })
         )}
+
+        </View>
 
         {loaded && !loading && registros != null && registros.length == 0 ? (
           <Text style={styles.textsmall}>No hay registros</Text>
@@ -359,15 +389,21 @@ const styles = StyleSheet.create({
   datePicker: {
     backgroundColor: "black",
   },
-    picker: {
+  picker: {
     color: "white",
   },
-    typeOfInvoice: {
+  typeOfInvoice: {
     borderColor: "white",
     borderWidth: 1,
     backgroundColor: "rgb(107,106,106)",
     margin: 10,
   },
+  containerthreecolumns: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "flex-start",
+    width: "100%",
+  }
 });
 
 export default Registros;

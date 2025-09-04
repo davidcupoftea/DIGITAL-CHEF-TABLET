@@ -8,7 +8,7 @@ import {
   Alert,
   Pressable,
   TextInput,
-  Platform
+  Platform,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AuthFlowContext } from "./AuthUseContextProvider.jsx";
@@ -174,6 +174,14 @@ const Facturas = ({ route }) => {
     getFacturas();
   }, [route.params?.refresh]);
 
+  const cardsPerRow = 3;
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [gapWidth, setGapWidth] = useState(0);
+
+  useEffect(() => {
+    setGapWidth(containerWidth * 0.02);
+  }, [containerWidth]);
+
   return (
     <View style={styles.ofertas}>
       {WARNING_NOT_SCROLLABLE ? (
@@ -208,7 +216,6 @@ const Facturas = ({ route }) => {
             onPressIn={toggleDatePicker}
           />
         </Pressable>
-
 
         {showPicker && (
           <RNDateTimePicker
@@ -279,33 +286,56 @@ const Facturas = ({ route }) => {
 
         <Text style={styles.textsmall}>Serie</Text>
         <View style={styles.typeOfInvoice}>
-        <Picker
-          selectedValue={serie}
-          style={styles.picker}
-          dropdownIconColor="white"
-          onValueChange={(itemValue, itemIndex) => setSerie(itemValue)}
-        >
-          <Picker.Item label="Todas" value="" />
-          <Picker.Item label="F1" value="F1" />
-          <Picker.Item label="F2" value="F2" />
-          <Picker.Item label="R4" value="R4" />
-          <Picker.Item label="R5" value="R5" />
-        </Picker>
+          <Picker
+            selectedValue={serie}
+            style={styles.picker}
+            dropdownIconColor="white"
+            onValueChange={(itemValue, itemIndex) => setSerie(itemValue)}
+          >
+            <Picker.Item label="Todas" value="" />
+            <Picker.Item label="F1" value="F1" />
+            <Picker.Item label="F2" value="F2" />
+            <Picker.Item label="R4" value="R4" />
+            <Picker.Item label="R5" value="R5" />
+          </Picker>
         </View>
 
-        {loading && !gotten ? (
-          <ActivityIndicator size={33} />
-        ) : !loading && !gotten ? (
-          <Text style={styles.textsmall}>No puedes acceder a estos datos</Text>
-        ) : (
-          facturas.map((factura, index) => (
-            <FacturaInList
-              key={index}
-              factura={factura}
-              fetchFacturas={fetchFacturas}
-            ></FacturaInList>
-          ))
-        )}
+        <View
+          style={styles.containerthreecolumns}
+          onLayout={(event) => {
+            const { width } = event.nativeEvent.layout;
+            setContainerWidth(width);
+          }}
+        >
+          {loading && !gotten ? (
+            <ActivityIndicator size={33} />
+          ) : !loading && !gotten ? (
+            <Text style={styles.textsmall}>
+              No puedes acceder a estos datos
+            </Text>
+          ) : (
+            facturas.map((factura, index) => {
+              const isLastInRow = (index + 1) % cardsPerRow === 0;
+              return (
+                <View
+                  key={index}
+                  style={{
+                    flexBasis: `33.33%`,
+                    flexGrow: 0,
+                    marginBottom: 10,
+                    paddingRight: isLastInRow ? 0 : gapWidth,
+                  }}
+                >
+                  <FacturaInList
+                    key={index}
+                    factura={factura}
+                    fetchFacturas={fetchFacturas}
+                  ></FacturaInList>
+                </View>
+              );
+            })
+          )}
+        </View>
         {loaded && !loading && facturas != null && facturas.length == 0 ? (
           <Text style={styles.textsmall}>No hay facturas</Text>
         ) : null}
@@ -338,15 +368,21 @@ const styles = StyleSheet.create({
   datePicker: {
     backgroundColor: "black",
   },
-    picker: {
+  picker: {
     color: "white",
   },
-    typeOfInvoice: {
+  typeOfInvoice: {
     borderColor: "white",
     borderWidth: 1,
     backgroundColor: "rgb(107,106,106)",
     margin: 10,
   },
+  containerthreecolumns: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "flex-start",
+    width: "100%",
+  }
 });
 
 export default Facturas;
