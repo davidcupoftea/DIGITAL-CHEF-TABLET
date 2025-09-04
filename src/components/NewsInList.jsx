@@ -8,7 +8,7 @@ import {
   Alert,
 } from "react-native";
 import { Video } from "expo-av";
-import ScaledImage from "./CustomFastAndFunctionalScaledImage.jsx";
+import ScaledImage from "./CustomFastAndFunctionalScaledImageContainerWidth.jsx";
 import { useNavigation } from "@react-navigation/native";
 import { AuthFlowContext } from "./AuthUseContextProvider.jsx";
 import { RestaurantChosenContext } from "./RestaurantChosenProvider.jsx";
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    width: Dimensions.get("window").width * 0.9 - 8,
+    width: '100%'
   },
   greencard: {
     flexDirection: "column",
@@ -289,7 +289,8 @@ const styles = StyleSheet.create({
   },
   video: {
     flex: 1,
-    width: Dimensions.get("window").width * 0.9 - 8,
+    width: "100%",
+    //width: Dimensions.get("window").width * 0.9 - 8,
     alignSelf: "center",
   },
 });
