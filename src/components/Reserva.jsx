@@ -235,6 +235,14 @@ function Reserva() {
     }
   };
 
+  const cardsPerRow = 3;
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [gapWidth, setGapWidth] = useState(0);
+
+  useEffect(() => {
+    setGapWidth(containerWidth * 0.02);
+  }, [containerWidth]);
+
   return (
     <View style={styles.container}>
       <ScrollView>

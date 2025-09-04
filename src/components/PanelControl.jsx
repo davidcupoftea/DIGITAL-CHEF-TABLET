@@ -257,7 +257,7 @@ const PanelControl = () => {
       );
       var res_json = await jsonData.json();
       var tables = res_json.tables;
-      console.log('TABLES ARE', tables)
+      console.log("TABLES ARE", tables);
       setTables([...tables]);
       setLoadingTables(false);
       setLoadedTables(true);
@@ -543,12 +543,9 @@ const PanelControl = () => {
     }
   };
 
-  //const screenWidth = Dimensions.get("window").width; // ancho de pantalla
-  const cardsPerRow = 3; // cuántas tarjetas por fila
-  //const gap = screenWidth * 0.019; // espacio entre tarjetas
+  const cardsPerRow = 3;
   const [containerWidth, setContainerWidth] = useState(0);
   const [gapWidth, setGapWidth] = useState(0);
-  //const cardWidth = (screenWidth - gap * (cardsPerRow - 1)) / cardsPerRow;
 
   useEffect(() => {
     setGapWidth(containerWidth * 0.02);
@@ -663,32 +660,21 @@ const PanelControl = () => {
         />
 
         <View
-          style={{
-            flexDirection: "row", // Poner elementos en fila
-            flexWrap: "wrap", // Permitir que se vayan a la siguiente fila
-            justifyContent: "flex-start", // Puedes usar 'space-between' si quieres separación
-            width: "100%",
-            //gap: gapWidth,
-          }}
+          style={styles.containerthreecolumns}
           onLayout={(event) => {
             const { width } = event.nativeEvent.layout;
             setContainerWidth(width);
           }}
         >
           {mesasConItems.map((mesa, index) => {
-            const cardWidth = (containerWidth - gapWidth * (cardsPerRow - 1)) / cardsPerRow;
             const isLastInRow = (index + 1) % cardsPerRow === 0;
             return (
-              <View
-                key={index}
-                style={{
-                  //width: cardWidth, // o un valor fijo como 150
-                  flexBasis: `33.33%`,
-                  flexGrow: 0,
-                  marginBottom: 10, // separación vertical entre filas
-                  paddingRight: isLastInRow ? 0 : gapWidth,
-                }}
-              >
+              <View key={index} style={{
+                      flexBasis: `33.33%`,
+                      flexGrow: 0,
+                      marginBottom: 10,
+                      paddingRight: isLastInRow ? 0 : gapWidth,
+                    }}>
                 <TableWithOrderElementsControlPanel
                   key={index}
                   table={mesa}
@@ -910,6 +896,12 @@ const styles = StyleSheet.create({
     fontFamily: "Function-Regular",
     textAlign: "center",
   },
+  containerthreecolumns: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "flex-start",
+    width: "100%",
+  }
 });
 
 //REPASADO Y LIMPIADO
