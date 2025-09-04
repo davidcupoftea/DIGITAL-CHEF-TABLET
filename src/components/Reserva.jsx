@@ -16,12 +16,10 @@ import * as Device from "expo-device";
 import { Picker } from "@react-native-picker/picker";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
-import { useNavigation, useIsFocused} from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { AuthFlowContext } from "./AuthUseContextProvider";
 import { RestaurantChosenContext } from "./RestaurantChosenProvider.jsx";
-import {
-  BASE_URL
-} from "../services/index.jsx";
+import { BASE_URL } from "../services/index.jsx";
 import getAndSetRestaurant from "../services/apiCallFavouriteRestaurant.jsx";
 
 function Reserva() {
@@ -47,7 +45,7 @@ function Reserva() {
   const [notArrival, setNotArrival] = useState(false);
   const [pending, setPending] = useState(true);
   const [indiferentState, setIndiferentState] = useState(false);
-  const [collisions, setCollisionas] = useState(false)
+  const [collisions, setCollisionas] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
@@ -93,38 +91,40 @@ function Reserva() {
     }
   };
 
-
   const getCollisions = async (restaurantChosen_pk) => {
     const jsonData = await fetch(
-        BASE_URL + "get-collisions/" + restaurantChosen_pk + "/",
-        {
-          method: "POST",
-          mode: "no-cors",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + String(authTokens?.access),
-          },
-          body: JSON.stringify({ date: reservationDateString, time_period: timePeriod, allreservations: allreservations }),
-        }
-      );
-      const res_json = await jsonData.json();
-      setCollisionas(res_json.found_collisions)
+      BASE_URL + "get-collisions/" + restaurantChosen_pk + "/",
+      {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + String(authTokens?.access),
+        },
+        body: JSON.stringify({
+          date: reservationDateString,
+          time_period: timePeriod,
+          allreservations: allreservations,
+        }),
+      }
+    );
+    const res_json = await jsonData.json();
+    setCollisionas(res_json.found_collisions);
+  };
 
-  }
-
-  useEffect(()=>{
-    if(isFocused){
-        if (reservationDateString != '' && timePeriod != 0){
-        getCollisions(restaurantChosen.pk)
-        }
+  useEffect(() => {
+    if (isFocused) {
+      if (reservationDateString != "" && timePeriod != 0) {
+        getCollisions(restaurantChosen.pk);
+      }
     }
-  },[isFocused])
+  }, [isFocused]);
 
-  useEffect(() =>{
-    if (reservationDateString != '' && timePeriod != 0){
-    getCollisions(restaurantChosen.pk)
-  }
-  },[reservationDateString, timePeriod, allreservations, navigation])
+  useEffect(() => {
+    if (reservationDateString != "" && timePeriod != 0) {
+      getCollisions(restaurantChosen.pk);
+    }
+  }, [reservationDateString, timePeriod, allreservations, navigation]);
 
   useEffect(() => {
     const gettingInfoForReservation = async () => {
@@ -174,14 +174,16 @@ function Reserva() {
     }
   };
 
-      useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', async ()=>{ 
-            if ((reservationDateString && timePeriod) ||(reservationDateString && !timePeriod && allreservations))
-            fetchReservations();   
-            })
-        return unsubscribe;
-
-    }, [isFocused, restaurantChosen.pk])
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", async () => {
+      if (
+        (reservationDateString && timePeriod) ||
+        (reservationDateString && !timePeriod && allreservations)
+      )
+        fetchReservations();
+    });
+    return unsubscribe;
+  }, [isFocused, restaurantChosen.pk]);
 
   const fetchReservations = async () => {
     if (!reservationDateString) {
@@ -226,12 +228,12 @@ function Reserva() {
       }
     );
     var jsonData = await res.json();
-    if (jsonData.status == 'ok'){
-    setReservaciones(jsonData.data);
-    setLoading(false);
-    setLoaded(true);
-    } else if (jsonData.status == 'nook'){
-      Alert.alert('Error', jsonData.message)
+    if (jsonData.status == "ok") {
+      setReservaciones(jsonData.data);
+      setLoading(false);
+      setLoaded(true);
+    } else if (jsonData.status == "nook") {
+      Alert.alert("Error", jsonData.message);
     }
   };
 
@@ -246,450 +248,480 @@ function Reserva() {
   return (
     <View style={styles.container}>
       <ScrollView>
-        
-          <Text style={styles.textsmall}>
-            Estás viendo las reservas del restaurante{" "}
-            {restaurantChosen.franchise} localizado en{" "}
-            {restaurantChosen.address}
-          </Text>
-        
+        <Text style={styles.textsmall}>
+          Estás viendo las reservas del restaurante {restaurantChosen.franchise}{" "}
+          localizado en {restaurantChosen.address}
+        </Text>
 
-        {collisions ? <View style={styles.collisions}><TouchableOpacity onPress={()=>{navigation.navigate('Colisiones',{date: reservationDateString, time_period: timePeriod, allreservations: allreservations})}}><Text style={styles.textcollisions}>Parece que con los parámetros dados hay mesas que comparten reserva. Pulsa <Text style={styles.underline}>aquí</Text> para solucionarlo</Text></TouchableOpacity></View>:null}
+        {collisions ? (
+          <View style={styles.collisions}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Colisiones", {
+                  date: reservationDateString,
+                  time_period: timePeriod,
+                  allreservations: allreservations,
+                });
+              }}
+            >
+              <Text style={styles.textcollisions}>
+                Parece que con los parámetros dados hay mesas que comparten
+                reserva. Pulsa <Text style={styles.underline}>aquí</Text> para
+                solucionarlo
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ) : null}
 
+        <Text style={styles.text}>Fecha de reserva </Text>
 
-        
-          <Text style={styles.text}>Fecha de reserva </Text>
+        <Pressable
+          onPress={() => {
+            setShowPicker(true);
+            setStartedEditingReservationDate(true);
+          }}
+        >
+          <TextInput
+            style={styles.textinput}
+            placeholder="Fecha de la reserva"
+            value={reservationDateString}
+            onChangeText={setReservationDate}
+            placeholderTextColor="white"
+            editable={false}
+            onPressIn={toggleDatePicker}
+          />
+        </Pressable>
 
-          <Pressable
-            onPress={() => {
-              setShowPicker(true);
-              setStartedEditingReservationDate(true);
-            }}
-          >
-            <TextInput
-              style={styles.textinput}
-              placeholder="Fecha de la reserva"
-              value={reservationDateString}
-              onChangeText={setReservationDate}
-              placeholderTextColor="white"
-              editable={false}
-              onPressIn={toggleDatePicker}
-            />
-          </Pressable>
+        {showPicker == false &&
+        reservationDateString.length == 0 &&
+        startedEditingReservationDate == true ? (
+          <Text style={styles.texterror}>Tienes que rellenar este campo</Text>
+        ) : null}
 
-          {showPicker == false &&
-          reservationDateString.length == 0 &&
-          startedEditingReservationDate == true ? (
-            <Text style={styles.texterror}>Tienes que rellenar este campo</Text>
-          ) : null}
+        {showPicker && (
+          <RNDateTimePicker
+            mode="date"
+            display="spinner"
+            value={reservationDate}
+            onChange={onChangePicker}
+            dateFormat="day month year"
+            style={styles.datePicker}
+            textColor="white"
+          />
+        )}
 
-          {showPicker && (
-            <RNDateTimePicker
-              mode="date"
-              display="spinner"
-              value={reservationDate}
-              onChange={onChangePicker}
-              dateFormat="day month year"
-              style={styles.datePicker}
-              textColor="white"
-            />
+        {showPicker &&
+          (Device.osName === "iOS" ||
+            Device.osName === "iPadOS" ||
+            Platform.OS === "ios") && (
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-around" }}
+            >
+              <TouchableOpacity style={styles.button}>
+                <Text
+                  style={styles.buttontextCancel}
+                  onPress={toggleDatePicker}
+                >
+                  Cancelar
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.button}>
+                <Text style={styles.buttontextConfirm} onPress={confirmIOSDate}>
+                  Confirmar
+                </Text>
+              </TouchableOpacity>
+            </View>
           )}
 
-          {showPicker &&
-            (Device.osName === "iOS" ||
-              Device.osName === "iPadOS" ||
-              Platform.OS === "ios") && (
-              <View
-                style={{ flexDirection: "row", justifyContent: "space-around" }}
-              >
-                <TouchableOpacity style={styles.button}>
-                  <Text
-                    style={styles.buttontextCancel}
-                    onPress={toggleDatePicker}
-                  >
-                    Cancelar
-                  </Text>
-                </TouchableOpacity>
+        <Text style={styles.text}>Hora de la reserva </Text>
 
-                <TouchableOpacity style={styles.button}>
-                  <Text
-                    style={styles.buttontextConfirm}
-                    onPress={confirmIOSDate}
-                  >
-                    Confirmar
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            )}
-
-          <Text style={styles.text}>Hora de la reserva </Text>
-
-          <Pressable
-            onPress={() => {
-              if (!reservationDateString) {
-                Alert.alert(
-                  "Ups",
-                  "Primero elige una fecha para ver las horas de reserva"
-                );
+        <Pressable
+          onPress={() => {
+            if (!reservationDateString) {
+              Alert.alert(
+                "Ups",
+                "Primero elige una fecha para ver las horas de reserva"
+              );
+            }
+          }}
+        >
+          <View style={styles.timeOfReservation}>
+            <Picker
+              selectedValue={timePeriod}
+              onValueChange={(itemValue, itemIndex) => {
+                setTimePeriod(itemValue);
+              }}
+              style={
+                getPlatform() == "android"
+                  ? styles.pickerstyleandroid
+                  : styles.pickerstyleios
               }
-            }}
-          >
-            <View style={styles.timeOfReservation}>
-              <Picker
-                selectedValue={timePeriod}
-                onValueChange={(itemValue, itemIndex) => {
-                  setTimePeriod(itemValue);
-                }}
-                style={
-                  getPlatform() == "android"
-                    ? styles.pickerstyleandroid
-                    : styles.pickerstyleios
-                }
-                dropdownIconColor="white"
-                itemStyle={{ height: 40, color: "white" }}
-              >
-                {loadedTimePeriods ? renderTimePeriodList() : null}
-              </Picker>
-            </View>
-          </Pressable>
+              dropdownIconColor="white"
+              itemStyle={{ height: 40, color: "white" }}
+            >
+              {loadedTimePeriods ? renderTimePeriodList() : null}
+            </Picker>
+          </View>
+        </Pressable>
 
-          <BouncyCheckbox
-            size={25}
-            isChecked={allreservations}
-            fillColor="black"
-            unFillColor="#FFFFFF"
-            useBuiltInState={false}
-            text="Todas las reservas de ese día independientemente de la hora"
-            iconStyle={{ borderColor: "white" }}
-            innerIconStyle={{ borderWidth: 2 }}
-            style={{ marginTop: 15 }}
-            textStyle={{
-              fontFamily: "Function-Regular",
-              fontSize: 20,
-              color: "white",
-              textDecorationLine: "none",
-            }}
-            onPress={(allreservations) => {
-              setAllReservations(!allreservations);
-            }}
-          />
-          <Text style={styles.text}>Otros ajustes</Text>
-          <BouncyCheckbox
-            size={25}
-            isChecked={window}
-            fillColor="black"
-            unFillColor="#FFFFFF"
-            useBuiltInState={false}
-            text="Al lado de una ventana"
-            iconStyle={{ borderColor: "white" }}
-            innerIconStyle={{ borderWidth: 2 }}
-            style={{ marginTop: 15 }}
-            textStyle={{
-              fontFamily: "Function-Regular",
-              fontSize: 20,
-              color: "white",
-              textDecorationLine: "none",
-            }}
-            onPress={(window) => {
-              setWindow(!window);
-              setPatio(false);
-              setSala(false);
-              setIndiferentLocation(false);
-            }}
-          />
-          <BouncyCheckbox
-            size={25}
-            isChecked={patio}
-            fillColor="black"
-            unFillColor="#FFFFFF"
-            useBuiltInState={false}
-            text="En la terraza"
-            iconStyle={{ borderColor: "white" }}
-            innerIconStyle={{ borderWidth: 2 }}
-            style={{ marginTop: 15 }}
-            textStyle={{
-              fontFamily: "Function-Regular",
-              fontSize: 20,
-              color: "white",
-              textDecorationLine: "none",
-            }}
-            onPress={(patio) => {
-              setPatio(!patio);
-              setWindow(false);
-              setSala(false);
-              setIndiferentLocation(false);
-            }}
-          />
-          <BouncyCheckbox
-            size={25}
-            isChecked={sala}
-            fillColor="black"
-            unFillColor="#FFFFFF"
-            useBuiltInState={false}
-            text="Sala"
-            iconStyle={{ borderColor: "white" }}
-            innerIconStyle={{ borderWidth: 2 }}
-            style={{ marginTop: 15 }}
-            textStyle={{
-              fontFamily: "Function-Regular",
-              fontSize: 20,
-              color: "white",
-              textDecorationLine: "none",
-            }}
-            onPress={(sala) => {
-              setPatio(false);
-              setWindow(false);
-              setSala(!sala);
-              setIndiferentLocation(false);
-            }}
-          />
+        <BouncyCheckbox
+          size={25}
+          isChecked={allreservations}
+          fillColor="black"
+          unFillColor="#FFFFFF"
+          useBuiltInState={false}
+          text="Todas las reservas de ese día independientemente de la hora"
+          iconStyle={{ borderColor: "white" }}
+          innerIconStyle={{ borderWidth: 2 }}
+          style={{ marginTop: 15 }}
+          textStyle={{
+            fontFamily: "Function-Regular",
+            fontSize: 20,
+            color: "white",
+            textDecorationLine: "none",
+          }}
+          onPress={(allreservations) => {
+            setAllReservations(!allreservations);
+          }}
+        />
+        <Text style={styles.text}>Otros ajustes</Text>
+        <BouncyCheckbox
+          size={25}
+          isChecked={window}
+          fillColor="black"
+          unFillColor="#FFFFFF"
+          useBuiltInState={false}
+          text="Al lado de una ventana"
+          iconStyle={{ borderColor: "white" }}
+          innerIconStyle={{ borderWidth: 2 }}
+          style={{ marginTop: 15 }}
+          textStyle={{
+            fontFamily: "Function-Regular",
+            fontSize: 20,
+            color: "white",
+            textDecorationLine: "none",
+          }}
+          onPress={(window) => {
+            setWindow(!window);
+            setPatio(false);
+            setSala(false);
+            setIndiferentLocation(false);
+          }}
+        />
+        <BouncyCheckbox
+          size={25}
+          isChecked={patio}
+          fillColor="black"
+          unFillColor="#FFFFFF"
+          useBuiltInState={false}
+          text="En la terraza"
+          iconStyle={{ borderColor: "white" }}
+          innerIconStyle={{ borderWidth: 2 }}
+          style={{ marginTop: 15 }}
+          textStyle={{
+            fontFamily: "Function-Regular",
+            fontSize: 20,
+            color: "white",
+            textDecorationLine: "none",
+          }}
+          onPress={(patio) => {
+            setPatio(!patio);
+            setWindow(false);
+            setSala(false);
+            setIndiferentLocation(false);
+          }}
+        />
+        <BouncyCheckbox
+          size={25}
+          isChecked={sala}
+          fillColor="black"
+          unFillColor="#FFFFFF"
+          useBuiltInState={false}
+          text="Sala"
+          iconStyle={{ borderColor: "white" }}
+          innerIconStyle={{ borderWidth: 2 }}
+          style={{ marginTop: 15 }}
+          textStyle={{
+            fontFamily: "Function-Regular",
+            fontSize: 20,
+            color: "white",
+            textDecorationLine: "none",
+          }}
+          onPress={(sala) => {
+            setPatio(false);
+            setWindow(false);
+            setSala(!sala);
+            setIndiferentLocation(false);
+          }}
+        />
 
-          <BouncyCheckbox
-            size={25}
-            isChecked={indiferentLocation}
-            fillColor="black"
-            unFillColor="#FFFFFF"
-            useBuiltInState={false}
-            text="Ubicación indiferente"
-            iconStyle={{ borderColor: "white" }}
-            innerIconStyle={{ borderWidth: 2 }}
-            style={{ marginTop: 15 }}
-            textStyle={{
-              fontFamily: "Function-Regular",
-              fontSize: 20,
-              color: "white",
-              textDecorationLine: "none",
-            }}
-            onPress={(indiferentLocation) => {
-              setPatio(false);
-              setWindow(false);
-              setSala(false);
-              setIndiferentLocation(!indiferentLocation);
-            }}
-          />
+        <BouncyCheckbox
+          size={25}
+          isChecked={indiferentLocation}
+          fillColor="black"
+          unFillColor="#FFFFFF"
+          useBuiltInState={false}
+          text="Ubicación indiferente"
+          iconStyle={{ borderColor: "white" }}
+          innerIconStyle={{ borderWidth: 2 }}
+          style={{ marginTop: 15 }}
+          textStyle={{
+            fontFamily: "Function-Regular",
+            fontSize: 20,
+            color: "white",
+            textDecorationLine: "none",
+          }}
+          onPress={(indiferentLocation) => {
+            setPatio(false);
+            setWindow(false);
+            setSala(false);
+            setIndiferentLocation(!indiferentLocation);
+          }}
+        />
 
-          <Text style={styles.text}>Estado de la reserva (nula o no)</Text>
-          <BouncyCheckbox
-            size={25}
-            isChecked={nulledByUser}
-            fillColor="black"
-            unFillColor="#FFFFFF"
-            useBuiltInState={false}
-            text="Anulada por el usuario"
-            iconStyle={{ borderColor: "white" }}
-            innerIconStyle={{ borderWidth: 2 }}
-            style={{ marginTop: 15 }}
-            textStyle={{
-              fontFamily: "Function-Regular",
-              fontSize: 20,
-              color: "white",
-              textDecorationLine: "none",
-            }}
-            onPress={(nulledByUser) => {
-              setNulledByUser(!nulledByUser);
-              setNulledByRestaurant(false);
-              setIndiferentNull(false);
-              setNotNulled(false);
-            }}
-          />
-          <BouncyCheckbox
-            size={25}
-            isChecked={nulledByRestaurant}
-            fillColor="black"
-            unFillColor="#FFFFFF"
-            useBuiltInState={false}
-            text="Anulada por el restaurante"
-            iconStyle={{ borderColor: "white" }}
-            innerIconStyle={{ borderWidth: 2 }}
-            style={{ marginTop: 15 }}
-            textStyle={{
-              fontFamily: "Function-Regular",
-              fontSize: 20,
-              color: "white",
-              textDecorationLine: "none",
-            }}
-            onPress={(nulledByRestaurant) => {
-              setNulledByRestaurant(!nulledByRestaurant);
-              setNulledByUser(false);
-              setIndiferentNull(false);
-              setNotNulled(false);
-            }}
-          />
-          <BouncyCheckbox
-            size={25}
-            isChecked={notNulled}
-            fillColor="black"
-            unFillColor="#FFFFFF"
-            useBuiltInState={false}
-            text="No anulada"
-            iconStyle={{ borderColor: "white" }}
-            innerIconStyle={{ borderWidth: 2 }}
-            style={{ marginTop: 15 }}
-            textStyle={{
-              fontFamily: "Function-Regular",
-              fontSize: 20,
-              color: "white",
-              textDecorationLine: "none",
-            }}
-            onPress={(notNulled) => {
-              setNulledByRestaurant(false);
-              setNulledByUser(false);
-              setIndiferentNull(false);
-              setNotNulled(!notNulled);
-            }}
-          />
-          <BouncyCheckbox
-            size={25}
-            isChecked={indiferentNull}
-            fillColor="black"
-            unFillColor="#FFFFFF"
-            useBuiltInState={false}
-            text="Nulidad indiferente"
-            iconStyle={{ borderColor: "white" }}
-            innerIconStyle={{ borderWidth: 2 }}
-            style={{ marginTop: 15 }}
-            textStyle={{
-              fontFamily: "Function-Regular",
-              fontSize: 20,
-              color: "white",
-              textDecorationLine: "none",
-            }}
-            onPress={(indiferentNull) => {
-              setNulledByUser(false);
-              setNulledByRestaurant(false);
-              setIndiferentNull(!indiferentNull);
-              setNotNulled(false);
-            }}
-          />
-          <Text style={styles.text}>Estado de la reserva</Text>
-          <BouncyCheckbox
-            size={25}
-            isChecked={arrival}
-            fillColor="black"
-            unFillColor="#FFFFFF"
-            useBuiltInState={false}
-            text="Ha llegado"
-            iconStyle={{ borderColor: "white" }}
-            innerIconStyle={{ borderWidth: 2 }}
-            style={{ marginTop: 15 }}
-            textStyle={{
-              fontFamily: "Function-Regular",
-              fontSize: 20,
-              color: "white",
-              textDecorationLine: "none",
-            }}
-            onPress={(arrival) => {
-              setArrival(!arrival);
-              setNotArrival(false);
-              setPending(false);
-              setIndiferentState(false);
-            }}
-          />
-          <BouncyCheckbox
-            size={25}
-            isChecked={notArrival}
-            fillColor="black"
-            unFillColor="#FFFFFF"
-            useBuiltInState={false}
-            text="No ha llegado (y no llegará ya)"
-            iconStyle={{ borderColor: "white" }}
-            innerIconStyle={{ borderWidth: 2 }}
-            style={{ marginTop: 15 }}
-            textStyle={{
-              fontFamily: "Function-Regular",
-              fontSize: 20,
-              color: "white",
-              textDecorationLine: "none",
-            }}
-            onPress={(notArrival) => {
-              setNotArrival(!notArrival);
-              setArrival(false);
-              setPending(false);
-              setIndiferentState(false);
-            }}
-          />
-          <BouncyCheckbox
-            size={25}
-            isChecked={pending}
-            fillColor="black"
-            unFillColor="#FFFFFF"
-            useBuiltInState={false}
-            text="Reserva no resuelta"
-            iconStyle={{ borderColor: "white" }}
-            innerIconStyle={{ borderWidth: 2 }}
-            style={{ marginTop: 15 }}
-            textStyle={{
-              fontFamily: "Function-Regular",
-              fontSize: 20,
-              color: "white",
-              textDecorationLine: "none",
-            }}
-            onPress={(pending) => {
-              setPending(!pending);
-              setArrival(false);
-              setNotArrival(false);
-              setIndiferentState(false);
-            }}
-          />
-          <BouncyCheckbox
-            size={25}
-            isChecked={indiferentState}
-            fillColor="black"
-            unFillColor="#FFFFFF"
-            useBuiltInState={false}
-            text="Estado indiferente"
-            iconStyle={{ borderColor: "white" }}
-            innerIconStyle={{ borderWidth: 2 }}
-            style={{ marginTop: 15 }}
-            textStyle={{
-              fontFamily: "Function-Regular",
-              fontSize: 20,
-              color: "white",
-              textDecorationLine: "none",
-            }}
-            onPress={(indiferentState) => {
-              setPending(false);
-              setArrival(false);
-              setNotArrival(false);
-              setIndiferentState(!indiferentState);
-            }}
-          />
+        <Text style={styles.text}>Estado de la reserva (nula o no)</Text>
+        <BouncyCheckbox
+          size={25}
+          isChecked={nulledByUser}
+          fillColor="black"
+          unFillColor="#FFFFFF"
+          useBuiltInState={false}
+          text="Anulada por el usuario"
+          iconStyle={{ borderColor: "white" }}
+          innerIconStyle={{ borderWidth: 2 }}
+          style={{ marginTop: 15 }}
+          textStyle={{
+            fontFamily: "Function-Regular",
+            fontSize: 20,
+            color: "white",
+            textDecorationLine: "none",
+          }}
+          onPress={(nulledByUser) => {
+            setNulledByUser(!nulledByUser);
+            setNulledByRestaurant(false);
+            setIndiferentNull(false);
+            setNotNulled(false);
+          }}
+        />
+        <BouncyCheckbox
+          size={25}
+          isChecked={nulledByRestaurant}
+          fillColor="black"
+          unFillColor="#FFFFFF"
+          useBuiltInState={false}
+          text="Anulada por el restaurante"
+          iconStyle={{ borderColor: "white" }}
+          innerIconStyle={{ borderWidth: 2 }}
+          style={{ marginTop: 15 }}
+          textStyle={{
+            fontFamily: "Function-Regular",
+            fontSize: 20,
+            color: "white",
+            textDecorationLine: "none",
+          }}
+          onPress={(nulledByRestaurant) => {
+            setNulledByRestaurant(!nulledByRestaurant);
+            setNulledByUser(false);
+            setIndiferentNull(false);
+            setNotNulled(false);
+          }}
+        />
+        <BouncyCheckbox
+          size={25}
+          isChecked={notNulled}
+          fillColor="black"
+          unFillColor="#FFFFFF"
+          useBuiltInState={false}
+          text="No anulada"
+          iconStyle={{ borderColor: "white" }}
+          innerIconStyle={{ borderWidth: 2 }}
+          style={{ marginTop: 15 }}
+          textStyle={{
+            fontFamily: "Function-Regular",
+            fontSize: 20,
+            color: "white",
+            textDecorationLine: "none",
+          }}
+          onPress={(notNulled) => {
+            setNulledByRestaurant(false);
+            setNulledByUser(false);
+            setIndiferentNull(false);
+            setNotNulled(!notNulled);
+          }}
+        />
+        <BouncyCheckbox
+          size={25}
+          isChecked={indiferentNull}
+          fillColor="black"
+          unFillColor="#FFFFFF"
+          useBuiltInState={false}
+          text="Nulidad indiferente"
+          iconStyle={{ borderColor: "white" }}
+          innerIconStyle={{ borderWidth: 2 }}
+          style={{ marginTop: 15 }}
+          textStyle={{
+            fontFamily: "Function-Regular",
+            fontSize: 20,
+            color: "white",
+            textDecorationLine: "none",
+          }}
+          onPress={(indiferentNull) => {
+            setNulledByUser(false);
+            setNulledByRestaurant(false);
+            setIndiferentNull(!indiferentNull);
+            setNotNulled(false);
+          }}
+        />
+        <Text style={styles.text}>Estado de la reserva</Text>
+        <BouncyCheckbox
+          size={25}
+          isChecked={arrival}
+          fillColor="black"
+          unFillColor="#FFFFFF"
+          useBuiltInState={false}
+          text="Ha llegado"
+          iconStyle={{ borderColor: "white" }}
+          innerIconStyle={{ borderWidth: 2 }}
+          style={{ marginTop: 15 }}
+          textStyle={{
+            fontFamily: "Function-Regular",
+            fontSize: 20,
+            color: "white",
+            textDecorationLine: "none",
+          }}
+          onPress={(arrival) => {
+            setArrival(!arrival);
+            setNotArrival(false);
+            setPending(false);
+            setIndiferentState(false);
+          }}
+        />
+        <BouncyCheckbox
+          size={25}
+          isChecked={notArrival}
+          fillColor="black"
+          unFillColor="#FFFFFF"
+          useBuiltInState={false}
+          text="No ha llegado (y no llegará ya)"
+          iconStyle={{ borderColor: "white" }}
+          innerIconStyle={{ borderWidth: 2 }}
+          style={{ marginTop: 15 }}
+          textStyle={{
+            fontFamily: "Function-Regular",
+            fontSize: 20,
+            color: "white",
+            textDecorationLine: "none",
+          }}
+          onPress={(notArrival) => {
+            setNotArrival(!notArrival);
+            setArrival(false);
+            setPending(false);
+            setIndiferentState(false);
+          }}
+        />
+        <BouncyCheckbox
+          size={25}
+          isChecked={pending}
+          fillColor="black"
+          unFillColor="#FFFFFF"
+          useBuiltInState={false}
+          text="Reserva no resuelta"
+          iconStyle={{ borderColor: "white" }}
+          innerIconStyle={{ borderWidth: 2 }}
+          style={{ marginTop: 15 }}
+          textStyle={{
+            fontFamily: "Function-Regular",
+            fontSize: 20,
+            color: "white",
+            textDecorationLine: "none",
+          }}
+          onPress={(pending) => {
+            setPending(!pending);
+            setArrival(false);
+            setNotArrival(false);
+            setIndiferentState(false);
+          }}
+        />
+        <BouncyCheckbox
+          size={25}
+          isChecked={indiferentState}
+          fillColor="black"
+          unFillColor="#FFFFFF"
+          useBuiltInState={false}
+          text="Estado indiferente"
+          iconStyle={{ borderColor: "white" }}
+          innerIconStyle={{ borderWidth: 2 }}
+          style={{ marginTop: 15 }}
+          textStyle={{
+            fontFamily: "Function-Regular",
+            fontSize: 20,
+            color: "white",
+            textDecorationLine: "none",
+          }}
+          onPress={(indiferentState) => {
+            setPending(false);
+            setArrival(false);
+            setNotArrival(false);
+            setIndiferentState(!indiferentState);
+          }}
+        />
 
-          <TouchableOpacity
-            style={styles.search}
-            onPress={() => {
-              fetchReservations();
-            }}
-          >
-            <Text style={styles.reservationtext}>Buscar reservas</Text>
-          </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.search}
+          onPress={() => {
+            fetchReservations();
+          }}
+        >
+          <Text style={styles.reservationtext}>Buscar reservas</Text>
+        </TouchableOpacity>
 
-          <Text style={styles.text}>Resultados</Text>
+        <Text style={styles.text}>Resultados</Text>
 
-          {!loaded && !loading ? (
-            <Text style={styles.textsmall}>
-              Dale a buscar para ver algún resultado
-            </Text>
-          ) : null}
+        {!loaded && !loading ? (
+          <Text style={styles.textsmall}>
+            Dale a buscar para ver algún resultado
+          </Text>
+        ) : null}
 
-          {!loaded && loading ? <ActivityIndicator size="large" /> : null}
+        {!loaded && loading ? <ActivityIndicator size="large" /> : null}
 
+        <View
+          style={styles.containerthreecolumns}
+          onLayout={(event) => {
+            const { width } = event.nativeEvent.layout;
+            setContainerWidth(width);
+          }}
+        >
           {loaded && !loading && reservaciones.length != 0
-            ? reservaciones.map((reservacion) => (
-                <ReservationInList
-                  key={reservacion.id}
-                  reservacion={reservacion}
-                  fetchReservations={fetchReservations}
-                ></ReservationInList>
-              ))
+            ? reservaciones.map((reservacion, index) => {
+                const isLastInRow = (index + 1) % cardsPerRow === 0;
+                return (
+                  <View
+                    key={index}
+                    style={{
+                      flexBasis: `33.33%`,
+                      flexGrow: 0,
+                      marginBottom: 10,
+                      paddingRight: isLastInRow ? 0 : gapWidth,
+                    }}
+                  >
+                    <ReservationInList
+                      key={reservacion.id}
+                      reservacion={reservacion}
+                      fetchReservations={fetchReservations}
+                    ></ReservationInList>
+                  </View>
+                );
+              })
             : null}
+        </View>
 
-          {loaded && !loading && reservaciones.length == 0 ? (
-            <Text style={styles.textsmall}>
-              No hay resultados que coinciden con tu búsqueda
-            </Text>
-          ) : null}
-        
+        {loaded && !loading && reservaciones.length == 0 ? (
+          <Text style={styles.textsmall}>
+            No hay resultados que coinciden con tu búsqueda
+          </Text>
+        ) : null}
       </ScrollView>
       <TouchableOpacity
         style={styles.reservation}
@@ -712,18 +744,18 @@ const styles = StyleSheet.create({
     backgroundColor: "rgb(107,106,106)",
     marginBottom: 10,
   },
-  underline:{
-    textDecorationLine: 'underline',
+  underline: {
+    textDecorationLine: "underline",
   },
   collisions: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 30,
     padding: 10,
     marginTop: 10,
   },
   textcollisions: {
-    textAlign: 'center',
-    color: 'red',
+    textAlign: "center",
+    color: "red",
   },
   textsmall: {
     color: "white",
@@ -810,6 +842,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "Function-Regular",
   },
+    containerthreecolumns: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "flex-start",
+    width: "100%",
+  }
 });
 
 //REPASADO Y LIMPIADO
