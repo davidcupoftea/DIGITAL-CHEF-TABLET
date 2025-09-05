@@ -29,6 +29,7 @@ const FacturaCompleta = ({ route }) => {
   const [numSerieFactura, setNumSerieFactura] = useState(null);
   const [notEditable, setNotEditable] = useState(false)
   const [alreadyResolved, setAlreadyResolved] = useState(false)
+  const [alreadyInvoice, setAlreadyInvoice] = useState(null)
 
   const [loading, setLoading] = useState(true);
   const [pedido, setPedido] = useState({});
@@ -234,6 +235,7 @@ const FacturaCompleta = ({ route }) => {
       setOrderElements(data.data.items);
       setPaid(data.data.paid);
       setTablesToUse(data.data.table_to_use);
+      setAlreadyInvoice(data.data.already_invoice)
     }
   };
 
@@ -425,6 +427,8 @@ const FacturaCompleta = ({ route }) => {
               onChangeText={setNif}
               value={nif}
             ></TextInput>}
+
+            {alreadyInvoice != null?<Text style={styles.text}>Ya hay una factura F2 o R5 asociada: {alreadyInvoice}</Text>:null}
 
             {disabledEditing ? <ActivityIndicator size="large" /> : null}
 
