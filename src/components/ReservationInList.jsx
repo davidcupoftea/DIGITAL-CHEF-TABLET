@@ -240,6 +240,9 @@ function ReservationInList({ reservacion, fetchReservations }) {
               <Text style={styles.textBold}>
                 En el restaurante localizado en: {reservacion.address}
               </Text>
+              <Text style={styles.textBold}>
+                {reservacion.added_through_restaurant?reservacion.created_by:null}
+              </Text>
               {reservacion.arrival != false && reservacion.arrival != true ?(<TouchableOpacity
                 style={styles.reservationgreen}
                 onPress={() => {
