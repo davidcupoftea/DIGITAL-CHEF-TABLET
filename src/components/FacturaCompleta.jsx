@@ -225,6 +225,8 @@ const FacturaCompleta = ({ route }) => {
       }
     );
     const data = await res.json();
+
+    console.log('DATA is', data)
     if (data.status == "ok") {
       setPedido(data.data);
       setArrival(data.data.arrival);
@@ -428,7 +430,7 @@ const FacturaCompleta = ({ route }) => {
               value={nif}
             ></TextInput>}
 
-            {alreadyInvoice != null?<Text style={styles.text}>Ya hay una factura F2 o R5 asociada: {alreadyInvoice}</Text>:null}
+            {alreadyInvoice != null?<Text style={styles.text}>Ya hay una factura F2 o R5 asociada a este pedido: {alreadyInvoice}</Text>:null}
 
             {disabledEditing ? <ActivityIndicator size="large" /> : null}
 
