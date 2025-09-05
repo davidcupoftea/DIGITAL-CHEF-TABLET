@@ -237,7 +237,7 @@ function ReservationInList({ reservacion, fetchReservations }) {
               <Text style={styles.textBold}>
                 Mesas añadidas manualmente: {reservacion.tables_chosen_by_the_restaurant_owner.toString()}
               </Text>
-              {reservacion.added_through_restaurant?<Text style={styles.textBold}>{reservacion.created_by}</Text>:null}
+              {reservacion.added_through_restaurant?<Text style={styles.textBold}>Anotado por:{reservacion.created_by}</Text>:null}
               <Text style={styles.textBold}>
                 En el restaurante localizado en: {reservacion.address}
               </Text>        
