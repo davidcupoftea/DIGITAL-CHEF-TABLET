@@ -237,12 +237,10 @@ function ReservationInList({ reservacion, fetchReservations }) {
               <Text style={styles.textBold}>
                 Mesas añadidas manualmente: {reservacion.tables_chosen_by_the_restaurant_owner.toString()}
               </Text>
+              {reservacion.added_through_restaurant?<Text style={styles.textBold}>{reservacion.created_by}</Text>:null}
               <Text style={styles.textBold}>
                 En el restaurante localizado en: {reservacion.address}
-              </Text>
-              <Text style={styles.textBold}>
-                {reservacion.added_through_restaurant?reservacion.created_by:null}
-              </Text>
+              </Text>        
               {reservacion.arrival != false && reservacion.arrival != true ?(<TouchableOpacity
                 style={styles.reservationgreen}
                 onPress={() => {
