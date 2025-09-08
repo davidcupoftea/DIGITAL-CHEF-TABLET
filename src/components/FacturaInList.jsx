@@ -95,6 +95,11 @@ const NewsInList = ({ factura, fetchFacturas }) => {
           {anulada?(<View>
             <Text style={styles.textBoldError}>ANULADA</Text>
           </View>):null}
+          {factura.needed_to_resend ? (
+            <View>
+              <Text style={styles.textBoldError}>SE NECESITA REENVIAR</Text>
+            </View>
+          ) : null}
           <View>
             <Text style={styles.text}>Identificador:{'\n'}{factura.ticket_identifier}</Text>
           </View>
