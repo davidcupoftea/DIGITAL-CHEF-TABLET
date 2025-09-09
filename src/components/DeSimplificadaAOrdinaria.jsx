@@ -184,7 +184,7 @@ const FacturaCompleta = ({ route }) => {
         <ScrollView>
           <View style={styles.card}>
             <Text style={styles.text}>
-              {!converted? 'Número serie factura a rectificar:': 'Número serie factura actualizada'}{"\n"} 
+              {!converted? 'Número serie factura a rectificar:': 'Número serie factura actualizada:'}{"\n"} 
               {numeroSerieFactura}
             </Text>
             <Text style={styles.text}>
