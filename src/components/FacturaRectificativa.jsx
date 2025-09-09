@@ -164,7 +164,7 @@ const FacturaRectificativa = ({ route }) => {
   const rectificarFactura = async () => {
     setDisabledEditing(true);
 
-    if (selectedDishPks.length == 0) {
+    if (selectedDishPks.length == 0 && selectedConceptosExtra.length == 0) {
       Alert.alert(
         "Error",
         "No puedes rectificar una factura con una nueva factura sin elementos. Añade al menos uno."
