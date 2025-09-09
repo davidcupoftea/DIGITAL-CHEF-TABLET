@@ -204,31 +204,40 @@ const FacturaCompleta = ({ route }) => {
             <Text style={styles.textMarginTop}>
               Nombre y apellidos/Razón social:
             </Text>
-            <TextInput
+            {!converted?<TextInput
               style={styles.textinput}
               multiline={true}
               numberOfLines={2}
               onChangeText={setRazonSocial}
               value={razonSocial}
-            ></TextInput>
+            ></TextInput>:
+            <Text style={styles.text}>
+              {razonSocial}
+            </Text>
+            } 
 
             <Text style={styles.text}>Domicilio fiscal:</Text>
-            <TextInput
+            {!converted?<TextInput
               style={styles.textinput}
               multiline={true}
               numberOfLines={2}
               onChangeText={setDomicilioFiscal}
               value={domicilioFiscal}
-            ></TextInput>
+            ></TextInput>:
+            <Text style={styles.text}>
+              {domicilioFiscal}
+            </Text>}
 
             <Text style={styles.text}>NIF (o CIF):</Text>
-            <TextInput
+            {!converted?<TextInput
               style={styles.textinput}
               multiline={true}
               numberOfLines={2}
               onChangeText={setNif}
               value={nif}
-            ></TextInput>
+            ></TextInput>:
+            <Text style={styles.text}>{nif}</Text>
+            }
 
             {disabledEditing ? <ActivityIndicator size="large" /> : null}
 
