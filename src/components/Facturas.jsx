@@ -63,6 +63,7 @@ const Facturas = ({ route }) => {
 
   const fetchFacturas = async (restaurantChosen_pk) => {
     setLoaded(false);
+    console.log('serie es', serie)
     const res = await fetch(
       BASE_URL + "facturas-digital-chef/" + restaurantChosen_pk + "/",
       {
@@ -76,6 +77,7 @@ const Facturas = ({ route }) => {
       }
     );
     var jsonData = await res.json();
+    console.log("NO LO ENTIENDO", jsonData);
 
     if (jsonData.status == "nook") {
       setGotten(false);
@@ -95,6 +97,7 @@ const Facturas = ({ route }) => {
 
   const fetchFacturasByDate = async (restaurantChosen_pk) => {
     setLoaded(false);
+    console.log('serie es',serie)
     const res = await fetch(
       BASE_URL + "facturas-digital-chef-by-date/" + restaurantChosen_pk + "/",
       {
@@ -160,19 +163,25 @@ const Facturas = ({ route }) => {
     fetchFacturasByDateOrNoDate();
   }, [filterByDateCheckBox, orderDateString, serie]);
 
+  const getFacturas = async () => {
+    console.log("facturas");
+    if (route.params?.refresh) {
+      const pk_restaurante_elegido = await getAndSetRestaurant(
+        authTokens?.access,
+        setRestaurantChosen
+      );
+      console.log("about to fetchfacturas");
+      fetchFacturas(pk_restaurante_elegido);
+      navigation.setParams({ refresh: false });
+    }
+  };
   useEffect(() => {
-    const getFacturas = async () => {
-      if (route.params?.refresh) {
-        const pk_restaurante_elegido = await getAndSetRestaurant(
-          authTokens?.access,
-          setRestaurantChosen
-        );
-        fetchFacturas(pk_restaurante_elegido);
-        navigation.setParams({ refresh: false });
-      }
-    };
     getFacturas();
   }, [route.params?.refresh]);
+
+  //   useEffect(() => {
+  //   getFacturas();
+  // }, []);
 
   const cardsPerRow = 3;
   const [containerWidth, setContainerWidth] = useState(0);
@@ -195,11 +204,11 @@ const Facturas = ({ route }) => {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + String(authTokens?.access),
-        }
+        },
       }
     );
     var jsonData = await res.json();
-    console.log('jsonData is', jsonData)
+    console.log("jsonData is", jsonData);
   };
 
   return (
@@ -221,7 +230,9 @@ const Facturas = ({ route }) => {
 
         <Text style={styles.textsmall}>
           Para reenviar las facturas pedientes de reenvío haz click{" "}
-          <Text style={styles.textsmallunderlined} onPress={reenviarTickets}>aquí.</Text>
+          <Text style={styles.textsmallunderlined} onPress={reenviarTickets}>
+            aquí.
+          </Text>
         </Text>
 
         <Text style={styles.textsmall}>Fecha</Text>
@@ -317,7 +328,7 @@ const Facturas = ({ route }) => {
             dropdownIconColor="white"
             onValueChange={(itemValue, itemIndex) => setSerie(itemValue)}
           >
-            <Picker.Item label="Todas" value="" />
+            <Picker.Item label="Todas" value="todas" />
             <Picker.Item label="F1" value="F1" />
             <Picker.Item label="F2" value="F2" />
             <Picker.Item label="R4" value="R4" />
@@ -390,13 +401,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: "Function-Regular",
   },
-    textsmallunderlined: {
+  textsmallunderlined: {
     color: "white",
     padding: 15,
     textAlign: "center",
     fontSize: 20,
     fontFamily: "Function-Regular",
-    textDecorationLine: 'underline'
+    textDecorationLine: "underline",
   },
   textinput: {
     padding: 14,
