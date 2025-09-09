@@ -182,6 +182,26 @@ const Facturas = ({ route }) => {
     setGapWidth(containerWidth * 0.001);
   }, [containerWidth]);
 
+  const reenviarTickets = async () => {
+    const pk_restaurante_elegido = await getAndSetRestaurant(
+      authTokens?.access,
+      setRestaurantChosen
+    );
+    const res = await fetch(
+      BASE_URL + "reenviar-tickets/" + pk_restaurante_elegido + "/",
+      {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + String(authTokens?.access),
+        }
+      }
+    );
+    var jsonData = await res.json();
+    console.log('jsonData is', jsonData)
+  };
+
   return (
     <View style={styles.ofertas}>
       {WARNING_NOT_SCROLLABLE ? (
@@ -198,6 +218,11 @@ const Facturas = ({ route }) => {
             {restaurantChosen.address}
           </Text>
         ) : null}
+
+        <Text style={styles.textsmall}>
+          Para reenviar las facturas haz click{" "}
+          <Text onPress={reenviarTickets}>aquí.</Text>
+        </Text>
 
         <Text style={styles.textsmall}>Fecha</Text>
 
