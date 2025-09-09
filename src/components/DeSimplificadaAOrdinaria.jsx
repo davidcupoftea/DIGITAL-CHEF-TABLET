@@ -20,6 +20,7 @@ const FacturaCompleta = ({ route }) => {
   const [orderElements, setOrderElements] = useState([]);
   const [conceptosExtra, setConceptosExtra] = useState([]);
   const [numeroSerieFactura, setNumeroSerieFactura] = useState(null);
+  const [converted, setConverted] = useState(false)
 
   const [totalAmount, setTotalAmount] = useState(0);
 
@@ -106,6 +107,7 @@ const FacturaCompleta = ({ route }) => {
     setNumeroSerieFactura(jsonData.ticket_identifier.ticket_identifier);
     setLoading(false);
     setFacturaPk(factura_pk);
+    setConverted(false)
   };
 
   useEffect(() => {
@@ -172,6 +174,7 @@ const FacturaCompleta = ({ route }) => {
       setDomicilioFiscal(jsonData.domicilio_fiscal);
       setDisabledEditing(false);
       setDisabledConversion(true);
+      setConverted(true)
     }
   };
 
@@ -181,7 +184,7 @@ const FacturaCompleta = ({ route }) => {
         <ScrollView>
           <View style={styles.card}>
             <Text style={styles.text}>
-              Numero serie factura a rectificar:{"\n"}
+              {!converted? 'Número serie factura a rectificar:': 'Número serie factura actualizada'}{"\n"} 
               {numeroSerieFactura}
             </Text>
             <Text style={styles.text}>

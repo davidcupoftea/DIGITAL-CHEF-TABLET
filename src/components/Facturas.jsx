@@ -220,8 +220,8 @@ const Facturas = ({ route }) => {
         ) : null}
 
         <Text style={styles.textsmall}>
-          Para reenviar las facturas haz click{" "}
-          <Text onPress={reenviarTickets}>aquí.</Text>
+          Para reenviar las facturas pedientes de reenvío haz click{" "}
+          <Text style={styles.textsmallunderlined} onPress={reenviarTickets}>aquí.</Text>
         </Text>
 
         <Text style={styles.textsmall}>Fecha</Text>
@@ -389,6 +389,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 20,
     fontFamily: "Function-Regular",
+  },
+    textsmallunderlined: {
+    color: "white",
+    padding: 15,
+    textAlign: "center",
+    fontSize: 20,
+    fontFamily: "Function-Regular",
+    textDecorationLine: 'underline'
   },
   textinput: {
     padding: 14,
