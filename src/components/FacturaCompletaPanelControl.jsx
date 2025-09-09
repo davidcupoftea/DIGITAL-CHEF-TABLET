@@ -141,6 +141,12 @@ const FacturaCompleta = ({ route }) => {
       return;
     }
 
+    if (elementsChosen.length == 0 && conceptosChosen.length == 0){
+      Alert.alert('Error', "¡Tiene que haber al menos un elemento o concepto");
+      setDisabledEditing(false);
+      return
+    }
+
     const result = await imprimirFacturaCompletaPanelControl(
       elementsChosen,
       conceptosChosen,
