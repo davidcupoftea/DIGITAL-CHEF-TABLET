@@ -743,6 +743,10 @@ const PanelControl = () => {
         <TouchableOpacity
           style={styles.greenButton}
           onPress={async () => {
+            if (!elementsChosen && !conceptosChosen){
+              Alert.alert('Tienes que elegir al menos un concepto o un elemento')
+              return
+            }
             setLoadingTicket(true);
             await imprimirTicketPanelControl(
               elementsChosen,
