@@ -209,6 +209,11 @@ const Facturas = ({ route }) => {
     );
     var jsonData = await res.json();
     console.log("jsonData is", jsonData);
+    if (jsonData.status == 'ok'){
+      Alert.alert('Éxito', jsonData.message)
+    } else {
+      Alert.alert('Error', jsonData.message)
+    }
   };
 
   return (
