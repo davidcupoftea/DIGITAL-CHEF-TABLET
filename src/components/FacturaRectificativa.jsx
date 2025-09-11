@@ -48,11 +48,6 @@ const FacturaRectificativa = ({ route }) => {
   const [disabledEditing, setDisabledEditing] = useState(false);
 
 
-  useEffect(()=>{
-    console.log('selectedDishPks is', selectedDishPks)
-    console.log('selectedConceptosExtra is', selectedConceptosExtra)
-
-  },[selectedDishPks, selectedConceptosExtra])
 
 
   useEffect(() => {
@@ -216,9 +211,7 @@ const FacturaRectificativa = ({ route }) => {
       setDomicilioFiscal(jsonData.domicilio);
       setDisabledEditing(false);
       setConceptosExtra(jsonData.conceptos_extra);
-      console.log('conceptos extra son', jsonData.conceptos_extra)
       setOrderElements(jsonData.order_elements);
-      console.log('order_elements son', jsonData.order_elements)
       setDescripcionCambio(null);
           setSelectedDishPks(
       jsonData.order_elements.map((e) => e.dish_pk)
@@ -242,7 +235,7 @@ const FacturaRectificativa = ({ route }) => {
             {orderElements.length > 0 ? (
               orderElements.map((order_element, index) => (
                 <OrderElementInList
-                  key={index}
+                  key={order_element.dish_pk}
                   order_element={order_element}
                   isInitiallySelected={selectedDishPks.includes(
                     order_element.dish_pk
