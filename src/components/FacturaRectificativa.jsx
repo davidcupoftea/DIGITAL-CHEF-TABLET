@@ -216,8 +216,16 @@ const FacturaRectificativa = ({ route }) => {
       setDomicilioFiscal(jsonData.domicilio);
       setDisabledEditing(false);
       setConceptosExtra(jsonData.conceptos_extra);
+      console.log('conceptos extra son', jsonData.conceptos_extra)
       setOrderElements(jsonData.order_elements);
+      console.log('order_elements son', jsonData.order_elements)
       setDescripcionCambio(null);
+          setSelectedDishPks(
+      jsonData.order_elements.map((e) => e.dish_pk)
+    );
+    setSelectedConceptosExtra(
+      jsonData.conceptos_extra.map((e) => e.id)
+    );
     }
   };
 
