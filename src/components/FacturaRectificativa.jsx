@@ -48,6 +48,13 @@ const FacturaRectificativa = ({ route }) => {
   const [disabledEditing, setDisabledEditing] = useState(false);
 
 
+  useEffect(()=>{
+    console.log('selectedDishPks is', selectedDishPks)
+    console.log('selectedConceptosExtra is', selectedConceptosExtra)
+
+  },[selectedDishPks, selectedConceptosExtra])
+
+
   useEffect(() => {
     const sumaElements = calcularSuma(orderElements, selectedDishPks);
     const sumaConceptos = calcularSumaConceptos(
