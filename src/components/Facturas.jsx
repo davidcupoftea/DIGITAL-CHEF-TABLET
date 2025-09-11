@@ -211,6 +211,7 @@ const Facturas = ({ route }) => {
     console.log("jsonData is", jsonData);
     if (jsonData.status == 'ok'){
       Alert.alert('Éxito', jsonData.message)
+      getFacturas()
     } else {
       Alert.alert('Error', jsonData.message)
     }
