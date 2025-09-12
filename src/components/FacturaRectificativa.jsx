@@ -15,7 +15,8 @@ import { PrinterContext } from "./PrintersContextProvider.jsx";
 import { BASE_URL } from "../services/index.jsx";
 import OrderElementInList from "./OrderElementInList.jsx";
 import ConceptoExtraInList from "./ConceptoExtraInList.jsx";
-import { soloImprimirFacturaAsociada} from "../services/printerFunctions.jsx";
+//import { soloImprimirFacturaAsociada} from "../services/printerFunctions.jsx";
+import { soloImprimirFacturaAsociada, getNumeroInstalacion} from "../services/printerFunctions.jsx";
 import Decimal from "decimal.js";
 
 const FacturaRectificativa = ({ route }) => {
@@ -179,6 +180,8 @@ const FacturaRectificativa = ({ route }) => {
       setDisabledEditing(false);
       return;
     }
+
+    const numero_instalacion = await getNumeroInstalacion()
     const res = await fetch(
       BASE_URL + "rectificar-factura/" + facturaPk + "/",
       {
@@ -196,6 +199,7 @@ const FacturaRectificativa = ({ route }) => {
           domicilio_fiscal: domicilioFiscal,
           descripcion_cambio: descripcionCambio,
           simplificada: simplificada,
+          numero_instalacion: numero_instalacion,
         }),
       }
     );
