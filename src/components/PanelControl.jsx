@@ -558,6 +558,17 @@ const PanelControl = () => {
           Estás viendo el panel de control del restaurante{" "}
           {restaurantChosen.franchise} localizado en {restaurantChosen.address}
         </Text>
+        <Text style={styles.text}>
+          Edita las mesas y sus relaciones{" "}
+          <Text
+            style={styles.textunderlined}
+            onPress={() => {
+              navigation.navigate("Mesas y Relaciones");
+            }}
+          >
+            aquí
+          </Text>
+        </Text>
 
         <BouncyCheckbox
           size={30}
@@ -669,12 +680,15 @@ const PanelControl = () => {
           {mesasConItems.map((mesa, index) => {
             const isLastInRow = (index + 1) % cardsPerRow === 0;
             return (
-              <View key={index} style={{
-                      flexBasis: `33.33%`,
-                      flexGrow: 0,
-                      marginBottom: 10,
-                      paddingRight: isLastInRow ? 0 : gapWidth,
-                    }}>
+              <View
+                key={index}
+                style={{
+                  flexBasis: `33.33%`,
+                  flexGrow: 0,
+                  marginBottom: 10,
+                  paddingRight: isLastInRow ? 0 : gapWidth,
+                }}
+              >
                 <TableWithOrderElementsControlPanel
                   key={index}
                   table={mesa}
@@ -743,9 +757,11 @@ const PanelControl = () => {
         <TouchableOpacity
           style={styles.greenButton}
           onPress={async () => {
-            if (!elementsChosen && !conceptosChosen){
-              Alert.alert('Tienes que elegir al menos un concepto o un elemento')
-              return
+            if (!elementsChosen && !conceptosChosen) {
+              Alert.alert(
+                "Tienes que elegir al menos un concepto o un elemento"
+              );
+              return;
             }
             setLoadingTicket(true);
             await imprimirTicketPanelControl(
@@ -826,6 +842,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: "Function-Regular",
   },
+  textunderlined: {
+    marginTop: 20,
+    color: "white",
+    textAlign: "center",
+    marginBottom: 10,
+    fontSize: 20,
+    fontFamily: "Function-Regular",
+    textDecorationLine: "underline",
+  },
   pickerstyleios: {
     color: "white",
     height: 40,
@@ -905,7 +930,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "flex-start",
     width: "100%",
-  }
+  },
 });
 
 //REPASADO Y LIMPIADO

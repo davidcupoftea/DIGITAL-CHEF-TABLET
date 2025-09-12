@@ -72,6 +72,9 @@ import CerrarDia from '../src/components/CerrarDia.jsx'
 import DeclaracionResponsable from '../src/components/DeclaracionResponsable.jsx'
 import MenuCategoryCreation from '../src/components/MenuCategoryCreation.jsx'
 import CrearHora from '../src/components/CrearHora.jsx'
+import MesasYRelaciones from '../src/components/MesasYRelaciones.jsx'
+import CrearMesa from '../src/components/CrearMesa.jsx'
+import CrearSala from '../src/components/CrearSala.jsx'
 
 import { navOptions } from './options';
 import { useNavigation } from '@react-navigation/native';
