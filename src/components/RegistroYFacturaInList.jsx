@@ -67,11 +67,11 @@ const NewsInList = ({ registro, fetchFacturas }) => {
 
     var jsonData2 = await res.json();
     if (jsonData2.status == "ok") {
-      Alert.alert("Factura anulada con éxito");
+      Alert.alert("Factura anulada con éxito", jsonData2.message);
       setAnulada(true);
       fetchFacturas(restaurantChosen.pk);
     } else if (jsonData2.status == "nook") {
-      Alert.alert(jsonData2.message);
+      Alert.alert('Problema', jsonData2.message);
       fetchFacturas(restaurantChosen.pk);
     }
   };
