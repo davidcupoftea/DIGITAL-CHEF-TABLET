@@ -495,7 +495,7 @@ function PedidoInList({ pedido }) {
             }
           )}
         <Text style={styles.text}>
-          Creado a la hora de:{"\n"}
+          Creado el {pedido.created.slice(0,10)} a la hora de:{"\n"}
           {pedido.created.slice(11, 16)}
         </Text>
         {pedido.annotation_by_user ? (
