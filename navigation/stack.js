@@ -91,6 +91,9 @@ export const PanelControlStack = () => {
       <Stack.Screen name="Sugerencias y Cupones" component={CouponsAndSuggestions} />
       <Stack.Screen name="Confirmar Pedido" component={ConfirmarPedidoParaPanelDeControl} />
       <Stack.Screen name="Factura Completa Desde Panel De Control" component={FacturaCompletaPanelControl} />
+      <Stack.Screen name="Mesas y Relaciones" component={MesasYRelaciones}/>
+      <Stack.Screen name="Crear mesa" component={CrearMesa}/>
+      <Stack.Screen name="Crear sala" component={CrearSala}/>
     </Stack.Navigator>
   )
 }
@@ -107,9 +110,6 @@ export const PedidoStack = () => {
       <Stack.Screen name="Pedido en Detalle" component={OrderScreen} />
       <Stack.Screen name="Factura Completa" component={FacturaCompleta} />
       <Stack.Screen name="Factura Rectificativa" component={FacturaRectificativa} />
-      <Stack.Screen name="Mesas y Relaciones" component={MesasYRelaciones}/>
-      <Stack.Screen name="Crear mesa" component={CrearMesa}/>
-      <Stack.Screen name="Crear sala" component={CrearSala}/>
     </Stack.Navigator>
   )
 }
