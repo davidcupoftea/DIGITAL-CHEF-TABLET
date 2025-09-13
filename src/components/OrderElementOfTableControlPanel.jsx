@@ -129,6 +129,7 @@ const OrderElementOfTableControlPanel = ({
     if (data.status == "ok") {
       setLoadingCleaning(false)
       setHidden(true);
+      removeElement(dishId)
     } else {
       setLoadingCleaning(false)
       Alert.alert("Error", data.message);
