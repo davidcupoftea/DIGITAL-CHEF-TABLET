@@ -63,7 +63,6 @@ const Facturas = ({ route }) => {
 
   const fetchFacturas = async (restaurantChosen_pk) => {
     setLoaded(false);
-    console.log('serie es', serie)
     const res = await fetch(
       BASE_URL + "facturas-digital-chef/" + restaurantChosen_pk + "/",
       {
@@ -77,7 +76,6 @@ const Facturas = ({ route }) => {
       }
     );
     var jsonData = await res.json();
-    console.log("NO LO ENTIENDO", jsonData);
 
     if (jsonData.status == "nook") {
       setGotten(false);
@@ -97,7 +95,6 @@ const Facturas = ({ route }) => {
 
   const fetchFacturasByDate = async (restaurantChosen_pk) => {
     setLoaded(false);
-    console.log('serie es',serie)
     const res = await fetch(
       BASE_URL + "facturas-digital-chef-by-date/" + restaurantChosen_pk + "/",
       {
@@ -111,7 +108,6 @@ const Facturas = ({ route }) => {
       }
     );
     var jsonData = await res.json();
-    //console.log("FETCHFACTURASBYDATE IS", jsonData);
 
     if (jsonData.status == "nook") {
       setGotten(false);
@@ -164,13 +160,11 @@ const Facturas = ({ route }) => {
   }, [filterByDateCheckBox, orderDateString, serie]);
 
   const getFacturas = async () => {
-    console.log("facturas");
     if (route.params?.refresh) {
       const pk_restaurante_elegido = await getAndSetRestaurant(
         authTokens?.access,
         setRestaurantChosen
       );
-      console.log("about to fetchfacturas");
       fetchFacturas(pk_restaurante_elegido);
       navigation.setParams({ refresh: false });
     }
@@ -208,7 +202,6 @@ const Facturas = ({ route }) => {
       }
     );
     var jsonData = await res.json();
-    console.log("jsonData is", jsonData);
     if (jsonData.status == 'ok'){
       Alert.alert('Éxito', jsonData.message)
       fetchFacturasByDateOrNoDate();

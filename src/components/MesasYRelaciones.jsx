@@ -110,7 +110,6 @@ const PanelControl = () => {
       );
       var res_json = await jsonData.json();
       var tables = res_json.tables;
-      //console.log('TABLES ARE', tables)
       setTables([...tables]);
       setLoadingTables(false);
       setLoadedTables(true);

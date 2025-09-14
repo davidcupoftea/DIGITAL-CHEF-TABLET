@@ -139,7 +139,6 @@ const togglePeriod = (dayId, tpId) => {
     } else {
       // Ordenar antes de guardar en el estado
       setTimePeriods(jsonData2.data);
-      //console.log("Time periods are", jsonData2.data);
       setLoading(false);
     }
   };
@@ -176,7 +175,6 @@ const togglePeriod = (dayId, tpId) => {
         (a, b) => dayOrder[a.day] - dayOrder[b.day]
       );
       setHoursOfEveryDay(sorted);
-      //console.log("jsonData2.data is", jsonData2.data);
       let initialSelected = {};
       sorted.forEach((day) => {
         day.time_period.forEach((tp) => {

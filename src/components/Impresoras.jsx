@@ -52,9 +52,7 @@ const Impresoras = () => {
       for (let printer of selectedPrinters) {
         try {
           await BluetoothManager.connect(printer.address); // usa address/MAC
-          //console.log("Conectado con:", printer.name);
         } catch (e) {
-          //console.log("No se pudo conectar con", printer.name, e);
         }
       }
     }
@@ -86,14 +84,6 @@ if (!contains(selectedPrinters, element)){
   removePrinter(element)
 }
   }
-
-  // useEffect(()=>{
-  //  console.log('printers are', printers)
-  // },[printers])
-
-  // useEffect(()=>{
-  //   console.log('actual printers are', selectedPrinters)
-  //  },[selectedPrinters])
   
   
   const getDevicesPaired = async (r) => {
@@ -119,19 +109,15 @@ if (!contains(selectedPrinters, element)){
     if (!enabled) {
       var r = await BluetoothManager.enableBluetooth()
       var paired = await getDevicesPaired(r)
-      //console.log('paired', paired)
     }else{
       var r = await BluetoothManager.enableBluetooth()
       var paired = await getDevicesPaired(r)
-      //console.log('paried', paired)
     }
 
     setPrinters(paired)
 
     var devices = await BluetoothManager.scanDevices()
-    //console.log('devices are',devices)
     var ss = JSON.parse(devices)
-    //console.log(ss)
   }
 
   const navigation = useNavigation();

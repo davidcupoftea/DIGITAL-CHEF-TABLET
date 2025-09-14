@@ -482,7 +482,6 @@ function PedidoInList({ pedido }) {
                 estadoStyle = styles.estadoLimpiado;
               }
 
-              //console.log('Pedido es', pedido)
 
               return (
                 <View key={index}>

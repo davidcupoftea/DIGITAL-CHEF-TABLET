@@ -209,7 +209,6 @@ const CrearMesaScreen = ({ navigation, tablesInRoom = [] }) => {
           <Picker
             selectedValue={room}
             onValueChange={(itemValue, itemIndex) => {
-              console.log("itmeValue is", itemValue);
               setRoom(itemValue);
             }}
             style={

@@ -27,15 +27,6 @@ const añadirItemsFacturados = (nuevosItems) => {
   ]);
 };
 
-// useEffect(()=>{
-//   console.log('conceptosFacturados son', conceptosFacturados)
-
-// }, [conceptosFacturados])
-
-// useEffect(()=>{
-//   console.log('itemsFacturados son', itemsFacturados)
-
-// }, [itemsFacturados])
 
   const limpiarConceptosFacturados = () => {
     setConceptosFacturados([]);

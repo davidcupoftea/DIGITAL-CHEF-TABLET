@@ -45,7 +45,6 @@ const TableWithOrderElementsControlPanel = ({
 
   const [conceptosExtra, setConceptosExtra] = useState(table.conceptosExtra)
 
-  //console.log('table.conceptos extra son', table.conceptosExtra)
 
   const [activityExtraConcept, setActivityExtraConcept] = useState(false)
 

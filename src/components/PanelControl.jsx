@@ -257,7 +257,6 @@ const PanelControl = () => {
       );
       var res_json = await jsonData.json();
       var tables = res_json.tables;
-      //console.log("TABLES ARE", tables);
       setTables([...tables]);
       setLoadingTables(false);
       setLoadedTables(true);
@@ -331,7 +330,6 @@ const PanelControl = () => {
       }
 
       const order = entry.order;
-      //console.log('entry is', entry)
 
       const orderElements = entry.order?.elements || [];
       const conceptosExtra = entry.conceptos_extra || [];
@@ -360,7 +358,6 @@ const PanelControl = () => {
           const alreadyExists = mesasConItems[key].conceptosExtra.find(
             (c) => c.id === concepto.id
           );
-          //console.log('alreadyExists is', alreadyExists)
           if (!alreadyExists) {
             mesasConItems[key].conceptosExtra.push(concepto);
           }
@@ -369,7 +366,6 @@ const PanelControl = () => {
     });
 
     const mesasArray = Object.values(mesasConItems);
-    //console.log('mesasArray is', mesasArray)
 
     setMesasConItems(mesasArray);
     setLoadingOrders(false);

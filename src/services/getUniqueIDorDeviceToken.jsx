@@ -20,18 +20,6 @@ import uuid from 'react-native-uuid';
     ) {;
       var android = false
       var ios = true
-      // if (parseInt(Platform.Version, 10) >= 11) {
-      //   var token = await DeviceInfo.getDeviceToken();
-      // } else {
-      //   var token = await DeviceInfo.getUniqueId();
-      // }
-
-      //console.log('about to get uuid')
-
-      // DeviceUUID.getUUID().then((uuid) => {
-      //   console.log(uuid);
-      //   token = uuid
-      // });
 
       try {
         const value = await AsyncStorage.getItem('ios-device-token');

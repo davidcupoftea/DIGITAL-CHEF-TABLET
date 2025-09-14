@@ -88,7 +88,6 @@ const ConfirmarPedido = () => {
     );
 
     const jsonData = await response.json();
-    //console.log('JSONDATA IS', jsonData)
     if (jsonData.status == 'ok'){
       Alert.alert('Éxito', "Se ha creado el pedido")
       setOrder({'products': []})

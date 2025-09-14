@@ -226,7 +226,6 @@ const FacturaCompleta = ({ route }) => {
     );
     const data = await res.json();
 
-    console.log('DATA is', data)
     if (data.status == "ok") {
       setPedido(data.data);
       setArrival(data.data.arrival);

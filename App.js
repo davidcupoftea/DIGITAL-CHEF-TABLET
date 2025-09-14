@@ -53,7 +53,6 @@ const App = () => {
   useEffect(() => {
   (async () => {
     const installDate = await getOrCreateInstallDate();
-    //console.log('Fecha instalación:', installDate);
   })();
 }, []);
 
