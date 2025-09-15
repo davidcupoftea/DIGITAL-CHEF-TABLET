@@ -141,7 +141,7 @@ const NewsInList = ({ factura, fetchFacturas }) => {
           </View>
           <View><Text style={styles.text}>Pedido:</Text>
             {factura.order_elements.length > 0 ? factura.order_elements.map((element, index)=>(
-              <Text style={factura.negative? styles.textred :null} key={index}>{element.dish} (x{element.quantity})</Text>
+              <Text style={factura.negative? styles.textred :null} key={index}>{element.dish} (x{element.quantity}) - {element.new_price_corrected?element.new_price_corrected:element.dish_price} €</Text>
             )): <Text style={factura.negative? styles.textred :null} >No hay platos</Text>}
           </View>
           <View><Text style={styles.text}>Conceptos:</Text>

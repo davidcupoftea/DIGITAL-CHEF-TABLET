@@ -448,7 +448,7 @@ const NewsInList = ({ registro, fetchFacturas }) => {
                         }
                         key={index}
                       >
-                        {element.dish} (x{element.quantity})
+                        {element.dish} (x{element.quantity}) - {element.new_price_corrected?element.new_price_corrected:element.dish_price} €
                       </Text>
                     )
                   )
