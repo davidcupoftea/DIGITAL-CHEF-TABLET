@@ -142,7 +142,7 @@ const TableWithOrderElementsControlPanel = ({
           </View>
           {table.items.map((item, index) => (
             <OrderElementOfTableControlPanel
-              key={index}
+              key={item.dishId}
               orderElement={item}
               addElement={addElement}
               removeElement={removeElement}
