@@ -686,7 +686,7 @@ const PanelControl = () => {
                 }}
               >
                 <TableWithOrderElementsControlPanel
-                  key={index}
+                  key={mesa.mesaId}
                   table={mesa}
                   addElement={addElement}
                   removeElement={removeElement}
