@@ -150,6 +150,8 @@ const NewsInList = ({ factura, fetchFacturas }) => {
             )): <Text style={factura.negative? styles.textred :null}>No hay conceptos</Text>}
           </View>
 
+          <Text style={styles.text}>Anotado por:{" "}{factura.created_by}</Text>
+
           {factura.available_from_simplified_to_ordinary ?
           (<TouchableOpacity
             style={styles.buttonyellow}
