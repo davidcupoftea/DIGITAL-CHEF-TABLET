@@ -32,6 +32,7 @@ const OrderElementOfTableControlPanel = ({
   const [isEditing, setIsEditing] = useState(false);
   const [editedPrice, setEditedPrice] = useState(price);
   const isModified = price !== orderElement.dishPrice;
+  const [nulled, setNulled] = useState(orderElement.nulled)
 
   const [loadingNewPrice, setLoadingNewPrice] = useState(false);
 
@@ -78,7 +79,8 @@ const OrderElementOfTableControlPanel = ({
   };
 
   const handleHideOrderElement = () => {
-    clearOrderElementFunction(orderElement.dishId);
+    setNulled(true)
+    //clearOrderElementFunction(orderElement.dishId);
   };
 
   const nullOrderElement = async (dishId, restaurant_pk) => {
@@ -215,6 +217,7 @@ const OrderElementOfTableControlPanel = ({
       }
       onPress={() => selectOrderElement(orderElement.dishId)}
     >
+      {nulled?<Text style={styles.nulled}>ANULADO</Text>:null}
       {orderElement.paid ? <Text style={styles.paid}>PAGADO</Text> : null}
       {orderElement.facturado || itemsFacturados.includes(orderElement.dishId) ? <Text style={styles.invoiced}>FACTURADO</Text> : null}
       <Text style={styles.buttontext}>
@@ -264,16 +267,21 @@ const OrderElementOfTableControlPanel = ({
       </View>
       {loadingCleaning?<ActivityIndicator size="large"/>:null}
       <View style={styles.actionButtonsContainer}>
-        <TouchableOpacity
-          onPress={handleCancelOrderElement}
-          style={[styles.actionButton, styles.cancelOrderButton]}
-        >
-          {orderElement.paid ? (
+        {orderElement.paid && !nulled ? (
+          <TouchableOpacity
+            onPress={handleCancelOrderElement}
+            style={[styles.actionButton, styles.cancelOrderButton]}
+          >
             <Text style={styles.iconText}>Anular y desembolsar</Text>
-          ) : (
+          </TouchableOpacity>
+        ) : !nulled ? (
+          <TouchableOpacity
+            onPress={handleCancelOrderElement}
+            style={[styles.actionButton, styles.cancelOrderButton]}
+          >
             <Text style={styles.iconText}>Anular</Text>
-          )}
-        </TouchableOpacity>
+          </TouchableOpacity>
+        ) : null}
         <TouchableOpacity
           onPress={handleHideOrderElement}
           style={[styles.actionButton, styles.hideOrderButton]}
@@ -349,6 +357,11 @@ const styles = StyleSheet.create({
   },
   paid: {
     color: "#C7F6C7",
+    fontSize: 20,
+    textAlign: "center",
+  },
+  nulled: {
+    color: "red",
     fontSize: 20,
     textAlign: "center",
   },
