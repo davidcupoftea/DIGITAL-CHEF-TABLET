@@ -489,7 +489,7 @@ const NewsInList = ({ registro, fetchFacturas }) => {
                 )}
               </View>
 
-              <Text style={styles.text}>Anotado por:{" "}{registro.ticket_identifier.created_by}</Text>
+              <Text style={styles.text}>Facturado por:{" "}{registro.ticket_identifier.created_by}</Text>
 
               <TouchableOpacity
                 style={styles.buttongreen}
