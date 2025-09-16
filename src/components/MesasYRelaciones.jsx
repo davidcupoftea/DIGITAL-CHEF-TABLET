@@ -6,10 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Pressable,
-  TextInput,
   Platform,
-  Alert,
-  FlatList,
   ActivityIndicator,
 } from "react-native";
 import * as Device from "expo-device";
@@ -17,18 +14,9 @@ import { Picker } from "@react-native-picker/picker";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { AuthFlowContext } from "./AuthUseContextProvider";
 import { RestaurantChosenContext } from "./RestaurantChosenProvider.jsx";
-import { PrinterContext } from "./PrintersContextProvider.jsx";
 import { BASE_URL } from "../services/index.jsx";
 import getAndSetRestaurant from "../services/apiCallFavouriteRestaurant.jsx";
 import MesaTableYSusRelaciones from "./MesaTableYSusRelaciones.jsx";
-import MesaTablePanelControlHorizontal from "./MesaTablePanelControlHorizontal.jsx";
-import TableWithOrderElementsControlPanel from "./TableWithOrderElementsControlPanel.jsx";
-import Decimal from "decimal.js";
-import {
-  imprimirTicketPanelControl,
-  imprimirProformaPanelControl,
-} from "../services/printerFunctions.jsx"; // DESCOMENTAR PARA VERSION CON IMPRESORA
-import { FacturadosContext } from "./ConceptosFacturadosProvider.jsx";
 
 const PanelControl = () => {
   const [rooms, setRoomsState] = useState([{ room: "Todas", id: "Todas" }]);
