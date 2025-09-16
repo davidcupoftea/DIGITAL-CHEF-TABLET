@@ -13,7 +13,7 @@ import {
 import { AuthFlowContext } from "./AuthUseContextProvider";
 import { BASE_URL } from "../services/index.jsx";
 
-const MesaTableYSusRelaciones = ({ table, tablesInRoom = [], apiUrl }) => {
+const MesaTableYSusRelaciones = ({ table, tablesInRoom = [], apiUrl, fetchTables }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editableTable, setEditableTable] = useState({ ...table });
   const [loading, setLoading] = useState(false);
@@ -65,6 +65,7 @@ const MesaTableYSusRelaciones = ({ table, tablesInRoom = [], apiUrl }) => {
       //console.error("❌ Error guardando mesa:", err.message);
     } finally {
       setLoading(false);
+      fetchTables()
     }
   };
 

@@ -198,6 +198,7 @@ const PanelControl = () => {
                 key={index}
                 room={room}
                 tablesInRoom={tables}
+                fetchTables={gettingInfoForTables}
               />
             ))
           : null}
