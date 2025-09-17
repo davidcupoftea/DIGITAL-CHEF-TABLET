@@ -23,20 +23,20 @@ const TrabajosList = ({trabajos, fetchTrabajos}) => {
     </View>)
   };
 
-    var offersFilteredNoFuture = (offers) => {
-      return offers.filter(function (obj) {
-        const offset = getOffset()
-        const dateOfOffer = obj.startdate;
-        const [yof, Mof, dof] = dateOfOffer.match(/\d+/g);
-        let startDateOfOfferStringFormatted = `${yof}-${Mof}-${dof}`;
-        let startDateOfOffer = new Date(startDateOfOfferStringFormatted);
-        let startDateOfOfferInTime = startDateOfOffer.getTime();
+    // var offersFilteredNoFuture = (offers) => {
+    //   return offers.filter(function (obj) {
+    //     const offset = getOffset()
+    //     const dateOfOffer = obj.startdate;
+    //     const [yof, Mof, dof] = dateOfOffer.match(/\d+/g);
+    //     let startDateOfOfferStringFormatted = `${yof}-${Mof}-${dof}`;
+    //     let startDateOfOffer = new Date(startDateOfOfferStringFormatted);
+    //     let startDateOfOfferInTime = startDateOfOffer.getTime();
 
-        let date = new Date();
-        currentDateInTime = new Date(date).getTime();
+    //     let date = new Date();
+    //     currentDateInTime = new Date(date).getTime();
 
-        return currentDateInTime + offset*60*60*1000 > startDateOfOfferInTime;
-      })}
+    //     return currentDateInTime + offset*60*60*1000 > startDateOfOfferInTime;
+    //   })}
 
     const sortByDate = (a, b) => {
       let dateOfA = a.startdate;
@@ -71,8 +71,8 @@ const TrabajosList = ({trabajos, fetchTrabajos}) => {
     };
 
 
-  let finaltrabajos2 = offersFilteredNoFuture(trabajos);
-  let finaltrabajos3 = finaltrabajos2.sort(sortByDate);
+  //let finaltrabajos2 = offersFilteredNoFuture(trabajos);
+  let finaltrabajos3 = trabajos.sort(sortByDate);
 
   return (
     <ScrollView>
