@@ -40,7 +40,7 @@ const SorteosList = ({ sorteos, onlylastweek=false, fetchSorteos }) => {
     let startDateOfAInTime = startDateOfA.getTime();
 
     let dateOfB = b.startdate;
-    const [db, Mb, yb] = dateOfB.match(/\d+/g);
+    const [yb, Mb, db] = dateOfB.match(/\d+/g);
     let startDateOfBStringFormatted = `${yb}-${Mb}-${db}`;
     let startDateOfB = new Date(startDateOfBStringFormatted);
     let startDateOfBInTime = startDateOfB.getTime();
