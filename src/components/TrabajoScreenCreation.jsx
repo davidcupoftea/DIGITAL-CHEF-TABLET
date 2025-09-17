@@ -414,7 +414,7 @@ const TrabajosScreen = (variable) => {
                 resizeMode="contain"
                 isLooping
                 onPlaybackStatusUpdate={setStatus}
-                onReadyForDisplay={updateVideoRatioOnDisplay}
+                //onReadyForDisplay={updateVideoRatioOnDisplay}
               />
             )
           ) : null}
