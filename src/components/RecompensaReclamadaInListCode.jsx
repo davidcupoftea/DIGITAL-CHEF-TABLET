@@ -55,7 +55,7 @@ return(
         <Text style={styles.text}>USUARIO (NÚMERO TLFN.): {code.user_phone?code.user_phone: 'No especificado'}</Text>
         <Text style={styles.text}>RECOMENSA NÚMERO: {code.number_of_reward}</Text>
         <Text style={styles.text}>DESCRIPCIÓN RECOMPENSA: {code.description_of_reward}</Text>
-        <Text style={styles.text}>CANJEADA EL: {code.date_added}</Text>
+        <Text style={styles.text}>OBTENIDA EL: {code.date_added}</Text>
         <Text style={styles.text}>USADA: {used.toString()}</Text>
         {!code.used?<TouchableOpacity style={styles.buttonforlogout} onPress={()=>{confirmarRecompensaCanjeada(code.pk)}}><Text style={styles.buttontextforlogout}>Usar</Text></TouchableOpacity>:null}
     </View>
