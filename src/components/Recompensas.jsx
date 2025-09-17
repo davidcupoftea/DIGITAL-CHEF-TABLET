@@ -100,7 +100,7 @@ function Recompensas() {
   return (
     <View style={styles.container}>
       <View>
-        <View><Text style={styles.pointstext}>Estás viendo las recompensas del restaurante {restaurantChosen.franchise}.</Text></View>
+        <View><Text style={styles.pointstext}>Estás viendo las recompensas del restaurante o restaurantes {restaurantChosen.franchise}.</Text></View>
         <Text style={styles.pointstext}>
           Invitar o ser invitado por un amigo otorga {pointsPerInvitation}{" "}
           puntos.
