@@ -16,7 +16,7 @@ import { BASE_URL } from "../services/index.jsx";
 import getAndSetRestaurant from "../services/apiCallFavouriteRestaurant.jsx";
 
 const Pedidos = () => {
-  const [nombreCategoria, setNombreCategoria] = useState(false);
+  const [nombreCategoria, setNombreCategoria] = useState(null);
 
   const { authTokensObject } = useContext(AuthFlowContext);
   const [authTokens, setAuthTokens] = authTokensObject;
