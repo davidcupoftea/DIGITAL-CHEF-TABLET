@@ -218,7 +218,7 @@ const OrderElementOfTableControlPanel = ({
       onPress={() => selectOrderElement(orderElement.dishId)}
     >
       {nulled?<Text style={styles.nulled}>ANULADO</Text>:null}
-      {orderElement.paid ? <Text style={styles.paid}>PAGADO</Text> : null}
+      {orderElement.paid || orderElement.facturado || itemsFacturados.includes(orderElement.dishId)? <Text style={styles.paid}>PAGADO</Text> : null}
       {orderElement.facturado || itemsFacturados.includes(orderElement.dishId) ? <Text style={styles.invoiced}>FACTURADO</Text> : null}
       <Text style={styles.buttontext}>
         {orderElement.dishName} (x {orderElement.quantity})
