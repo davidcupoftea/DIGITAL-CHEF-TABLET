@@ -31,7 +31,7 @@ export default function SignUpWithEmail() {
         return
     }
 
-        const [android, ios, uniID, deviceToken] =  getuniqueIDorDeviceToken();
+        const [android, ios, uniID, deviceToken] =  await getuniqueIDorDeviceToken();
         await getVerifiedEmail(android, ios, uniID, deviceToken);
     }
 
