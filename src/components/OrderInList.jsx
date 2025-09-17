@@ -513,10 +513,10 @@ function PedidoInList({ pedido }) {
           El restaurante está localizado en:{"\n"}
           {pedido.restaurant_address}
         </Text>
-        <Text style={styles.text}>
+        {pedido.created_by?<Text style={styles.text}>
           Pedido anotado por:{"\n"}
           {pedido.created_by}
-        </Text>
+        </Text>:null}
         {!pedido.manage_in_control_panel &&
         pedido.fromtable &&
         (confirmedByRestaurant || paid ||pedido.confirmed_by_user) && //FALTA PONER AQUI SI ES CONFIRMADO POR EL USUARIO?
