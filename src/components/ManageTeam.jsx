@@ -86,6 +86,7 @@ const ManageTeam = ({route}) => {
               {membership.granted && membership.group == 'RestaurantWaiters'? <Text style={styles.textsmalltopmargin}>Tiene acceso: Camarero</Text>:null}
               {membership.granted && membership.group == 'RestaurantManagers'? <Text style={styles.textsmalltopmargin}>Tiene acceso: Manager</Text>:null}
               {membership.granted && membership.group == 'RestaurantOwners'? <Text style={styles.textsmalltopmargin}>Tiene acceso: Propietario</Text>:null}
+              {membership.granted && membership.group == 'Copywriters'? <Text style={styles.textsmalltopmargin}>Tiene acceso: Copywriter</Text>:null}
               {!membership.granted? <Text style={styles.textsmalltopmargin}>No tiene acceso</Text>:null}
               <TouchableOpacity onPress={() => {grantAccess('waiter', membership.pk)}} style={styles.button}><Text style={styles.textbutton}>Dar acceso de camarero</Text></TouchableOpacity>
               <TouchableOpacity onPress={() => {grantAccess('manager', membership.pk)}} style={styles.buttonorange}><Text style={styles.textbutton}>Dar acceso de manager</Text></TouchableOpacity>
