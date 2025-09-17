@@ -321,6 +321,7 @@ const styles = StyleSheet.create({
     color: "red",
     fontSize: 25,
     fontFamily: "Function-Regular",
+    textAlign: 'center'
   },
   reservationgreen: {
     backgroundColor: "green",
