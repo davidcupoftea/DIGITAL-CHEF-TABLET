@@ -46,7 +46,7 @@ const SorteosList = ({ sorteos, onlylastweek=false, fetchSorteos }) => {
     let startDateOfBInTime = startDateOfB.getTime();
 
     if (startDateOfAInTime !== startDateOfBInTime) {
-      return startDateOfAInTime - startDateOfBInTime;
+      return startDateOfBInTime - startDateOfAInTime;
     } else {
       const finnishOfA = a.finishdate;
       const [yaf, Maf, daf] = finnishOfA.match(/\d+/g);
@@ -60,7 +60,7 @@ const SorteosList = ({ sorteos, onlylastweek=false, fetchSorteos }) => {
       const finnishDateOfB = new Date(finnishDateOfBStringFormatted);
       const finnishDateOfBInTime = finnishDateOfB.getTime();
 
-      return finnishDateOfAInTime - finnishDateOfBInTime;
+      return finnishDateOfBInTime - finnishDateOfAInTime;
     }
   };
 
