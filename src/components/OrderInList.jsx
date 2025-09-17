@@ -149,7 +149,7 @@ function PedidoInList({ pedido }) {
         );
       }
     }
-    disabledButton(false)
+    setDisabledButton(false)
     //ESTO DE AQUI ARRIBA DESCOMENTAR PARA VERSIÓN CON IMPRESORA
   };
 
