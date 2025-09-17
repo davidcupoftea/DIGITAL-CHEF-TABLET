@@ -316,6 +316,7 @@ const styles = StyleSheet.create({
     fontFamily: "Function-Regular",
     marginTop: 10,
     marginBottom: 10,
+    textAlign: 'center'
   },
   textBoldError: {
     color: "red",
