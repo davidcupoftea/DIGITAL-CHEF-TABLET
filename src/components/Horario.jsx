@@ -234,8 +234,9 @@ const togglePeriod = (dayId, tpId) => {
             </Text>
           ) : (
             hoursOfEveryDay.map((hourOfEveryDay) => (
-              <>
+              
                 <View key={hourOfEveryDay.id}>
+                  <View>
                   {hourOfEveryDay.day == "MONDAY" ? (
                     <Text style={styles.text}> LUNES</Text>
                   ) : null}
@@ -278,7 +279,7 @@ const togglePeriod = (dayId, tpId) => {
                     );
                   })}
                 </View>
-              </>
+              </View>
             ))
           )}
         </View>
