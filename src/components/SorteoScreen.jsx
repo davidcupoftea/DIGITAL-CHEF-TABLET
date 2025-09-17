@@ -41,6 +41,7 @@ const SorteosScreen = (variable) => {
   const [typeOfMedia, setTypeOfMedia] = useState(null);
   const [imageNotUpdated, setImageNotUpdated] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  const [sorteo, setSorteo] = useState(null)
 
 
   const [publishingDate, setPublishingDate] = useState(new Date());
@@ -480,8 +481,8 @@ const SorteosScreen = (variable) => {
             <View>
               <Text style={styles.textDescription}>
                 Cantidad de puntos del ganador provisional (por tener máxima
-                cantidad de puntos): {item.provisional_winner_max_points}{" "}
-                puntos, el ganador es {item.provisional_winner_max_points_user}
+                cantidad de puntos):{sorteo.provisional_winner_max_points}{" "}
+                puntos, el ganador es {sorteo.provisional_winner_max_points_user}
               </Text>
             </View>
             {image ? (
