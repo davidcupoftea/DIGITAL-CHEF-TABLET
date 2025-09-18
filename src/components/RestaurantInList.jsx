@@ -13,14 +13,14 @@ import { AuthFlowContext } from "./AuthUseContextProvider.jsx";
 import { RestaurantChosenContext } from "./RestaurantChosenProvider.jsx";
 import getAndSetRestaurant from "../services/apiCallFavouriteRestaurant.jsx";
 import { BASE_URL } from "../services/index.jsx";
-import { FacturadosContext} from "./ConceptosFacturadosProvider.jsx";
+//import { FacturadosContext} from "./ConceptosFacturadosProvider.jsx";
 
 
 const RestaurantInList = ({ offer }) => {
   const [selected, setSelected] = useState(false);
 
-  const { conceptosFacturadosObject, añadirConceptosFacturados, limpiarConceptosFacturados } = useContext(FacturadosContext);
-  const [conceptosFacturados, setConceptosFacturados] = conceptosFacturadosObject;
+  // const { conceptosFacturadosObject, añadirConceptosFacturados, limpiarConceptosFacturados } = useContext(FacturadosContext);
+  // const [conceptosFacturados, setConceptosFacturados] = conceptosFacturadosObject;
 
 
   let { authTokensObject, logOutFunction } = useContext(AuthFlowContext);
@@ -99,7 +99,7 @@ const RestaurantInList = ({ offer }) => {
     });
     var jsonData = await res.json();
     getAndSetRestaurant(authTokens?.access, setRestaurantChosen);
-    limpiarConceptosFacturados()
+    //limpiarConceptosFacturados()
     setSelected(false);
   };
 
