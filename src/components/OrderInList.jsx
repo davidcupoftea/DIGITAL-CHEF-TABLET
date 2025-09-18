@@ -606,7 +606,7 @@ function PedidoInList({ pedido }) {
           pedido.confirmed_by_user) && //AQUI PONER CONFIRMADO POR EL RESTAURANTE?
         !nulled &&
         !pedido.error_out_of_stock &&
-        !pedido.nulled_by_user_error_stock ? (
+        !pedido.nulled_by_user_error_stock && !(arrival == true && paid == false)? (
           <TouchableOpacity
             disabled={disabledButton}
             style={styles.reservationyellow}
