@@ -196,6 +196,20 @@ const PanelControl = () => {
     getAmountToPay();
   }, [elementsChosen, conceptosChosen]);
 
+   useEffect(() => {
+  if (!restaurantChosen?.pk) return; // seguridad
+
+  // Limpiar cálculos cuando cambia de restaurante
+  setAmountsToPay([]);
+  setAmountsConcept([]);
+  setStringConcatDefinitive("");
+  setTotalDefinitive(0);
+  setEfectivo(0);
+  setCambio(0);
+  setElementsChosen([]);
+  setConceptosChosen([]);
+}, [restaurantChosen?.pk])
+
   const fetchRooms = async (restaurantChosen_pk) => {
     setLoadedRooms(false);
     setLoadingRooms(true);
