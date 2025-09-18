@@ -479,7 +479,7 @@ const NewsInList = ({ registro, fetchFacturas }) => {
                       style={registro.ticket_identifier.negative ? styles.textred : null}
                       key={index}
                     >
-                      {element.description}
+                      {element.description} - [{element.price} €]
                     </Text>
                   ))
                 ) : (
