@@ -505,8 +505,8 @@ const Pedidos = () => {
 
             if (!fromTable == true) {
               fetchTables();
-              setPaid(false);
-              setNotPaid(true);
+              setPaid(true);
+              setNotPaid(false);
               setIndiferentPayment(false);
               Alert.alert(
                 "Atención",
