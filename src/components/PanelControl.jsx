@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useCallback, useMemo } from "react";
 import {
   View,
   Text,
@@ -11,7 +11,6 @@ import {
   Alert,
   FlatList,
   ActivityIndicator,
-  Dimensions,
 } from "react-native";
 import * as Device from "expo-device";
 import { Picker } from "@react-native-picker/picker";
@@ -34,35 +33,35 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import CanvasMesas from "./Canvas.jsx";
 
 const PanelControl = () => {
-  const addTable = (pk) => {
+ const addTable = useCallback((pk) => {
     setTablesChosen((prevState) => [...prevState, pk]);
-  };
+  },[tablesChosen])
 
-  const removeTable = (pk) => {
+  const removeTable = useCallback((pk) => {
     let new_tablesChosen = [...tablesChosen];
     new_tablesChosen = new_tablesChosen.filter((table) => table != pk);
     setTablesChosen(new_tablesChosen);
-  };
+  }, [tablesChosen]);
 
-  const addElement = (pk) => {
+  const addElement = useCallback((pk) => {
     setElementsChosen((prevState) => [...prevState, pk]);
-  };
+  }, [elementsChosen])
 
-  const removeElement = (pk) => {
+  const removeElement = useCallback((pk) => {
     let new_elementsChosen = [...elementsChosen];
     new_elementsChosen = new_elementsChosen.filter((element) => element != pk);
     setElementsChosen(new_elementsChosen);
-  };
+  },[elementsChosen]);
 
-  const addConcepto = (pk) => {
+  const addConcepto = useCallback((pk) => {
     setConceptosChosen((prevState) => [...prevState, pk]);
-  };
+  },[conceptosChosen]);
 
-  const removeConcepto = (pk) => {
+  const removeConcepto = useCallback((pk) => {
     let new_elementsChosen = [...conceptosChosen];
     new_elementsChosen = new_elementsChosen.filter((element) => element != pk);
     setConceptosChosen(new_elementsChosen);
-  };
+  },[conceptosChosen]);
 
   const [rooms, setRoomsState] = useState([{ room: "Todas", id: "Todas" }]);
   const [room, setRoom] = useState("Todas");
@@ -89,17 +88,15 @@ const PanelControl = () => {
   const [amountsConcept, setAmountsConcept] = useState([]);
   const [stringConcat, setStringConcat] = useState("");
   const [stringConcatConcept, setStringConcatConcept] = useState("");
-  const [stringConcatDefinitive, setStringConcatDefinitive] = useState("");
+  //const [stringConcatDefinitive, setStringConcatDefinitive] = useState("");
   const [total, setTotal] = useState(0);
   const [totalConcept, setTotalConcept] = useState(0);
-  const [totalDefinitive, setTotalDefinitive] = useState(0);
+  //const [totalDefinitive, setTotalDefinitive] = useState(0);
   const [efectivo, setEfectivo] = useState(0);
-  const [cambio, setCambio] = useState(0);
+  //const [cambio, setCambio] = useState(0);
 
   const [loadingProforma, setLoadingProforma] = useState(false);
   const [loadingTicket, setLoadingTicket] = useState(false);
-
-  const [isEditing, setIsEditing] = useState(false);
 
   const navigation = useNavigation();
   const isFocused = useIsFocused();
@@ -122,7 +119,7 @@ const PanelControl = () => {
   const [conceptosFacturados, setConceptosFacturados] =
     conceptosFacturadosObject;
 
-  const fetchAmountToPay = async (restaurantChosen_pk) => {
+ const fetchAmountToPay = useCallback(async (restaurantChosen_pk) => {
     const response = await fetch(
       BASE_URL + "get-amount-to-pay/" + restaurantChosen_pk + "/",
       {
@@ -141,48 +138,70 @@ const PanelControl = () => {
     const jsonData = await response.json();
     setAmountsToPay(jsonData.amounts);
     setAmountsConcept(jsonData.concepts);
-  };
+  },[authTokens?.access, elementsChosen, conceptosChosen]);
+
 
   function joinIfBothExist(str1, str2, separator = " + ") {
     if (str1 && str2) return `${str1}${separator}${str2}`;
     return str1 || str2 || "";
   }
 
-  useEffect(() => {
-    if (amountsToPay != undefined && amountsConcept != undefined) {
-      const stringConcat = amountsToPay
-        .map((n) => `${n.toFixed(2)}`)
-        .join(" + ");
-      const stringConcatConcept = amountsConcept
-        .map((n) => `${n.toFixed(2)}`)
-        .join(" + ");
+  // useEffect(() => {
+  //   if (amountsToPay != undefined && amountsConcept != undefined) {
+  //     const stringConcat = amountsToPay
+  //       .map((n) => `${n.toFixed(2)}`)
+  //       .join(" + ");
+  //     const stringConcatConcept = amountsConcept
+  //       .map((n) => `${n.toFixed(2)}`)
+  //       .join(" + ");
 
-      const stringConcatDefinitive = joinIfBothExist(
-        stringConcat,
-        stringConcatConcept
-      );
+  //     const stringConcatDefinitive = joinIfBothExist(
+  //       stringConcat,
+  //       stringConcatConcept
+  //     );
 
-      setStringConcatDefinitive(stringConcatDefinitive);
-      let total = amountsToPay.reduce((acc, n) => acc.plus(n), new Decimal(0));
-      const total_str = total.toString();
-      let totalConcept = amountsConcept.reduce(
-        (acc, n) => acc.plus(n),
-        new Decimal(0)
-      );
-      const totalConcept_str = totalConcept.toString();
-      setTotalDefinitive(totalConcept.plus(total).toString());
-    }
-  }, [amountsToPay, amountsConcept]);
+  //     setStringConcatDefinitive(stringConcatDefinitive);
+  //     let total = amountsToPay.reduce((acc, n) => acc.plus(n), new Decimal(0));
+  //     const total_str = total.toString();
+  //     let totalConcept = amountsConcept.reduce(
+  //       (acc, n) => acc.plus(n),
+  //       new Decimal(0)
+  //     );
+  //     const totalConcept_str = totalConcept.toString();
+  //     setTotalDefinitive(totalConcept.plus(total).toString());
+  //   }
+  // }, [amountsToPay, amountsConcept]);
 
-  useEffect(() => {
-    if (efectivo.length > 0) {
-      let efectivo_decimal = new Decimal(efectivo);
-      let cambio = efectivo_decimal.minus(new Decimal(totalDefinitive));
-      setCambio(cambio.toString());
-    }
-  }, [totalDefinitive, efectivo]);
+  const stringConcatDefinitive = useMemo(() => {
+  if (!amountsToPay || !amountsConcept) return "";
+  const stringConcat = amountsToPay.map((n) => n.toFixed(2)).join(" + ");
+  const stringConcatConcept = amountsConcept.map((n) => n.toFixed(2)).join(" + ");
+  return joinIfBothExist(stringConcat, stringConcatConcept);
+}, [amountsToPay, amountsConcept]);
 
-  const getAmountToPay = async () => {
+const totalDefinitive = useMemo(() => {
+  if (!amountsToPay || !amountsConcept) return "0.00";
+  const total = amountsToPay.reduce((acc, n) => acc.plus(n), new Decimal(0));
+  const totalConcept = amountsConcept.reduce((acc, n) => acc.plus(n), new Decimal(0));
+  return total.plus(totalConcept).toString();
+}, [amountsToPay, amountsConcept]);
+
+  // useEffect(() => {
+  //   if (efectivo.length > 0) {
+  //     let efectivo_decimal = new Decimal(efectivo);
+  //     let cambio = efectivo_decimal.minus(new Decimal(totalDefinitive));
+  //     setCambio(cambio.toString());
+  //   }
+  // }, [totalDefinitive, efectivo]);
+
+  const cambio = useMemo(() => {
+  if (!efectivo || efectivo.length === 0) return "0.00";
+  const efectivo_decimal = new Decimal(efectivo);
+  const total_decimal = new Decimal(totalDefinitive || 0);
+  return efectivo_decimal.minus(total_decimal).toString();
+}, [efectivo, totalDefinitive]);
+
+  const getAmountToPay = useCallback(async () => {
     if (authTokens != null && authTokens != "null") {
       const restaurantChosen_pk = await getAndSetRestaurant(
         authTokens?.access,
@@ -190,27 +209,27 @@ const PanelControl = () => {
       );
       fetchAmountToPay(restaurantChosen_pk);
     }
-  };
+  },[authTokens, fetchAmountToPay])
 
   useEffect(() => {
     getAmountToPay();
   }, [elementsChosen, conceptosChosen]);
 
-   useEffect(() => {
+ useEffect(() => {
   if (!restaurantChosen?.pk) return; // seguridad
 
   // Limpiar cálculos cuando cambia de restaurante
   setAmountsToPay([]);
   setAmountsConcept([]);
-  setStringConcatDefinitive("");
-  setTotalDefinitive(0);
+  // setStringConcatDefinitive("");
+  // setTotalDefinitive(0);
   setEfectivo(0);
-  setCambio(0);
+  // setCambio(0);
   setElementsChosen([]);
   setConceptosChosen([]);
 }, [restaurantChosen?.pk])
 
-  const fetchRooms = async (restaurantChosen_pk) => {
+  const fetchRooms = useCallback(async (restaurantChosen_pk) => {
     setLoadedRooms(false);
     setLoadingRooms(true);
     const response = await fetch(
@@ -229,9 +248,9 @@ const PanelControl = () => {
     setRoomsState([...jsonData.rooms, { room: "Todas", id: "Todas" }]);
     setLoadedRooms(true);
     setLoadingRooms(false);
-  };
+  },[authTokens?.access]);
 
-  const getRooms = async () => {
+  const getRooms = useCallback(async () => {
     if (authTokens != null && authTokens != "null") {
       const restaurantChosen_pk = await getAndSetRestaurant(
         authTokens?.access,
@@ -239,7 +258,7 @@ const PanelControl = () => {
       );
       fetchRooms(restaurantChosen_pk);
     }
-  };
+  },[authTokens?.access, fetchRooms]);
 
   useEffect(() => {
     getRooms();
@@ -252,10 +271,9 @@ const PanelControl = () => {
     return unsubscribe;
   }, [isFocused]);
 
-  const getTables = async (restaurantChosen_pk) => {
+ const getTables = useCallback(async (restaurantChosen_pk) => {
     setLoadingTables(true);
     setLoadedTables(false);
-    //setTables([])
     if (room != null) {
       const jsonData = await fetch(
         BASE_URL + "tables-dc/" + restaurantChosen_pk + "/",
@@ -275,9 +293,10 @@ const PanelControl = () => {
       setLoadingTables(false);
       setLoadedTables(true);
     }
-  };
+  },[]);
 
-  const gettingInfoForTables = async () => {
+
+  const gettingInfoForTables = useCallback(async () => {
     if (authTokens != null && authTokens != "null") {
       const restaurantChosen_pk = await getAndSetRestaurant(
         authTokens?.access,
@@ -285,11 +304,12 @@ const PanelControl = () => {
       );
       getTables(restaurantChosen_pk);
     }
-  };
+  },[authTokens?.access, getTables]);
 
   useEffect(() => {
     gettingInfoForTables();
   }, [room]);
+
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", async () => {
@@ -306,7 +326,7 @@ const PanelControl = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const getOrdersFromTables = async (restaurantChosen_pk) => {
+    const getOrdersFromTables = useCallback(async (restaurantChosen_pk) => {
     setLoadingOrders(true);
     setLoadedOrders(false);
     const jsonData = await fetch(
@@ -384,9 +404,10 @@ const PanelControl = () => {
     setMesasConItems(mesasArray);
     setLoadingOrders(false);
     setLoadedOrders(true);
-  };
+  },[authTokens?.access, tablesChosen]);
 
-  const getOrders = async () => {
+
+  const getOrders = useCallback(async () => {
     if (authTokens != null && authTokens != "null") {
       const restaurantChosen_pk = await getAndSetRestaurant(
         authTokens?.access,
@@ -394,7 +415,7 @@ const PanelControl = () => {
       );
       getOrdersFromTables(restaurantChosen_pk);
     }
-  };
+  },[authTokens?.access, getOrdersFromTables]);
 
   useEffect(() => {
     getOrders();
@@ -407,7 +428,7 @@ const PanelControl = () => {
     return unsubscribe;
   }, [isFocused]);
 
-  const getPlatform = () => {
+  const getPlatform = useCallback(() => {
     if (Device.osName === "Android" || Platform.OS === "android") {
       return "android";
     } else if (
@@ -417,7 +438,7 @@ const PanelControl = () => {
     ) {
       return "ios";
     }
-  };
+  },[]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", async () => {
@@ -426,7 +447,7 @@ const PanelControl = () => {
     return unsubscribe;
   }, [isFocused]);
 
-  const actuallyClearElements = async (
+  const actuallyClearElements = useCallback(async (
     restaurantChosen_pk,
     order_elements,
     conceptos_extra
@@ -462,9 +483,9 @@ const PanelControl = () => {
       setLoadingCleaning(false);
     }
     return res_json;
-  };
+  },[authTokens?.access, getOrders]);
 
-  const checkIfAreItemsNotInvoiced = async (
+  const checkIfAreItemsNotInvoiced = useCallback(async (
     restaurantChosen_pk,
     order_elements,
     conceptos_extra
@@ -529,17 +550,18 @@ const PanelControl = () => {
         );
       }
     }
-  };
+  },[authTokens?.access, actuallyClearElements]);
 
-  const clearElements = async (restaurantChosen_pk) => {
+  const clearElements = useCallback(async (restaurantChosen_pk) => {
     checkIfAreItemsNotInvoiced(
       restaurantChosen_pk,
       elementsChosen,
       conceptosChosen
     );
-  };
+  },[checkIfAreItemsNotInvoiced, elementsChosen, conceptosChosen]);
 
-  const renderRooms = () => {
+
+  const renderRooms = useCallback(() => {
     if (rooms.length > 0) {
       return rooms.map((roomElement, index) => {
         return (
@@ -551,7 +573,7 @@ const PanelControl = () => {
         );
       });
     }
-  };
+  },[rooms]);
 
   const cardsPerRow = 3;
   const [containerWidth, setContainerWidth] = useState(0);

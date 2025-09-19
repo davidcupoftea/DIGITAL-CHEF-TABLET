@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -341,6 +341,6 @@ extraConceptTitle: {
 
 });
 
-export default TableWithOrderElementsControlPanel;
+export default React.memo(TableWithOrderElementsControlPanel);
 
 //REPASADO Y REVISADO
