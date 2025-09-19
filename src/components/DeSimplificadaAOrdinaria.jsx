@@ -114,21 +114,35 @@ const FacturaCompleta = ({ route }) => {
     fetchTicketData(route.params.eventId);
   }, []);
 
-  const order_elements_string =
-    orderElements.length > 0
-      ? orderElements
-          .map(({ dish, quantity, dish_price }) => {
-            const order_element =
-              dish.toString() +
-              " (x" +
-              quantity.toString() +
-              ") [" +
-              dish_price.toString() +
-              " €]";
-            return order_element;
-          })
-          .join(", ")
-      : "No hay platos";
+  // const order_elements_string =
+  //   orderElements.length > 0
+  //     ? orderElements
+  //         .map(({ dish, quantity, dish_price }) => {
+  //           const order_element =
+  //             dish.toString() +
+  //             " (x" +
+  //             quantity.toString() +
+  //             ") [" +
+  //             dish_price.toString() +
+  //             " €]";
+  //           return order_element;
+  //         })
+  //         .join(", ")
+  //     : "No hay platos";
+
+const order_elements_string =
+  orderElements.length > 0
+    ? orderElements
+        .map(({ dish, quantity, dish_price, price_corrected, new_price_corrected, dish_pk }) => {
+          const priceToShow =
+            price_corrected && new_price_corrected
+              ? new_price_corrected
+              : dish_price;
+
+          return `${dish} (x${quantity}) [${priceToShow} €] (id: ${dish_pk})`;
+        })
+        .join(", ")
+    : "No hay platos";
 
   const conceptos_string =
     conceptosExtra.length > 0
