@@ -173,6 +173,7 @@ const ElegirProductos = ({ route }) => {
           <ActivityIndicator size="large" />
         ) : (
           dishes.map((element, index) => (
+            element.dishes && element.dishes.length > 0 ? (
             <View key={index}>
               <TouchableOpacity
                 onPress={() => {
@@ -208,7 +209,7 @@ const ElegirProductos = ({ route }) => {
                 anotherkey={index}
                 dishes={element.dishes}
               ></ElegirProductoSection>
-            </View>
+            </View>):null
           ))
         )}
       </ScrollView>
