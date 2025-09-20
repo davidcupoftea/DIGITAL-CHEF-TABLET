@@ -160,6 +160,7 @@ const order_elements_string =
 
         if (!razonSocial || !nif || !domicilioFiscal){
       Alert.alert('¡Tienes que rellenar todos los campos!')
+      setDisabledEditing(false)
       return
     }
 
