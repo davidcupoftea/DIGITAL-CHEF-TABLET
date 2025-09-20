@@ -479,6 +479,7 @@ const totalDefinitive = useMemo(() => {
       );
       setConceptosJustHided((prevState) => [...prevState, ...conceptos_extra]);
       await getOrders(restaurantChosen_pk);
+      await fetchAmountToPay(restaurantChosen_pk);
     } else {
       setLoadingCleaning(false);
     }
