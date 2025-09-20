@@ -765,6 +765,7 @@ const totalDefinitive = useMemo(() => {
           <ActivityIndicator size="large"></ActivityIndicator>
         ) : null}
         <TouchableOpacity
+          disabled={loadingProforma}
           style={styles.greenButton}
           onPress={async () => {
             setLoadingProforma(true);
@@ -788,6 +789,7 @@ const totalDefinitive = useMemo(() => {
         ) : null}
 
         <TouchableOpacity
+          disabled={loadingTicket}
           style={styles.greenButton}
           onPress={async () => {
             if (!elementsChosen && !conceptosChosen) {
@@ -834,6 +836,7 @@ const totalDefinitive = useMemo(() => {
         ) : null}
 
         <TouchableOpacity
+        disabled={loadingCleaning}
           style={styles.redButton}
           onPress={() => {
             clearElements(restaurantChosen.pk);
