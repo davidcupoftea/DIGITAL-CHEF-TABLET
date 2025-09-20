@@ -8,7 +8,7 @@ import {
   Alert,
   Pressable,
   TextInput,
-  Platform,
+  Platform
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AuthFlowContext } from "./AuthUseContextProvider.jsx";
