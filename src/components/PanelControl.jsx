@@ -761,7 +761,7 @@ const totalDefinitive = useMemo(() => {
         <TouchableOpacity
           disabled={loadingProforma}
           style={styles.greenButton}
-          onPress={async () => {
+          onPress={useCallback(async () => {
             setLoadingProforma(true);
             await imprimirProformaPanelControl(
               elementsChosen,
@@ -771,7 +771,7 @@ const totalDefinitive = useMemo(() => {
               authTokens?.access
             );
             setLoadingProforma(false);
-          }}
+          })}
         >
           <Text style={styles.buttonText}>
             Imprimir proforma con los elementos seleccionados
