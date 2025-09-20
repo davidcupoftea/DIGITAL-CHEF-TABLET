@@ -7,7 +7,7 @@ import {
   Image,
   Dimensions,
 } from "react-native";
-import ScaledImage from "./CustomFastAndFunctionalScaledImage.jsx";
+import ScaledImage from "./CustomFastAndFunctionalScaledImageContainerWidth.jsx";
 import { OrderContext } from "./OrderContextProvider.jsx";
 
 const ElegirProductoInList = ({ item }) => {
@@ -147,8 +147,7 @@ const styles = StyleSheet.create({
   image: {
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    width: Dimensions.get("window").width * 0.9 - 10,
-    marginBottom: 5,
+    width: '100%'
   },
   quantity: {
     marginTop: 15,

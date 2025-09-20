@@ -28,7 +28,6 @@ const ElegirProductoSection = ({ displayed = false, anotherkey, dishes }) => {
       style={[styles.screen, { marginHorizontal: margin }]}
       onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}
     >
-      <View style={styles.screen}>
         {displayed ? (
           <FlatList
             data={dishes}
@@ -44,7 +43,6 @@ const ElegirProductoSection = ({ displayed = false, anotherkey, dishes }) => {
           />
         ) : null}
       </View>
-    </View>
   );
 };
 const styles = StyleSheet.create({
