@@ -232,7 +232,7 @@ const FacturaRectificativa = ({ route }) => {
         <ScrollView>
           <View style={styles.card}>
             <Text style={styles.text}>
-              Numero serie factura a rectificar:{"\n"}
+              Número serie factura a rectificar:{"\n"}
               {numeroSerieFactura}
             </Text>
             <Text style={styles.text}>Elementos del pedido:</Text>
