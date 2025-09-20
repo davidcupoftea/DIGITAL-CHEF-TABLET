@@ -33,35 +33,29 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import CanvasMesas from "./Canvas.jsx";
 
 const PanelControl = () => {
- const addTable = useCallback((pk) => {
-    setTablesChosen((prevState) => [...prevState, pk]);
-  },[tablesChosen])
+const addTable = useCallback((pk) => {
+  setTablesChosen(prev => [...prev, pk]);
+}, []);
 
-  const removeTable = useCallback((pk) => {
-    let new_tablesChosen = [...tablesChosen];
-    new_tablesChosen = new_tablesChosen.filter((table) => table != pk);
-    setTablesChosen(new_tablesChosen);
-  }, [tablesChosen]);
+const removeTable = useCallback((pk) => {
+  setTablesChosen(prev => prev.filter((table) => table !== pk));
+}, []);
 
-  const addElement = useCallback((pk) => {
-    setElementsChosen((prevState) => [...prevState, pk]);
-  }, [elementsChosen])
+const addElement = useCallback((pk) => {
+  setElementsChosen(prev => [...prev, pk]);
+}, []);
 
-  const removeElement = useCallback((pk) => {
-    let new_elementsChosen = [...elementsChosen];
-    new_elementsChosen = new_elementsChosen.filter((element) => element != pk);
-    setElementsChosen(new_elementsChosen);
-  },[elementsChosen]);
+const removeElement = useCallback((pk) => {
+  setElementsChosen(prev => prev.filter((element) => element !== pk));
+}, []);
 
-  const addConcepto = useCallback((pk) => {
-    setConceptosChosen((prevState) => [...prevState, pk]);
-  },[conceptosChosen]);
+const addConcepto = useCallback((pk) => {
+  setConceptosChosen(prev => [...prev, pk]);
+}, []);
 
-  const removeConcepto = useCallback((pk) => {
-    let new_elementsChosen = [...conceptosChosen];
-    new_elementsChosen = new_elementsChosen.filter((element) => element != pk);
-    setConceptosChosen(new_elementsChosen);
-  },[conceptosChosen]);
+const removeConcepto = useCallback((pk) => {
+  setConceptosChosen(prev => prev.filter((concepto) => concepto !== pk));
+}, []);
 
   const [rooms, setRoomsState] = useState([{ room: "Todas", id: "Todas" }]);
   const [room, setRoom] = useState("Todas");
