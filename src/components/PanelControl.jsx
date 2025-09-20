@@ -59,6 +59,7 @@ const removeConcepto = useCallback((pk) => {
 
   const [rooms, setRoomsState] = useState([{ room: "Todas", id: "Todas" }]);
   const [room, setRoom] = useState("Todas");
+  const [isEditing, setIsEditing] = useState(false)
 
   const [loadedRooms, setLoadedRooms] = useState(false);
   const [loadingRooms, setLoadingRooms] = useState(false);
