@@ -69,10 +69,10 @@ const ConfirmarPedido = () => {
     setDisabled(true)
 
     const quantity = await total();
-    if (quantity == 0) {
-      Alert.alert("Error", "La cantidad no puede ser 0");
-      return
-    }
+    // if (quantity == 0) {
+    //   Alert.alert("Error", "La cantidad no puede ser 0");
+    //   return
+    // }
   
     let response = await fetch(
       BASE_URL + "crear-orden-desde-el-restaurante/" + restaurantChosen.pk + "/",
