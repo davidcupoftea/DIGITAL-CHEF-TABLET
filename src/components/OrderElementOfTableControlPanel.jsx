@@ -98,7 +98,8 @@ const OrderElementOfTableControlPanel = ({
     const data = await response.json();
     if (data.status == "ok") {
       setLoadingCleaning(false)
-      setHidden(true);
+      setNulled(true)
+      //setHidden(true);
     } else {
       setLoadingCleaning(false)
       Alert.alert("Error", data.message);
