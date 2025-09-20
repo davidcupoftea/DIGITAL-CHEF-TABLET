@@ -651,7 +651,7 @@ const totalDefinitive = useMemo(() => {
 
         <View style={{ flex: 1, flexDirection: "column" }}>
           <View style={{ flexDirection: "row", flex: 1, gap: 15 }}>
-            <View style={{ flex: 2 }}>
+            <View style={{ flex: 2, minHeight: 300  }}>
               <CanvasMesas
                 mesasOriginales={tables}
                 isEditing={isEditing}
