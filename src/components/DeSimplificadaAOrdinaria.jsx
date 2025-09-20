@@ -158,6 +158,11 @@ const order_elements_string =
   const convertirFacturaACompleta = async () => {
     setDisabledEditing(true);
 
+        if (!razonSocial || !nif || !domicilioFiscal){
+      Alert.alert('¡Tienes que rellenar todos los campos!')
+      return
+    }
+
     const numero_instalacion = await getNumeroInstalacion()
 
     const res = await fetch(
