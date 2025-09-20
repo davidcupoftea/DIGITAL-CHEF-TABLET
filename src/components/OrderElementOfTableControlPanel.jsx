@@ -79,8 +79,8 @@ const OrderElementOfTableControlPanel = ({
   };
 
   const handleHideOrderElement = () => {
-    setNulled(true)
-    //clearOrderElementFunction(orderElement.dishId);
+    //setNulled(true)
+    clearOrderElementFunction(orderElement.dishId);
   };
 
   const nullOrderElement = async (dishId, restaurant_pk) => {
