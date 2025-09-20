@@ -284,7 +284,7 @@ const totalDefinitive = useMemo(() => {
       );
       var res_json = await jsonData.json();
       var tables = res_json.tables;
-      console.log('tables are', tables)
+      //console.log('tables are', tables)
       setTables([...tables]);
       setLoadingTables(false);
       setLoadedTables(true);
