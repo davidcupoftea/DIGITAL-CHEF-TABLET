@@ -138,7 +138,7 @@ const OrderElementOfTableControlPanel = ({
       Alert.alert("Error", data.message);
     }
   };
-
+ 
   const clearOrderElementFunction = async (dishId) => {
     const restaurantChosen_pk = await getAndSetRestaurant(
       authTokens?.access,
