@@ -199,6 +199,7 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: "white",
     borderRadius: 30,
+    overflow: 'hidden'
   },
   greencard: {
     flexDirection: "column",
@@ -209,6 +210,7 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: "green",
     borderRadius: 30,
+    overflow: 'hidden',
   },
   insidecard: {
     padding: 15,
